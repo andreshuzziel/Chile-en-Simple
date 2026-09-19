@@ -2174,6 +2174,21 @@ renderGastoBanc();
   function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
   medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
   if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
+  // Al pulsar una categoría: el TÍTULO de la sección queda pegado justo bajo la barra (1px de aire),
+  // sin importar el relleno de la sección, el ancho de pantalla o cuántas filas tenga la barra.
+  const AIRE = 1;
+  function irA(id, actualizarHash){
+    const sec = document.getElementById(id); if(!sec) return false;
+    const tit = sec.querySelector('h2, h3') || sec;
+    const y = tit.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 0) - AIRE;
+    window.scrollTo({top: Math.max(0, y), behavior: 'smooth'});
+    if(actualizarHash && history.replaceState) history.replaceState(null, '', '#' + id);
+    return true;
+  }
+  document.querySelectorAll('nav.menu a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => { const id = a.getAttribute('href').slice(1); if(irA(id, true)) e.preventDefault(); });
+  });
+  if(location.hash.length > 1) setTimeout(() => irA(location.hash.slice(1), false), 350);
 })();
 </script>
 </body>
