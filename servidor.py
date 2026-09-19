@@ -841,6 +841,8 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(html)
             except FileNotFoundError:
                 self.send_response(404); self.end_headers()
+        elif p.path == '/dashboard_congreso.html':   # nombre antiguo → redirige al principal
+            self.send_response(301); self.send_header('Location', '/'); self.end_headers()
         elif p.path == '/api/estado':
             with LOCK:
                 estado = {k: {'edad_s': round(time.time()-v['t'])} for k, v in CACHE.items()}
