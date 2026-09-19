@@ -128,6 +128,8 @@ t('nav incluye Próxima elección', $$('nav.menu a').some(a => a.getAttribute('h
 t('botón Próxima elección en fechas', !!$('#btn-proxima') && $('#btn-proxima').getAttribute('href') === 'proxima_eleccion.html');
 t('SEO: description, robots, og:title y favicon presentes', !!$('meta[name="description"]') && !!$('meta[name="robots"]') && !!$('meta[property="og:title"]') && !!$('link[rel="icon"]'));
 t('archivo antiguo redirige a index.html', fs.readFileSync('/home/user/dashboard_congreso.html','utf8').includes('url=index.html'));
+const sdR = $('#sel-distrito'); sdR.value = '20'; sdR.dispatchEvent(new window.Event('change'));
+setTimeout(()=>{}, 0);
 t('nav incluye Ranking', $$('nav.menu a').some(a => a.getAttribute('href') === '#ranking'));
 t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));

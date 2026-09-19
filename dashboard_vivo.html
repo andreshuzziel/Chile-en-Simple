@@ -1653,7 +1653,8 @@ renderGastoBanc();
     });
     selR.addEventListener('change', ()=>{ region = selR.value; pintar(); });
     const bm = $('#rank-mio'); if(bm) bm.addEventListener('click', ()=>{ region = region==='__mio__' ? '' : '__mio__'; selR.value=''; pintar(); });
-    const sd = $('#sel-distrito'); if(sd) sd.addEventListener('change', pintar);
+    const sd = $('#sel-distrito'); if(sd) sd.addEventListener('change', ()=>setTimeout(pintar,0));  /* tras guardar el distrito */
+    const bo = $('#olvidar-distrito'); if(bo) bo.addEventListener('click', ()=>setTimeout(()=>{ if(region==='__mio__') region=''; pintar(); },0));
     pintar();
   })();
 
