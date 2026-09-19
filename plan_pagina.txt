@@ -241,6 +241,49 @@ ARCHIVOS DEL PROYECTO (carpeta plana, sin subcarpetas)
    elecciones_geografia.json trazado comunal → distritos para el mapa
    + snapshots JSON de cada sección (asistencia, gastos, votaciones…)
 
+PÁGINA 3: 🗓️ CALENDARIO DE VOTACIONES DE LEYES (IMPLEMENTADO)
+   calendario_votaciones.html — calendario mensual con las 942
+   votaciones de 2026. Cada día con votación de ley (605) muestra un
+   chip azul; al hacer clic se abre el detalle ciudadano:
+   - Tarjeta "¿De qué trata este proyecto?" con nombre oficial,
+     iniciativa (Moción + autores / Mensaje presidencial), cámara de
+     origen y fecha de ingreso (140 fichas de proyectos).
+   - Botón "📄 Ver trámite oficial en camara.cl" → enlace verificado
+     camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmID=<Id>.
+   - 4 KPIs (a favor / en contra / abstención / no votaron), barra
+     apilada de la Cámara y los 155 diputados con su voto, filtrables
+     por opción y buscables.
+   - Qué se está votando exactamente (materias · trámite · artículo ·
+     quórum) en lenguaje simple.
+   - Entrada desde la barra de navegación (🗓️ Calendario), tarjeta
+     azul en la sección Votaciones del dashboard y buscador ciudadano.
+   - Datos: api/votacionesxano + api/votacionesDetalle (605 votos
+     nominales) + api/votaciones por boletín → calendario_votaciones.json
+     (generador: gen_calendario.py; página: gen_calendario_page.py).
+
+DISEÑO RESPONSIVE — TODOS LOS DISPOSITIVOS (IMPLEMENTADO)
+   Las 4 páginas (dashboard, vivo, elecciones, calendario) usan:
+   - <meta viewport> + -webkit-text-size-adjust.
+   - Media queries por quiebre: 760 / 720 / 640 / 600 / 480 / 360 px
+     (calendario celular con celdas compactas, dashboard con KPIs,
+     tablas y tarjetas reducidas; mapa electoral fluido al ancho).
+   - env(safe-area-inset-*) para teléfonos con notch.
+   - Inputs a 16 px en móvil (evita el zoom automático de iOS).
+   - touch-action:manipulation + botones ≥ 40 px (objetivos táctiles).
+   - prefers-reduced-motion: sin animaciones si el usuario lo pide.
+   - SVG del mapa width:100% y contenedor con scroll/pan en móvil.
+   - Cero dependencias externas: CSS puro, funciona sin internet.
+   Verificado por 17 aserciones automáticas (suites jsdom, hito.sh).
+
+ARCHIVOS AGREGADOS POR EL CALENDARIO Y EL RESPONSIVE
+   gen_calendario.py         descarga votaciones + fichas → JSON
+   calendario_votaciones.json snapshot (942 votos, 140 proyectos)
+   template_calendario.html  plantilla de la página del calendario
+   gen_calendario_page.py    inyecta datos → calendario_votaciones.html
+   calendario_votaciones.html página final (~1,2 MB, estática)
+   test_calendario_jsdom.js  35 aserciones (incluye responsive)
+
 RESUMEN EN 1 LÍNEA POR PÁGINA
    Página 1: entender el Congreso y el Gobierno hoy.
    Página 2: entender cómo se eligieron en 2025 (con mapa de Chile).
+   Página 3: entender qué se votó cada día y cómo votó cada diputado.
