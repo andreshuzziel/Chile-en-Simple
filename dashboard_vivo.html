@@ -40,6 +40,9 @@
   .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.25); padding:4px 12px; border-radius:999px; font-size:12.5px;}
 
   /* ---------- nav ---------- */
+  /* Al saltar a una sección desde la nav, el título queda debajo de la barra fija (altura real medida en JS) */
+  html{scroll-padding-top:calc(var(--nav-h, 80px) + 12px); scroll-behavior:smooth;}
+  section[id], [id].tarjeta, h2[id]{scroll-margin-top:calc(var(--nav-h, 80px) + 12px);}
   nav.menu{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
   nav.menu .cont{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:3px 4px; padding-top:5px; padding-bottom:5px; max-width:none; width:100%;}
   nav.menu a{white-space:nowrap; text-decoration:none; color:var(--texto2); font-size:12px; font-weight:600; padding:5px 9px; border-radius:999px; line-height:1.2;}
@@ -2159,6 +2162,15 @@ renderGastoBanc();
   // Auto-refresco silencioso cada 15 min: misma lógica "sin base de datos" —
   // vuelve a descargar al momento, mantiene todo solo en RAM y re-rota los proyectos.
   setInterval(async ()=>{ await cargarEnVivo(true); if(DATA) render(); }, 15*60*1000);
+})();
+</script>
+<script>
+// Altura real de la barra (cambia según ancho de pantalla / filas) → variable CSS para el desplazamiento de anclas
+(function(){
+  const nav = document.querySelector('nav.menu');
+  function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
+  medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
+  if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
 })();
 </script>
 </body>
