@@ -37,6 +37,7 @@ t('feriados', $$('#fechas-feriados .fer-card').length >= 5);
 console.log('== 3. accesos al tablero electoral ==');
 t('botón grande hacia elecciones_chile.html', !!$('#btn-elecciones'));
 t('nav incluye Elecciones', $$('nav.menu a').some(a => a.textContent.includes('Elecciones') && a.getAttribute('href') === 'elecciones_chile.html'));
+t('nav incluye Calendario de votaciones', $$('nav.menu a').some(a => a.textContent.includes('Calendario') && a.getAttribute('href') === 'calendario_votaciones.html'));
 const cd = $('#elecciones-countdown');
 t('cuadro próxima elección visible', cd && cd.innerHTML.includes('Próxima elección'));
 t('cuadro próxima elección con botón electoral', cd && !!cd.querySelector('a[href="elecciones_chile.html"]'));
