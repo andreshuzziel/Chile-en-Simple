@@ -241,6 +241,13 @@ ARCHIVOS DEL PROYECTO (carpeta plana, sin subcarpetas)
    elecciones_geografia.json trazado comunal → distritos para el mapa
    + snapshots JSON de cada sección (asistencia, gastos, votaciones…)
 
+BUSCADOR CIUDADANO AMPLIADO (IMPLEMENTADO)
+   La barra de búsqueda del hero ahora encuentra, además de diputad@s
+   y bancadas: términos del glosario (abre y resalta la definición),
+   presidente y ministros del gabinete, fechas clave (feriados, hitos
+   y elecciones), noticias del día, proyectos clave y leyes votadas.
+   Cada resultado lleva al ciudadano directo a la sección correcta.
+
 PÁGINA 3: 🗓️ CALENDARIO DE VOTACIONES DE LEYES (IMPLEMENTADO)
    calendario_votaciones.html — calendario mensual con las 942
    votaciones de 2026. Cada día con votación de ley (605) muestra un

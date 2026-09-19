@@ -169,6 +169,8 @@
   .busq-main small{color:var(--gris); font-size:12px;}
   .busq-nums{display:flex; flex-direction:column; align-items:flex-end; font-size:12px; color:var(--texto2); font-variant-numeric:tabular-nums;}
   .busq-vacio{padding:16px; font-size:13.5px; color:var(--texto2);}
+  @keyframes busqflash{0%{outline-color:rgba(232,164,0,0);}25%{outline-color:rgba(232,164,0,.95);}100%{outline-color:rgba(232,164,0,0);}}
+  .busq-flash{outline:3px solid rgba(232,164,0,0); outline-offset:3px; animation:busqflash 1.5s ease;}
   mark{background:#ffe58a; color:inherit; border-radius:3px; padding:0 1px;}
   .busq-chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; position:relative; z-index:4;}
   .busq-chips button{background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:12.5px;
@@ -489,7 +491,7 @@
       <div class="busq-caja">
         <span class="busq-lupa">🔍</span>
         <input id="busq" type="text" autocomplete="off" spellcheck="false"
-               placeholder="Busca a tu diputad@, una bancada o el gabinete…" aria-label="Buscar diputados y secciones">
+               placeholder="Busca diputad@s, leyes, ministros, fechas, glosario…" aria-label="Buscar información en la página">
         <span class="busq-hint">↑↓ · Enter</span>
       </div>
       <div class="busq-panel" id="busq-res" role="listbox"></div>
@@ -1700,6 +1702,52 @@ renderGastoBanc();
     return out.slice(0,4);
   }
 
+  /* ---- índice de CONTENIDO de la página: glosario, gobierno, fechas, noticias, proyectos y leyes ---- */
+  let INFO_IDX = null;
+  function buildInfoIdx(){
+    const idx = [];
+    const irA = (id, extra)=>()=>{
+      const sec = document.getElementById(id); if(!sec) return;
+      sec.scrollIntoView({behavior:'smooth'});
+      if(extra) setTimeout(extra, 380);
+    };
+    // 1) Glosario ciudadano (términos vivos del HTML)
+    document.querySelectorAll('#glosario details').forEach((det, i)=>{
+      const term = (det.querySelector('summary')||{}).textContent || '';
+      const texto = (det.querySelector('p')||{}).textContent || '';
+      idx.push({cat:'glosario', t:term, sub:'📖 glosario ciudadano', txt:term+' '+texto,
+        fn:()=>irA('glosario', ()=>{ det.open = true; det.classList.add('busq-flash'); det.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(()=>det.classList.remove('busq-flash'), 1600); })});
+    });
+    // 2) Gobierno: presidente y gabinete
+    const gob = DATA.gobierno || {};
+    if(gob.presidente && gob.presidente.nombre) idx.push({cat:'gobierno', t:gob.presidente.nombre, sub:'🇨🇱 Presidente de la República', txt:gob.presidente.nombre+' presidente', fn:irA('gobierno')});
+    for(const m of (gob.gabinete||[])){ idx.push({cat:'gobierno', t:m.ministro, sub:'🇨🇱 '+(m.ministerio||'ministro'), txt:m.ministro+' '+(m.ministerio||'')+' '+m.cargo, fn:irA('gobierno')}); }
+    // 3) Fechas clave (feriados, hitos, elecciones)
+    for(const grp of (DATA.fechas_clave||[])){
+      for(const it of (grp.items||[])){ idx.push({cat:'fechas', t:(it.emoji||'')+' '+it.titulo, sub:'📅 '+(grp.titulo||'fecha clave'), txt:it.titulo+' '+(it.desc||'')+' '+grp.titulo, fn:irA('fechas')}); }
+    }
+    // 4) Noticias del día (Cámara, Senado y Gobierno)
+    const not = DATA.noticias || {};
+    for(const [lado, arr] of [['Cámara', not.camara||[]], ['Senado', not.senado||[]], ['Gobierno', not.gobierno||[]]]){
+      for(const n of arr){ if(n && n.titulo) idx.push({cat:'noticias', t:n.titulo, sub:'📰 noticia · '+lado, txt:n.titulo, fn:irA('noticias')}); }
+    }
+    // 5) Proyectos clave y leyes votadas
+    for(const p of (DATA.destacadas||[])){ if(p && p.titulo) idx.push({cat:'proyectos', t:p.titulo, sub:'📌 proyecto clave · '+(p.ref||''), txt:p.titulo+' '+(p.ref||''), fn:irA('proyectos-clave')}); }
+    for(const v of (DATA.votos_leyes||[])){ if(v && v.titulo) idx.push({cat:'leyes', t:v.titulo, sub:'🗳️ ley votada · '+(v.resultado||''), txt:v.titulo+' '+(v.ref||'')+' '+(v.resultado||''), fn:irA('votaciones')}); }
+    return idx;
+  }
+  function buscarInfo(q){
+    if(!INFO_IDX) INFO_IDX = buildInfoIdx();
+    const out = [];
+    for(const it of INFO_IDX){
+      const n = norm(it.txt);
+      if(n.includes(q)) out.push(it);
+    }
+    // primero títulos que parten con la búsqueda
+    out.sort((a,b)=> (norm(b.t).startsWith(q)?1:0) - (norm(a.t).startsWith(q)?1:0));
+    return out.slice(0,6);
+  }
+
   function renderPanel(raw){
     const q = norm(raw.trim());
     sel = -1;
@@ -1736,8 +1784,19 @@ renderGastoBanc();
         }
       }
     }
+    const info = buscarInfo(q);
+    if(info.length){
+      html += '<div class="busq-grupo">Información de la página</div>';
+      for(const it of info){
+        const idx = items.length; items.push({tipo:'info', it});
+        html += `<div class="busq-item" data-i="${idx}" role="option">
+          <span class="busq-ico">📄</span>
+          <div class="busq-main"><b>${hl(it.t, q)}</b><small>${it.sub}</small></div>
+          <div class="busq-nums"><span>ver →</span></div></div>`;
+      }
+    }
     if(!items.length){
-      html = `<div class="busq-vacio">Sin resultados para «${raw.trim()}». Prueba con un apellido (ej: Jiles, Kast) o una bancada (ej: UDI).</div>`;
+      html = `<div class="busq-vacio">Sin resultados para «${raw.trim()}». Prueba con un apellido (ej: Jiles, Kast), una ley (ej: fútbol), una fecha (ej: Año Nuevo), un ministro o una palabra del glosario (ej: quórum).</div>`;
     }
     panel.innerHTML = html;
     panel.classList.add('show');
@@ -1754,6 +1813,8 @@ renderGastoBanc();
       window.explorador.bancada(it.b.grupo);
     } else if(it.tipo==='seccion'){
       document.getElementById(it.s.id).scrollIntoView({behavior:'smooth'});
+    } else if(it.tipo==='info' && it.it.fn){
+      it.it.fn();
     }
   }
   function marcar(){

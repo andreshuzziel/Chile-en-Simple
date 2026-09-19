@@ -86,6 +86,21 @@ t('touch-action en controles táctiles', html.includes('touch-action:manipulatio
 t('nav compacta en móvil (toda visible, letra achicada)', html.includes('Nav compacta en móvil') && html.includes('nav.menu a{ font-size:10px;') && html.includes('flex-wrap:wrap; justify-content:center'));
 t('modo oscuro legible (KPIs, tablas y chips oscurecidos)', html.includes('texto siempre legible') && html.includes('body.dark .kpi-card .num') && html.includes('body.dark .tabla-wrap{background:#171e30') && html.includes('body.dark .voto-chip.N'));
 t('botón claro/oscuro visible en ambos modos', html.includes('#dark-toggle{margin-left:auto; border:1px solid #b9c8ec; background:#eef2fd') && html.includes('body.dark #dark-toggle{background:#25314f'));
+
+console.log('== 7. buscador de contenido de la página ==');
+const busq = $('#busq');
+const panel = $('#busq-res');
+busq.value = 'quorum';
+busq.dispatchEvent(new window.Event('input', {bubbles:true}));
+t('buscador indexa el glosario ciudadano', panel.textContent.includes('Información de la página') && panel.textContent.includes('Quórum'));
+busq.value = 'año nuevo';
+busq.dispatchEvent(new window.Event('input', {bubbles:true}));
+t('buscador encuentra fechas clave (Año Nuevo)', panel.textContent.includes('Año Nuevo'));
+busq.value = 'ministerio';
+busq.dispatchEvent(new window.Event('input', {bubbles:true}));
+t('buscador encuentra al gabinete', panel.textContent.includes('Presidente de la República') || panel.textContent.includes('🇨🇱'));
+busq.value = '';
+busq.dispatchEvent(new window.Event('input', {bubbles:true}));
 t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 
