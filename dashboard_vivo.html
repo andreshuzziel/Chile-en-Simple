@@ -2174,9 +2174,9 @@ renderGastoBanc();
   function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
   medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
   if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
-  // Al pulsar una categoría: el TÍTULO de la sección queda pegado justo bajo la barra (1px de aire),
+  // Al pulsar una categoría: el TÍTULO de la sección queda pegado justo bajo la barra (6px de aire),
   // sin importar el relleno de la sección, el ancho de pantalla o cuántas filas tenga la barra.
-  const AIRE = 1;
+  const AIRE = 6;
   function irA(id, actualizarHash){
     const sec = document.getElementById(id); if(!sec) return false;
     const tit = sec.querySelector('h2, h3') || sec;
