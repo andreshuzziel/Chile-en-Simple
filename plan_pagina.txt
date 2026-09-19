@@ -248,6 +248,21 @@ BUSCADOR CIUDADANO AMPLIADO (IMPLEMENTADO)
    y elecciones), noticias del día, proyectos clave y leyes votadas.
    Cada resultado lleva al ciudadano directo a la sección correcta.
 
+UTILIDADES CIUDADANAS (IMPLEMENTADAS)
+   🧒 Modo "explícame como si tuviera 12 años": botón en la nav que
+      reemplaza la explicación de las 19 secciones por una versión con
+      ejemplos cotidianos (colegio, mesada, álbum de láminas).
+   🏆 Ranking en simple: top 10 más presentes / más faltas / más gastan /
+      más austeros / más asesor@s, filtrable por región o "mi distrito",
+      con contexto para no sacar conclusiones apresuradas.
+   ♿ Accesibilidad (botón flotante): letra A/A+/A++, alto contraste,
+      lectura fácil, modo oscuro y modo 12 años; preferencias solo en el
+      navegador; botón restablecer.
+   🔊 Escuchar por sección: botón en cada título que lee en voz alta el
+      contenido VISIBLE usando la voz del navegador (Web Speech API).
+      Al no ser un archivo grabado, se renueva solo: siempre lee los datos
+      del momento (incluida la versión en vivo). Sin base de datos.
+
 PÁGINA 3: 🗓️ CALENDARIO DE VOTACIONES DE LEYES (IMPLEMENTADO)
    calendario_votaciones.html — calendario mensual con las 942
    votaciones de 2026. Cada día con votación de ley (605) muestra un
