@@ -6,13 +6,13 @@ PROPÓSITO
 ---------
 Un tablero ciudadano, en lenguaje simple y SIN bases de datos, para que
 cualquier persona entienda el Congreso y el Gobierno de Chile, más un
-tablero electoral aparte estilo "Decide Chile". Todo se descarga al
+tablero electoral aparte, visual y en simple. Todo se descarga al
 momento desde fuentes oficiales y vive solo en memoria (RAM).
 
 ESTRUCTURA: 2 PÁGINAS CONECTADAS
 --------------------------------
 1) dashboard_congreso.html  → "El Poder en Simple" (tablero principal)
-2) elecciones_chile.html    → "Tablero electoral" (estilo Decide Chile)
+2) elecciones_chile.html    → "Tablero electoral" (resultados en simple)
    Se llega desde la página 1 por 3 vías: botón grande en la sección de
    fechas clave, botón en el cuadro "Próxima elección" y menú superior.
 
@@ -66,8 +66,8 @@ C. REGLAS DE LA PÁGINA 1
 PÁGINA 2 · TABLERO ELECTORAL (elecciones_chile.html)
 =============================================================
 
-ESTILO: inspirado en "Decide Chile" (resultados visuales, simples y
-directos), pero con datos oficiales del Servel, sin base de datos.
+ESTILO: resultados visuales, simples y
+directos, con datos oficiales del Servel, sin base de datos.
 
 FUENTE DE DATOS
    - ZIP oficiales de resultados preliminares del Servel, elección del

@@ -1,4 +1,4 @@
-# El Poder en Simple — genera elecciones_chile.html (dashboard electoral estilo Decide Chile)
+# El Poder en Simple — genera elecciones_chile.html (dashboard electoral ciudadano)
 # Sin bases de datos: todo sale del snapshot oficial elecciones_resultados.json (Servel)
 # y de la geografía horneada elecciones_geografia.json (opcional: sin ella la página
 # cae al mapa de franjas, nunca se rompe).
