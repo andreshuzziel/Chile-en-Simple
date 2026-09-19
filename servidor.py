@@ -808,6 +808,17 @@ class Handler(BaseHTTPRequestHandler):
             except Exception as e:
                 import traceback; traceback.print_exc()
                 self._json({'error': str(e)}, 500)
+        elif p.path in ('/calendario', '/calendario_votaciones.html'):
+            try:
+                html = open('/home/user/calendario_votaciones.html', 'rb').read()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('Content-Length', str(len(html)))
+                self.end_headers()
+                self.wfile.write(html)
+            except FileNotFoundError:
+                self.send_response(404); self.end_headers()
         elif p.path in ('/elecciones', '/elecciones_chile.html'):
             try:
                 html = open('/home/user/elecciones_chile.html', 'rb').read()

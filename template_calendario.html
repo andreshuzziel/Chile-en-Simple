@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario de Votaciones · El Poder en Simple</title>
+<style>
+  :root{
+    --azul:#1d3a8f; --azul2:#2c55c8; --rojo:#d92632; --verde:#1e9e5a; --ambar:#e8a400;
+    --gris:#6b7280; --fondo:#f3f5fb; --tarjeta:#ffffff; --borde:#e4e8f2;
+    --texto:#1c2333; --texto2:#4a5468;
+    --sombra:0 2px 10px rgba(20,30,70,.07);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.5;}
+  .cont{max-width:1080px; margin:0 auto; padding:0 16px;}
+  header.hero{background:linear-gradient(135deg,#14265e 0%,#1d3a8f 55%,#2c55c8 100%); color:#fff; padding:34px 0 28px;}
+  .hero .franja{height:6px; background:linear-gradient(90deg,var(--rojo) 33%,#fff 33% 66%,var(--azul2) 66%); border-radius:3px; margin-bottom:20px; opacity:.85;}
+  .eyebrow{font-size:12px; letter-spacing:2.5px; font-weight:800; opacity:.85; text-transform:uppercase;}
+  .hero h1{font-size:clamp(24px,4vw,36px); letter-spacing:-.5px; margin-top:6px;}
+  .hero h1 .simple{color:#ffd75e;}
+  .hero .sub{margin-top:10px; font-size:15px; max-width:780px; color:#dbe4ff;}
+  .badges{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
+  .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); padding:5px 12px; border-radius:99px; font-size:12px; font-weight:600;}
+  .volver{display:inline-block; margin-top:14px; color:#ffd75e; font-weight:700; text-decoration:none; font-size:14px;}
+  section{padding:26px 0 8px;}
+  h2.tit{font-size:clamp(20px,3vw,26px); position:relative; padding-bottom:10px;}
+  h2.tit::after{content:""; position:absolute; left:0; bottom:0; width:56px; height:4px; border-radius:4px; background:linear-gradient(90deg,var(--rojo),var(--azul2));}
+  .lead{margin-top:12px; color:var(--texto2); font-size:15px; max-width:860px;}
+  .card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:16px; padding:20px 22px; box-shadow:var(--sombra);}
+  .mt{margin-top:16px;}
+  .nota-metodo{font-size:12px; color:var(--gris); margin-top:10px; line-height:1.6;}
+  .grid{display:grid; gap:14px;}
+  .grid.cuatro{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+  .kpi{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:14px 16px; box-shadow:var(--sombra); text-align:center;}
+  .kpi .num{font-size:22px; font-weight:800; color:var(--azul);}
+  .kpi .lbl{font-size:11.5px; color:var(--texto2); margin-top:3px;}
+  .kpi.si .num{color:var(--verde);} .kpi.no .num{color:var(--rojo);} .kpi.ab .num{color:var(--ambar);} .kpi.au .num{color:var(--gris);}
+  /* nav de meses */
+  .mes-nav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:14px;}
+  .mes-nav button{border:1px solid var(--borde); background:#fff; padding:8px 14px; border-radius:10px; font-weight:700; font-size:13.5px; cursor:pointer; color:var(--texto2);}
+  .mes-nav button.on{background:var(--azul); color:#fff; border-color:var(--azul);}
+  .mes-nav .flecha{font-size:17px; color:var(--azul); background:#eef2ff; border:none; width:38px; height:38px; border-radius:10px;}
+  /* calendario */
+  .cal{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-top:14px;}
+  .cal .cab{font-size:11.5px; font-weight:800; color:var(--gris); text-align:center; padding:4px 0; text-transform:uppercase;}
+  .dia{background:var(--tarjeta); border:1px solid var(--borde); border-radius:12px; min-height:86px; padding:8px; cursor:default; transition:.15s; position:relative;}
+  .dia.vacio{background:transparent; border:none;}
+  .dia.con{cursor:pointer;}
+  .dia.con:hover{border-color:var(--azul2); transform:translateY(-2px); box-shadow:var(--sombra);}
+  .dia.sel{border:2px solid var(--rojo); background:#fff8f4;}
+  .dia.hoy{outline:2px dashed var(--azul2); outline-offset:-2px;}
+  .dia .n{font-size:12px; font-weight:800; color:var(--texto2);}
+  .dia .chip-leyes{margin-top:6px; display:inline-block; background:#eef2ff; color:var(--azul); font-size:12px; font-weight:800; border-radius:99px; padding:3px 9px;}
+  .dia .chip-otras{display:block; font-size:10.5px; color:var(--gris); margin-top:4px;}
+  .dia .mini{margin-top:6px; height:5px; border-radius:3px; overflow:hidden; display:flex;}
+  .dia .mini i{height:100%;}
+  /* lista del día */
+  .voto-item{display:block; background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:15px 17px; box-shadow:var(--sombra); margin-top:10px; cursor:pointer; transition:.15s; text-decoration:none; color:inherit;}
+  .voto-item:hover{border-color:var(--azul2); transform:translateY(-2px);}
+  .voto-item .top{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .chip{display:inline-block; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px;}
+  .chip.aprobado{background:#e3f6ec; color:var(--verde); border:1px solid #b7e6cd;}
+  .chip.rechazado{background:#fdeaea; color:var(--rojo); border:1px solid #f5c2c2;}
+  .chip.tipo{background:#eef2ff; color:var(--azul); border:1px solid #d9e1fb;}
+  .chip.fecha{background:#f0f2f7; color:var(--texto2);}
+  .chip.sin-detalle{background:#fff3cd; color:#8a6d00; border:1px solid #eedc9a;}
+  .voto-item b{display:block; font-size:14.5px; margin-top:8px; line-height:1.4;}
+  .voto-item .nums{display:flex; gap:14px; margin-top:8px; font-size:13px; flex-wrap:wrap;}
+  .voto-item .nums .si{color:var(--verde); font-weight:800;}
+  .voto-item .nums .no{color:var(--rojo); font-weight:800;}
+  .voto-item .nums .ab{color:var(--ambar); font-weight:800;}
+  /* detalle */
+  .det-head{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .btn-volver{border:1px solid var(--borde); background:#fff; color:var(--azul); font-weight:800; font-size:13.5px; padding:8px 16px; border-radius:10px; cursor:pointer;}
+  .btn-volver:hover{background:var(--azul); color:#fff;}
+  .filtros{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center;}
+  .filtros button{border:1px solid var(--borde); background:#fff; padding:7px 13px; border-radius:99px; font-size:12.5px; font-weight:700; cursor:pointer; color:var(--texto2);}
+  .filtros button.on{background:var(--azul); color:#fff; border-color:var(--azul);}
+  .filtros input{padding:8px 13px; border-radius:99px; border:1px solid var(--borde); font-size:13px; min-width:190px;}
+  .stack{display:flex; height:34px; border-radius:9px; overflow:hidden; background:#edf0f7; margin-top:8px;}
+  .stack span{height:100%;}
+  .ley-grupo{margin-top:16px;}
+  .ley-grupo h4{font-size:13px; color:var(--texto2); display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  .punto{display:inline-block; width:10px; height:10px; border-radius:3px;}
+  .dips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .dip{font-size:12px; font-weight:700; border-radius:99px; padding:4px 11px; border:1px solid;}
+  .dip.S{background:#e6f7ee; color:#12603a; border-color:#bfe8d0;}
+  .dip.N{background:#fdeaea; color:#8f1d24; border-color:#f5c2c2;}
+  .dip.A{background:#fdf3dc; color:#8a6200; border-color:#eedc9a;}
+  .dip.X{background:#eef0f4; color:#5a6272; border-color:#d9dde6;}
+  footer{margin-top:40px; padding:26px 0 40px; border-top:1px solid var(--borde); color:var(--gris); font-size:12.5px; line-height:1.7;}
+  @media (max-width:720px){ .dia{min-height:66px; padding:5px;} .dia .chip-leyes{font-size:10.5px; padding:2px 6px;} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="cont">
+    <div class="franja"></div>
+    <div class="eyebrow">CALENDARIO CIUDADANO DE VOTACIONES</div>
+    <h1>¿Qué se votó <span class="simple">y cuándo?</span> 🗓️</h1>
+    <p class="sub">Un calendario con todas las leyes que votó la <b>Cámara de Diputadas y Diputados</b> en 2026. Pincha un día para ver qué se votó, y luego pincha una ley para abrir su <b>ficha completa</b>: cómo votó cada diputad@ — a favor, en contra, abstención o ausente — explicado simple.</p>
+    <div class="badges" id="hero-badges"></div>
+    <a class="volver" href="dashboard_congreso.html">← Volver al tablero El Poder en Simple</a>
+  </div>
+</header>
+
+<div class="cont">
+
+  <!-- ═══ VISTA CALENDARIO ═══ -->
+  <div id="vista-calendario">
+    <section>
+      <h2 class="tit">🗓️ El año legislativo, mes a mes</h2>
+      <p class="lead">Cada cuadrito es un día. El número azul son las <b>votaciones de leyes</b> de ese día; la barrita muestra cuántas se <b style="color:var(--verde)">aprobaron</b> y cuántas se <b style="color:var(--rojo)">rechazaron</b>. Haz clic en un día para ver el detalle.</p>
+      <div class="grid cuatro mt" id="kpis-anio"></div>
+      <div class="mes-nav" id="mes-nav"></div>
+      <div class="cal" id="cal"></div>
+      <p class="nota-metodo">Fuente: registro oficial de votaciones de la Sala de la Cámara de Diputadas y Diputados (datos abiertos), año 2026. También se cuentan resoluciones y acuerdos (en gris), que son pronunciamientos de la Cámara, no leyes.</p>
+    </section>
+
+    <section id="sec-dia" style="display:none">
+      <h2 class="tit" id="dia-tit">📄 Votaciones del día</h2>
+      <p class="lead">Pincha una votación para abrir su ficha completa con el voto de cada diputad@.</p>
+      <div id="dia-lista"></div>
+    </section>
+  </div>
+
+  <!-- ═══ VISTA FICHA (el "otro dashboard") ═══ -->
+  <div id="vista-detalle" style="display:none">
+    <section>
+      <button class="btn-volver" id="btn-volver">← Volver al calendario</button>
+      <div id="det-contenido" class="mt"></div>
+    </section>
+  </div>
+
+  <footer>
+    <b>El Poder en Simple · Calendario de Votaciones</b> — resumen educativo del registro oficial de votaciones de la Sala de la Cámara de Diputadas y Diputados (datos abiertos oficiales, vía Mirada al Congreso). Nada se guarda en bases de datos.
+    <br>ℹ️ Este calendario cubre a la <b>Cámara de Diputadas y Diputados (155)</b>. El voto nominal del Senado por cada ley no está publicado en las fuentes que usa este tablero; puedes consultar la tramitación de cada proyecto en <a href="https://www.camara.cl/legislacion/proyectosdeley/proyectosdeley.aspx" target="_blank" rel="noopener" style="color:var(--azul2)">camara.cl</a> y en <a href="https://www.senado.cl/" target="_blank" rel="noopener" style="color:var(--azul2)">senado.cl</a>.
+    · <a href="dashboard_congreso.html" style="color:var(--azul2)">Volver al tablero principal</a>
+  </footer>
+</div>
+
+<script>
+const DATA = /*__DATA__*/;
+
+if(!Element.prototype.scrollIntoView){ Element.prototype.scrollIntoView = function(){}; }
+const $ = s => document.querySelector(s);
+const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
+const MES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const COL = {
+  'Republicanos':'#2b3a8f','PNL':'#5ab6e8','Social Cristiano':'#2e9e5b','UDI':'#f5821f',
+  'RN/EVO':'#0f72c4','PPD':'#8e44ad','Frente Amplio':'#e4445e','Comunistas':'#a6202e',
+  'PS/PL/PR':'#f08a80','DC':'#17a2a2','PDG':'#6c2d9c','Demócratas/Amarillos':'#d9ae00',
+  'Independientes':'#8a8f98','Otros/IND':'#8a8f98'
+};
+const colorB = g => COL[g] || '#8a8f98';
+
+/* ---------- índices ---------- */
+const V = DATA.votaciones;
+const LEY = t => t === 'Proyecto de Ley';
+const porDia = {};
+V.forEach(v => { (porDia[v.fecha] = porDia[v.fecha] || []).push(v); });
+const meses = [...new Set(V.map(v => v.fecha.slice(0,7)))].sort();
+let mesAct = meses[meses.length-1];
+let diaSel = null;
+
+/* ---------- hero + KPIs ---------- */
+(function(){
+  const diasCon = Object.keys(porDia).length;
+  const leyes = V.filter(v => LEY(v.tipo));
+  const apr = leyes.filter(v => v.resultado === 'Aprobado').length;
+  $('#hero-badges').innerHTML = `
+    <span class="badge">🗳️ ${fmt(V.length)} votaciones en 2026</span>
+    <span class="badge">📚 ${fmt(leyes.length)} votaciones de leyes</span>
+    <span class="badge">📅 ${diasCon} días con sesiones de votación</span>
+    <span class="badge">📊 Fuente: datos abiertos oficiales de la Cámara</span>`;
+  $('#kpis-anio').innerHTML = [
+    {n:fmt(leyes.length), l:'votaciones de leyes', c:''},
+    {n:fmt(apr), l:'leyes aprobadas', c:'si'},
+    {n:fmt(leyes.length - apr), l:'rechazadas o sin acuerdo', c:'no'},
+    {n:diasCon, l:'días con votaciones', c:''},
+  ].map(k=>`<div class="kpi ${k.c}"><div class="num">${k.n}</div><div class="lbl">${k.l}</div></div>`).join('');
+})();
+
+/* ---------- navegación de meses ---------- */
+function renderMesNav(){
+  const idx = meses.indexOf(mesAct);
+  $('#mes-nav').innerHTML = `
+    <button class="flecha" id="m-prev" ${idx===0?'disabled':''}>‹</button>
+    ${meses.map(m=>{
+      const [a,mm] = m.split('-');
+      return `<button data-m="${m}" class="${m===mesAct?'on':''}">${MES[+mm-1].slice(0,3)} ${a.slice(2)}</button>`;
+    }).join('')}
+    <button class="flecha" id="m-next" ${idx===meses.length-1?'disabled':''}>›</button>`;
+  $('#mes-nav').onclick = e => {
+    const b = e.target.closest('button'); if(!b) return;
+    if(b.id==='m-prev' && idx>0) mesAct = meses[idx-1];
+    else if(b.id==='m-next' && idx<meses.length-1) mesAct = meses[idx+1];
+    else if(b.dataset.m) mesAct = b.dataset.m;
+    else return;
+    renderMesNav(); renderCal();
+  };
+}
+
+/* ---------- calendario ---------- */
+function renderCal(){
+  const [a,m] = mesAct.split('-').map(Number);
+  const primero = new Date(a, m-1, 1);
+  const off = (primero.getDay()+6)%7; // lunes = 0
+  const dias = new Date(a, m, 0).getDate();
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  let html = ['Lu','Ma','Mi','Ju','Vi','Sá','Do'].map(d=>`<div class="cab">${d}</div>`).join('');
+  for(let i=0;i<off;i++) html += '<div class="dia vacio"></div>';
+  for(let d=1; d<=dias; d++){
+    const f = `${mesAct}-${String(d).padStart(2,'0')}`;
+    const lista = porDia[f];
+    const esHoy = hoy.getTime() === new Date(a, m-1, d).getTime();
+    if(!lista){ html += `<div class="dia${esHoy?' hoy':''}"><span class="n">${d}</span></div>`; continue; }
+    const leyes = lista.filter(v=>LEY(v.tipo));
+    const otras = lista.length - leyes.length;
+    const apr = leyes.filter(v=>v.resultado==='Aprobado').length;
+    const rec = leyes.length - apr;
+    const totL = Math.max(1, leyes.length);
+    html += `<div class="dia con${f===diaSel?' sel':''}${esHoy?' hoy':''}" data-f="${f}" title="${leyes.length} votaciones de leyes (${apr} aprobadas, ${rec} rechazadas) y ${otras} de otros tipos">
+      <span class="n">${d}</span>
+      ${leyes.length?`<span class="chip-leyes">📚 ${leyes.length} ${leyes.length===1?'ley':'leyes'}</span>`:''}
+      ${otras?`<span class="chip-otras">+${otras} otras votaciones</span>`:''}
+      ${leyes.length?`<div class="mini"><i style="width:${apr/totL*100}%;background:var(--verde)"></i><i style="width:${rec/totL*100}%;background:var(--rojo)"></i></div>`:''}
+    </div>`;
+  }
+  $('#cal').innerHTML = html;
+  $('#cal').onclick = e => {
+    const c = e.target.closest('.dia.con'); if(!c) return;
+    diaSel = c.dataset.f;
+    renderCal(); renderDia();
+    $('#sec-dia').style.display = '';
+    $('#sec-dia').scrollIntoView({behavior:'smooth'});
+  };
+}
+
+/* ---------- lista del día ---------- */
+function renderDia(){
+  const lista = porDia[diaSel] || [];
+  const [a,m,d] = diaSel.split('-');
+  const fechaBonita = new Date(+a, +m-1, +d).toLocaleDateString('es-CL', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  $('#dia-tit').textContent = `📄 Lo que se votó el ${fechaBonita}`;
+  const orden = [...lista].sort((x,y)=> (LEY(y.tipo)-LEY(x.tipo)) || x.id.localeCompare(y.id));
+  $('#dia-lista').innerHTML = orden.map(v=>{
+    const chipRes = v.resultado==='Aprobado' ? '<span class="chip aprobado">✔ APROBADO</span>'
+      : v.resultado==='Rechazado' ? '<span class="chip rechazado">✖ RECHAZADO</span>'
+      : `<span class="chip tipo">${v.resultado}</span>`;
+    const titulo = v.titulo || (v.boletin ? `Boletín N° ${v.boletin}` : v.desc);
+    const conNominal = !!v.nominal;
+    return `<div class="voto-item" data-id="${v.id}">
+      <div class="top">
+        <span class="chip tipo">${v.tipo}</span>
+        ${chipRes}
+        ${v.boletin?`<span class="chip fecha">Boletín ${v.boletin}</span>`:''}
+        ${conNominal?'':'<span class="chip sin-detalle">sin voto por diputad@</span>'}
+      </div>
+      <b>${titulo}</b>
+      <div class="nums"><span class="si">👍 ${v.si} a favor</span><span class="no">👎 ${v.no} en contra</span><span class="ab">◻ ${v.abst} abstención</span></div>
+      <p class="nota-metodo" style="margin-top:6px">${conNominal?'👆 Haz clic para ver cómo votó cada diputad@':'👆 Haz clic para ver el detalle disponible'} · votación N° ${v.id}</p>
+    </div>`;
+  }).join('');
+  $('#dia-lista').onclick = e => {
+    const it = e.target.closest('.voto-item'); if(!it) return;
+    abrirDetalle(it.dataset.id);
+  };
+}
+
+/* ---------- ficha completa de la votación ---------- */
+let filtro = 'T', qBusq = '';
+function abrirDetalle(id){
+  const v = V.find(x => x.id === id); if(!v) return;
+  filtro = 'T'; qBusq = '';
+  $('#vista-calendario').style.display = 'none';
+  $('#vista-detalle').style.display = '';
+  renderDetalle(v);
+  window.scrollTo({top:0});
+}
+function renderDetalle(v){
+  const titulo = v.titulo || (v.boletin ? `Boletín N° ${v.boletin}` : v.desc);
+  const chipRes = v.resultado==='Aprobado' ? '<span class="chip aprobado">✔ APROBADO</span>'
+    : v.resultado==='Rechazado' ? '<span class="chip rechazado">✖ RECHAZADO</span>'
+    : `<span class="chip tipo">${v.resultado}</span>`;
+  const nom = v.nominal;
+  const todos = Object.keys(DATA.diputados);
+  let S=[], N=[], A=[], X=[];
+  if(nom){
+    S = nom.S || []; N = nom.N || []; A = nom.A || [];
+    const votaron = new Set([...S, ...N, ...A]);
+    X = todos.filter(id => !votaron.has(id));
+  }
+  const n155 = todos.length;
+  const pct = n => (n/n155*100).toFixed(1);
+  let html = `
+    <div class="det-head">
+      <span class="chip tipo">${v.tipo}</span>${chipRes}
+      <span class="chip fecha">📅 ${v.fecha.split('-').reverse().join('/')}</span>
+      ${v.boletin?`<span class="chip fecha">Boletín N° ${v.boletin}</span>`:''}
+      <span class="chip fecha">votación N° ${v.id}</span>
+    </div>
+    <h2 style="font-size:clamp(19px,3vw,25px); margin-top:12px; line-height:1.35;">${titulo}</h2>`;
+  if(!nom){
+    html += `<div class="card mt"><p>Esta votación no tiene registro de voto por diputad@ en la fuente oficial (${v.tipo==='Proyecto de Ley'?'el detalle no estaba disponible al generar este tablero':'las resoluciones y acuerdos no siempre se votan de forma nominal'}).</p>
+      <div class="nums" style="display:flex; gap:16px; margin-top:10px; font-size:15px;"><span style="color:var(--verde);font-weight:800">👍 ${v.si} a favor</span><span style="color:var(--rojo);font-weight:800">👎 ${v.no} en contra</span><span style="color:var(--ambar);font-weight:800">◻ ${v.abst} abstención</span></div>
+      <p class="nota-metodo">Puedes revisar la tramitación oficial del proyecto en <a href="https://www.camara.cl/legislacion/proyectosdeley/proyectosdeley.aspx" target="_blank" rel="noopener" style="color:var(--azul2)">camara.cl</a>.</p></div>`;
+    $('#det-contenido').innerHTML = html;
+    return;
+  }
+  const totalSiNo = v.si + v.no + v.abst;
+  const explicacion = v.resultado==='Aprobado'
+    ? `La Cámara la <b>aprobó</b>: ${v.si} diputad@s votaron a favor, más que los ${v.no} en contra${v.abst?` (${v.abst} se abstuvieron)`:''}.`
+    : v.resultado==='Rechazado'
+    ? `La Cámara la <b>rechazó</b>: los ${v.no} votos en contra superaron a los ${v.si} a favor${v.abst?` (${v.abst} se abstuvieron)`:''}.`
+    : `Resultado: <b>${v.resultado}</b> (${v.si} a favor, ${v.no} en contra, ${v.abst} abstención).`;
+  html += `
+    <p class="lead" style="font-size:14.5px">${explicacion} De los ${n155} diputad@s en ejercicio, <b>${X.length} no votaron</b> (ausencia, licencia o pareo).</p>
+    <div class="grid cuatro mt">
+      <div class="kpi si"><div class="num">${S.length}</div><div class="lbl">👍 a favor (${pct(S.length)}%)</div></div>
+      <div class="kpi no"><div class="num">${N.length}</div><div class="lbl">👎 en contra (${pct(N.length)}%)</div></div>
+      <div class="kpi ab"><div class="num">${A.length}</div><div class="lbl">◻ abstención (${pct(A.length)}%)</div></div>
+      <div class="kpi au"><div class="num">${X.length}</div><div class="lbl">⬜ no votaron (${pct(X.length)}%)</div></div>
+    </div>
+    <div class="card mt">
+      <h3 style="font-size:15px;">Así se repartió la Cámara completa</h3>
+      <div class="stack">
+        <span style="width:${S.length/n155*100}%; background:var(--verde)" title="${S.length} a favor"></span>
+        <span style="width:${N.length/n155*100}%; background:var(--rojo)" title="${N.length} en contra"></span>
+        <span style="width:${A.length/n155*100}%; background:var(--ambar)" title="${A.length} abstención"></span>
+        <span style="width:${X.length/n155*100}%; background:#c9cedb" title="${X.length} no votaron"></span>
+      </div>
+      <p class="nota-metodo">🟢 a favor · 🔴 en contra · 🟡 abstención · ⬜ no votó</p>
+    </div>
+    <div class="filtros" id="det-filtros">
+      <button data-f="T" class="on">Tod@s (${n155})</button>
+      <button data-f="S">👍 A favor (${S.length})</button>
+      <button data-f="N">👎 En contra (${N.length})</button>
+      <button data-f="A">◻ Abstención (${A.length})</button>
+      <button data-f="X">⬜ No votaron (${X.length})</button>
+      <input id="det-buscar" type="text" placeholder="🔍 Busca un nombre…">
+    </div>
+    <div id="det-dips"></div>
+    <p class="nota-metodo mt">📎 ¿Cómo le fue a este proyecto después? Revisa su tramitación oficial (incluido el Senado) en <a href="https://www.camara.cl/legislacion/proyectosdeley/proyectosdeley.aspx" target="_blank" rel="noopener" style="color:var(--azul2)">camara.cl — Proyectos de ley</a>. Voto nominal oficial de la Sala de la Cámara; l@s diputad@s que no aparecen votando pudieron estar ausentes, con licencia médica o pareados.</p>`;
+  $('#det-contenido').innerHTML = html;
+  const mapa = {}; S.forEach(i=>mapa[i]='S'); N.forEach(i=>mapa[i]='N'); A.forEach(i=>mapa[i]='A'); X.forEach(i=>mapa[i]='X');
+  const grupos = {};
+  todos.forEach(id => { const d = DATA.diputados[id]; (grupos[d.g] = grupos[d.g] || []).push(id); });
+  function pintarDips(){
+    const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    let html = '';
+    Object.keys(grupos).sort().forEach(g => {
+      const ids = grupos[g].filter(id => {
+        if(filtro !== 'T' && mapa[id] !== filtro) return false;
+        if(qBusq && !norm(DATA.diputados[id].n).includes(norm(qBusq))) return false;
+        return true;
+      });
+      if(!ids.length) return;
+      html += `<div class="ley-grupo"><h4><span class="punto" style="background:${colorB(g)}"></span>${g} <span class="nota-metodo">(${ids.length})</span></h4>
+        <div class="dips">${ids.map(id => `<span class="dip ${mapa[id]}" title="${{S:'Votó a favor',N:'Votó en contra',A:'Se abstuvo',X:'No votó'}[mapa[id]]}">${DATA.diputados[id].n}</span>`).join('')}</div></div>`;
+    });
+    $('#det-dips').innerHTML = html || '<p class="nota-metodo">Ningún diputad@ coincide con el filtro.</p>';
+  }
+  pintarDips();
+  $('#det-filtros').onclick = e => {
+    const b = e.target.closest('button[data-f]'); if(!b) return;
+    filtro = b.dataset.f;
+    document.querySelectorAll('#det-filtros button').forEach(x=>x.classList.toggle('on', x===b));
+    pintarDips();
+  };
+  $('#det-buscar').addEventListener('input', e => { qBusq = e.target.value.trim(); pintarDips(); });
+}
+$('#btn-volver').addEventListener('click', ()=>{
+  $('#vista-detalle').style.display = 'none';
+  $('#vista-calendario').style.display = '';
+  $('#sec-dia').scrollIntoView({behavior:'smooth'});
+});
+
+renderMesNav(); renderCal();
+</script>
+</body>
+</html>
