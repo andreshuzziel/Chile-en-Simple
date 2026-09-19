@@ -83,6 +83,7 @@ t('safe-area insets (móviles con notch)', html.includes('env(safe-area-inset-le
 t('prefers-reduced-motion respetado', html.includes('prefers-reduced-motion'));
 t('inputs 16px anti-zoom iOS', /input, select\{ font-size:16px; \}/.test(html));
 t('touch-action en controles táctiles', html.includes('touch-action:manipulation'));
+t('nav compacta en móvil (1 fila deslizable)', html.includes('Barra de navegación compacta en móvil') && html.includes('flex-wrap:nowrap') && html.includes('nav.menu #dark-toggle'));
 t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 

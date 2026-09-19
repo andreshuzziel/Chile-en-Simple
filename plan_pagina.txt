@@ -272,8 +272,12 @@ DISEÑO RESPONSIVE — TODOS LOS DISPOSITIVOS (IMPLEMENTADO)
    - touch-action:manipulation + botones ≥ 40 px (objetivos táctiles).
    - prefers-reduced-motion: sin animaciones si el usuario lo pide.
    - SVG del mapa width:100% y contenedor con scroll/pan en móvil.
+   - Barra de navegación compacta en celular: 1 sola fila horizontal
+     deslizable con el dedo (sin barras de scrollbar, con fundido en el
+     borde derecho), enlaces reducidos a 12,5 px y botón de modo oscuro
+     incluido en el scroll. En escritorio se mantiene el menú completo.
    - Cero dependencias externas: CSS puro, funciona sin internet.
-   Verificado por 17 aserciones automáticas (suites jsdom, hito.sh).
+   Verificado por 18 aserciones automáticas (suites jsdom, hito.sh).
 
 ARCHIVOS AGREGADOS POR EL CALENDARIO Y EL RESPONSIVE
    gen_calendario.py         descarga votaciones + fichas → JSON
