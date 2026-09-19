@@ -20,6 +20,9 @@
   *{box-sizing:border-box; margin:0; padding:0;}
   body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.5;}
   .cont{max-width:1080px; margin:0 auto; padding:0 16px;}
+  /* Escritorio: aprovechar el ancho real de la pantalla */
+  @media (min-width:1200px){ .cont{max-width:min(1560px, 94vw); padding:0 24px;} }
+  @media (min-width:1800px){ .cont{max-width:1700px;} }
   header.hero{background:linear-gradient(135deg,#14265e 0%,#1d3a8f 55%,#2c55c8 100%); color:#fff; padding:34px 0 28px;}
   .hero .franja{height:6px; background:linear-gradient(90deg,var(--rojo) 33%,#fff 33% 66%,var(--azul2) 66%); border-radius:3px; margin-bottom:20px; opacity:.85;}
   .eyebrow{font-size:12px; letter-spacing:2.5px; font-weight:800; opacity:.85; text-transform:uppercase;}
