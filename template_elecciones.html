@@ -82,7 +82,31 @@
   .cell.geo.sel{stroke:#101a3a; stroke-width:1.8;}
   .cell:focus{outline:2px solid var(--azul2); outline-offset:1px;}
   .cell path.comuna-hl{stroke:#101a3a; stroke-width:1.9; filter:drop-shadow(0 0 3px rgba(16,26,58,.8));}
-  @media (prefers-contrast: more){ .cell.geo{stroke:#000; stroke-width:1.2;} }
+  /* ================= RESPONSIVE PLUS (todos los dispositivos) ================= */
+  html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body{ padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right); }
+  button, a, select, input, summary{ touch-action:manipulation; }
+  #svg-mapa{ width:100%; height:auto; min-width:340px; display:block; }
+  nav.tabs button{ min-height:40px; }
+  select{ font-size:16px; } /* evita zoom de iOS al enfocar */
+  .mapa-tip{ max-width:92vw; }
+  @media (max-width:760px){ .mapa-caja{ max-height:66vh; } }
+  @media (max-width:480px){
+    .hero h1{ font-size:23px; }
+    .hero .sub{ font-size:13.5px; }
+    .badge{ font-size:11px; padding:4px 9px; }
+    .card{ padding:15px; }
+    .bar-row{ padding:8px 0; }
+    .bar-nom{ font-size:13px; }
+    .kpi .num{ font-size:19px; }
+    .electo{ font-size:11.5px; padding:4px 10px; }
+    .mapa-caja{ max-height:60vh; }
+  }
+  @media (max-width:600px){ input, select{ font-size:16px; } }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+    html{ scroll-behavior:auto; }
+  }
   .isla{stroke:#9db4e8; stroke-dasharray:4 3;}
   .hatch{stroke:#c9d0e0; stroke-dasharray:4 3;}
   .lbl-reg{font-size:10.5px; font-weight:700; fill:#5b657a;}

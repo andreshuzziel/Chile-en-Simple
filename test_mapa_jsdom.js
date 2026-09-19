@@ -170,6 +170,13 @@ t('barras nacionales diputados', $$('#dip-nacional .bar-row').length > 0);
 t('select diputados con 28 opciones', $('#sel-distrito').options.length === 29);
 t('select senadores con 7 opciones', $('#sel-circ').options.length === 8);
 t('enlaces a Servel intactos', html.includes('https://www.servel.cl') && html.includes('dashboard_congreso.html'));
+
+console.log('== 13. responsive (todos los dispositivos) ==');
+t('meta viewport presente', (doc.querySelector('meta[name=viewport]') || {}).getAttribute('content').includes('width=device-width'));
+t('safe-area insets (móviles con notch)', html.includes('env(safe-area-inset-left)'));
+t('prefers-reduced-motion respetado', html.includes('prefers-reduced-motion'));
+t('SVG del mapa fluido', /#svg-mapa\{\s*width:100%/.test(html));
+t('touch-action en controles táctiles', html.includes('touch-action:manipulation'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 
 console.log(`\nRESULTADO: ${pass} pass, ${fail} fail`);

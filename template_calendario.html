@@ -96,6 +96,48 @@
   .dip.X{background:#eef0f4; color:#5a6272; border-color:#d9dde6;}
   footer{margin-top:40px; padding:26px 0 40px; border-top:1px solid var(--borde); color:var(--gris); font-size:12.5px; line-height:1.7;}
   @media (max-width:720px){ .dia{min-height:66px; padding:5px;} .dia .chip-leyes{font-size:10.5px; padding:2px 6px;} }
+  /* ================= RESPONSIVE PLUS (todos los dispositivos) ================= */
+  html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body{ padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right); }
+  button, a, select, input, summary{ touch-action:manipulation; }
+  .mes-nav button{ min-height:42px; }
+  .mes-nav .flecha{ width:44px; height:44px; }
+  .btn-volver{ min-height:42px; }
+  input, select{ font-size:16px; } /* evita zoom de iOS al enfocar */
+  @media (max-width:600px){
+    .dia{ min-height:58px; padding:4px; border-radius:9px; }
+    .dia .n{ font-size:11px; }
+    .dia .chip-leyes{ font-size:9.5px; padding:2px 5px; margin-top:4px; }
+    .dia .chip-otras{ font-size:9px; margin-top:2px; }
+    .cal{ gap:4px; }
+    .cal .cab{ font-size:10px; }
+    .card{ padding:15px; }
+    .kpi .num{ font-size:19px; }
+    .voto-item{ padding:12px 13px; gap:12px; }
+    .voto-item b{ font-size:13.5px; }
+    .voto-item .nums{ gap:10px; font-size:12px; }
+    .dip{ font-size:11px; padding:3px 9px; }
+    .filtros{ gap:6px; }
+    .filtros button{ font-size:11.5px; padding:6px 10px; min-height:38px; }
+    .det-head .chip{ font-size:10px; padding:3px 8px; }
+    .stack{ height:26px; }
+    .caja-ley b{ font-size:13.5px; }
+    .btn-oficial{ font-size:12.5px; padding:11px 13px; width:100%; justify-content:center; }
+    .leyenda{ gap:12px; font-size:11.5px; }
+    .cab-tit h2{ font-size:18px; }
+    .mes-nav{ margin:2px 0 14px; }
+    .wrap{ padding:0 12px; }
+  }
+  @media (max-width:360px){
+    .dia{ min-height:52px; }
+    .dia .chip-otras{ display:none; }
+    .wrap{ padding:0 9px; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+    html{ scroll-behavior:auto; }
+    .dia.con:hover{ transform:none; }
+  }
 </style>
 </head>
 <body>

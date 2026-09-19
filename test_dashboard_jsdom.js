@@ -76,6 +76,14 @@ t('polifill scrollIntoView', html.includes('Element.prototype.scrollIntoView'));
 const ext = $$('a[href^="http"]').length;
 t('enlaces externos presentes', ext >= 20, 'hay ' + ext);
 t('secciones ancladas existen', ['resumen','noticias','fechas','asistencia','gastos','votaciones','gobierno','senado','explorador','distrito','comparador','glosario'].every(id => !!doc.getElementById(id)));
+
+console.log('== 6. responsive (todos los dispositivos) ==');
+t('meta viewport presente', (doc.querySelector('meta[name=viewport]') || {}).getAttribute('content').includes('width=device-width'));
+t('safe-area insets (móviles con notch)', html.includes('env(safe-area-inset-left)'));
+t('prefers-reduced-motion respetado', html.includes('prefers-reduced-motion'));
+t('inputs 16px anti-zoom iOS', /input, select\{ font-size:16px; \}/.test(html));
+t('touch-action en controles táctiles', html.includes('touch-action:manipulation'));
+t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 
 console.log(`\nRESULTADO: ${pass} pass, ${fail} fail`);
