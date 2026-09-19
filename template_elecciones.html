@@ -307,6 +307,26 @@
       </div>
       <div id="dip-distrito" class="mt"></div>
     </div>
+
+    <!-- ══ EXPLORADOR COMPLETO DIP ══ -->
+    <div class="card mt" id="dip-explorador" style="border-top:4px solid var(--azul2);">
+      <h3 style="font-size:17px;">🔎 Explorador completo · Diputadas y diputados 2025</h3>
+      <p style="font-size:14px; color:var(--texto2); margin-top:6px;">Todos los resultados: quiénes salieron elect@s, cómo le fue a cada pacto y partido distrito por distrito, quiénes fueron los más votados del país y una tabla ordenable. Además puedes <b>buscar a cualquier candidat@</b>, haya salido o no.</p>
+      <div class="subtabs" id="dip-subtabs">
+        <button data-s="electos" class="on">✅ Elect@s</button>
+        <button data-s="pactos">🏛️ Pactos y partidos</button>
+        <button data-s="zona">📍 Por distrito</button>
+        <button data-s="top">⭐ Más votad@s</button>
+        <button data-s="busca">🔎 Buscar candidat@</button>
+        <button data-s="tabla">📋 Tabla completa</button>
+      </div>
+      <div class="sub on" id="dip-sub-electos"><div class="mini-kpis" id="dip-mini"></div><div class="zona-sel mt"><label style="font-weight:700">Filtrar por pacto:</label><select id="dip-electos-pacto"></select></div><div class="tabla-wrap"><table class="tp" id="dip-electos-tabla"></table></div><p class="nota-metodo">✔ = elect@ según el escrutinio preliminar del Servel. El orden es por votos personales; recuerda que en Chile los escaños se reparten primero entre pactos (sistema proporcional D'Hondt) y luego entre candidat@s, por eso a veces sale elect@ alguien con menos votos que otr@ de otra lista.</p></div>
+      <div class="sub" id="dip-sub-pactos"><h4 style="margin-top:14px; font-size:15px;">🏛️ Votos vs. escaños por pacto</h4><div class="tabla-wrap"><table class="tp" id="dip-pactos-tabla"></table></div><h4 style="margin-top:16px; font-size:15px;">🎗️ Partidos: candidat@s, votos y elect@s</h4><div class="tabla-wrap"><table class="tp" id="dip-partidos-tabla"></table></div><p class="nota-metodo">"Escaños por 1 % de votos" muestra cuán eficiente fue cada pacto: un número alto significa que convirtió bien sus votos en escaños (normalmente porque fue en lista con aliados).</p></div>
+      <div class="sub" id="dip-sub-zona"><div class="zona-sel mt"><label style="font-weight:700">Elige distrito:</label><select id="dip-zona-sel"></select><input class="busca-tp" id="dip-zona-busca" placeholder="o escribe tu comuna / región"></div><div id="dip-zona-det" class="mt"></div></div>
+      <div class="sub" id="dip-sub-top"><div class="ranking-dist mt" id="dip-top"></div><p class="nota-metodo">Top 15 por votos personales en todo el país y, abajo, quiénes tuvieron el porcentaje más alto dentro de su distrito.</p><div class="ranking-dist mt" id="dip-top-pct"></div></div>
+      <div class="sub" id="dip-sub-busca"><div class="zona-sel mt"><input class="busca-tp" id="dip-busca" placeholder="Nombre, partido o pacto (mín. 3 letras)" style="min-width:min(100%,360px)"></div><div class="tabla-wrap"><table class="tp" id="dip-busca-tabla"></table></div><p class="nota-metodo" id="dip-busca-nota"></p></div>
+      <div class="sub" id="dip-sub-tabla"><p class="nota-metodo" style="margin-top:10px">Una fila por distrito: haz clic en un encabezado para ordenar.</p><div class="tabla-wrap"><table class="tp" id="dip-tabla-full"></table></div></div>
+    </div>
   </section>
 
   <!-- ══════════ SENADORES ══════════ -->
@@ -321,11 +341,36 @@
       </div>
       <div id="sen-circ" class="mt"></div>
     </div>
+
+    <!-- ══ EXPLORADOR COMPLETO SEN ══ -->
+    <div class="card mt" id="sen-explorador" style="border-top:4px solid var(--azul2);">
+      <h3 style="font-size:17px;">🔎 Explorador completo · Senadoras y senadores 2025</h3>
+      <p style="font-size:14px; color:var(--texto2); margin-top:6px;">Todos los resultados: quiénes salieron elect@s, cómo le fue a cada pacto y partido circunscripción por circunscripción, quiénes fueron los más votados del país y una tabla ordenable. Además puedes <b>buscar a cualquier candidat@</b>, haya salido o no.</p>
+      <div class="subtabs" id="sen-subtabs">
+        <button data-s="electos" class="on">✅ Elect@s</button>
+        <button data-s="pactos">🏛️ Pactos y partidos</button>
+        <button data-s="zona">📍 Por circunscripción</button>
+        <button data-s="top">⭐ Más votad@s</button>
+        <button data-s="busca">🔎 Buscar candidat@</button>
+        <button data-s="tabla">📋 Tabla completa</button>
+      </div>
+      <div class="sub on" id="sen-sub-electos"><div class="mini-kpis" id="sen-mini"></div><div class="zona-sel mt"><label style="font-weight:700">Filtrar por pacto:</label><select id="sen-electos-pacto"></select></div><div class="tabla-wrap"><table class="tp" id="sen-electos-tabla"></table></div><p class="nota-metodo">✔ = elect@ según el escrutinio preliminar del Servel. El orden es por votos personales; recuerda que en Chile los escaños se reparten primero entre pactos (sistema proporcional D'Hondt) y luego entre candidat@s, por eso a veces sale elect@ alguien con menos votos que otr@ de otra lista.</p></div>
+      <div class="sub" id="sen-sub-pactos"><h4 style="margin-top:14px; font-size:15px;">🏛️ Votos vs. escaños por pacto</h4><div class="tabla-wrap"><table class="tp" id="sen-pactos-tabla"></table></div><h4 style="margin-top:16px; font-size:15px;">🎗️ Partidos: candidat@s, votos y elect@s</h4><div class="tabla-wrap"><table class="tp" id="sen-partidos-tabla"></table></div><p class="nota-metodo">"Escaños por 1 % de votos" muestra cuán eficiente fue cada pacto: un número alto significa que convirtió bien sus votos en escaños (normalmente porque fue en lista con aliados).</p></div>
+      <div class="sub" id="sen-sub-zona"><div class="zona-sel mt"><label style="font-weight:700">Elige circunscripción:</label><select id="sen-zona-sel"></select><input class="busca-tp" id="sen-zona-busca" placeholder="o escribe tu comuna / región"></div><div id="sen-zona-det" class="mt"></div></div>
+      <div class="sub" id="sen-sub-top"><div class="ranking-dist mt" id="sen-top"></div><p class="nota-metodo">Top 15 por votos personales en todo el país y, abajo, quiénes tuvieron el porcentaje más alto dentro de su circunscripción.</p><div class="ranking-dist mt" id="sen-top-pct"></div></div>
+      <div class="sub" id="sen-sub-busca"><div class="zona-sel mt"><input class="busca-tp" id="sen-busca" placeholder="Nombre, partido o pacto (mín. 3 letras)" style="min-width:min(100%,360px)"></div><div class="tabla-wrap"><table class="tp" id="sen-busca-tabla"></table></div><p class="nota-metodo" id="sen-busca-nota"></p></div>
+      <div class="sub" id="sen-sub-tabla"><p class="nota-metodo" style="margin-top:10px">Una fila por circunscripción: haz clic en un encabezado para ordenar.</p><div class="tabla-wrap"><table class="tp" id="sen-tabla-full"></table></div></div>
+    </div>
   </section>
 
   <!-- ══════════ REGIONALES Y MUNICIPALES ══════════ -->
   <section id="tab-regionales" class="oculto">
     <h2 class="tit">🗺️ Elecciones regionales y municipales</h2>
+    <div class="card mt" style="border:2px dashed var(--ambar); background:linear-gradient(120deg,#fffaf0,#fff6d6); text-align:center;">
+      <h3 style="font-size:16px;">🔜 Alcaldes, concejales, gobernadores y CORE 2028: tablero ya preparado</h3>
+      <p style="font-size:13.5px; color:var(--texto2); margin-top:6px; max-width:680px; margin-left:auto; margin-right:auto;">El mismo explorador (elect@s, pactos, por comuna/región, más votad@s, buscador y tabla) quedará disponible apenas el Servel publique los archivos de la próxima elección municipal y regional. Mientras tanto, mira la cuenta regresiva y los cargos en juego.</p>
+      <a href="proxima_eleccion.html" style="display:inline-block; margin-top:12px; background:var(--azul); color:#fff; font-weight:800; text-decoration:none; padding:11px 22px; border-radius:12px;">🔜 Ir al tablero de la próxima elección →</a>
+    </div>
     <p class="lead">Gobernadores regionales, consejeros regionales (CORE), alcaldes y concejales se eligen en una elección distinta a la presidencial.</p>
     <div class="grid mt" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
       <div class="card">
@@ -993,6 +1038,76 @@ pintarMapa();
   tf.addEventListener('click', e=>{ const th=e.target.closest('th'); if(!th) return; if(sortKey===th.dataset.k) sortDesc=!sortDesc; else { sortKey=th.dataset.k; sortDesc=true; } pintarTabla(); });
   tm.addEventListener('change', ()=>{ sortKey=null; pintarTabla(); });
   pintarTabla();
+})();
+
+/* ---------- EXPLORADOR PARLAMENTARIO COMPLETO (diputados + senadores; reutilizable para alcaldes/gobernadores) ---------- */
+function exploradorParlamentario(pref, data, opts){
+  if(!data || !$('#'+pref+'-explorador')) return;
+  const Z = data.distritos; const keys = Object.keys(Z).sort((a,b)=>Number(a)-Number(b));
+  const zonaNom = k => opts.nombreZona(k); const zonaInfo = k => opts.infoZona(k);
+  const norm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const limpio = s => { s = String(s||''); return (s==='nan'||s==='None') ? '' : s.replace('PARTIDO ','P. '); };
+  const PC = {}; (data.resumen_nacional||[]).forEach((p,i)=>{ PC[p.pacto] = colorDe(i); });
+  const cp = p => PC[p] || '#8a8f98';
+  const dotP = p => `<span class="dot" style="background:${cp(p)}"></span>`;
+  // universo de candidat@s
+  const TODOS = []; keys.forEach(k=>Z[k].candidatos.forEach(c=>TODOS.push({...c, zona:k, pactoL:limpio(c.pacto), partidoL:limpio(c.partido)})));
+  const ELECTOS = TODOS.filter(c=>c.electo);
+  const esc = keys.reduce((s,k)=>s+Z[k].electos.length,0);
+  $('#'+pref+'-subtabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#'+pref+'-subtabs button').forEach(x=>x.classList.toggle('on', x===b));
+    document.querySelectorAll('#'+pref+'-explorador .sub').forEach(s=>s.classList.toggle('on', s.id===pref+'-sub-'+b.dataset.s)); });
+  const filaC = (c, conZona=true) => `<tr><td>${c.electo?'<span style="color:var(--verde);font-weight:900">✔</span> ':''}<b>${c.nombre}</b></td>${conZona?`<td>${zonaNom(c.zona)}</td>`:''}<td>${dotP(c.pacto)}${c.pactoL||'—'}</td><td>${c.partidoL||'IND'}</td><td class="num">${fmt(c.votos)}</td><td class="num">${c.pct.toFixed(2)}%</td></tr>`;
+  const cab = (conZona=true) => `<thead><tr><th>Candidat@</th>${conZona?`<th>${opts.zonaTit}</th>`:''}<th>Pacto</th><th>Partido</th><th>Votos</th><th>% en su ${opts.zonaLabel}</th></tr></thead>`;
+  // --- elect@s
+  const tv = data.total_validos; const mesas = keys.reduce((s,k)=>s+Z[k].mesas,0); const nb = keys.reduce((s,k)=>s+Z[k].nulos+Z[k].blancos,0); const el = keys.reduce((s,k)=>s+Z[k].electores,0);
+  $('#'+pref+'-mini').innerHTML = [`✅ ${esc} elect@s`, `🧑‍🤝‍🧑 ${fmt(TODOS.length)} candidaturas`, `📍 ${keys.length} ${opts.zonaPlural}`, `🏫 ${fmt(mesas)} mesas`, `👥 ${fmt(el)} habilitados`, `🗳️ participación ${((tv+nb)/el*100).toFixed(1)}%`, `✅ ${fmt(tv)} válidos`, `⚪❌ ${fmt(nb)} nulos+blancos`].map(x=>`<span>${x}</span>`).join('');
+  const selP = $('#'+pref+'-electos-pacto');
+  selP.innerHTML = '<option value="">Todos los pactos</option>' + (data.resumen_nacional||[]).map(p=>`<option value="${p.pacto}">${limpio(p.pacto)} (${p.escanos})</option>`).join('');
+  const pintarElectos = ()=>{ const xs = ELECTOS.filter(c=>!selP.value || c.pacto===selP.value).sort((a,b)=>b.votos-a.votos);
+    $('#'+pref+'-electos-tabla').innerHTML = cab() + '<tbody>' + xs.map(c=>filaC(c)).join('') + '</tbody>'; };
+  selP.addEventListener('change', pintarElectos); pintarElectos();
+  // --- pactos y partidos
+  const maxE = Math.max(...(data.resumen_nacional||[]).map(p=>p.escanos),1);
+  $('#'+pref+'-pactos-tabla').innerHTML = `<thead><tr><th>Pacto</th><th>Votos</th><th>% votos</th><th>Escaños</th><th>% escaños</th><th>Escaños por 1 % de votos</th><th>Candidaturas</th></tr></thead><tbody>` +
+    (data.resumen_nacional||[]).map(p=>`<tr><td>${dotP(p.pacto)}<b>${limpio(p.pacto)}</b></td><td class="num">${fmt(p.votos)}</td><td class="num">${p.pct.toFixed(2)}%</td><td class="num"><b>${p.escanos}</b> <span class="pista" style="display:inline-block;width:80px;height:10px;vertical-align:middle"><i style="width:${p.escanos/maxE*100}%;background:${cp(p.pacto)}"></i></span></td><td class="num">${(p.escanos/esc*100).toFixed(1)}%</td><td class="num">${p.pct?(p.escanos/p.pct).toFixed(2):'—'}</td><td class="num">${TODOS.filter(c=>c.pacto===p.pacto).length}</td></tr>`).join('') + '</tbody>';
+  const PART = {}; TODOS.forEach(c=>{ const k = c.partidoL||'IND'; const o = PART[k] = PART[k]||{n:0,v:0,e:0,pacto:c.pacto}; o.n++; o.v+=c.votos; if(c.electo) o.e++; });
+  $('#'+pref+'-partidos-tabla').innerHTML = `<thead><tr><th>Partido</th><th>Pacto</th><th>Candidaturas</th><th>Votos</th><th>% votos</th><th>Elect@s</th></tr></thead><tbody>` +
+    Object.entries(PART).sort((a,b)=>b[1].e-a[1].e || b[1].v-a[1].v).map(([k,o])=>`<tr><td><b>${k}</b></td><td>${dotP(o.pacto)}${limpio(o.pacto)||'—'}</td><td class="num">${o.n}</td><td class="num">${fmt(o.v)}</td><td class="num">${(o.v/tv*100).toFixed(2)}%</td><td class="num"><b>${o.e}</b></td></tr>`).join('') + '</tbody>';
+  // --- por zona
+  const zs = $('#'+pref+'-zona-sel'); zs.innerHTML = keys.map(k=>`<option value="${k}">${zonaNom(k)}</option>`).join('');
+  const pintarZona = ()=>{ const k = zs.value, d = Z[k]; if(!d) return; const mx = Math.max(...d.pactos.map(p=>p.votos),1);
+    $('#'+pref+'-zona-det').innerHTML = `<h4 style="font-size:16px;">📍 ${zonaNom(k)}</h4><p class="nota-metodo" style="margin-top:2px">${zonaInfo(k)}</p><div class="mini-kpis"><span>✅ ${d.electos.length} escaños</span><span>👥 ${fmt(d.electores)} habilitados</span><span>🗳️ participación ${((d.total_validos+d.nulos+d.blancos)/d.electores*100).toFixed(1)}%</span><span>🏫 ${fmt(d.mesas)} mesas</span><span>✅ ${fmt(d.total_validos)} válidos</span><span>⚪ ${fmt(d.blancos)} blancos</span><span>❌ ${fmt(d.nulos)} nulos</span><span>🧑‍🤝‍🧑 ${d.candidatos.length} candidaturas</span></div>` +
+      `<h5 style="margin-top:12px; font-size:14px;">Pactos en ${opts.zonaLabel==='distrito'?'el':'la'} ${opts.zonaLabel}</h5>` + d.pactos.map(p=>{ const e = d.candidatos.filter(c=>c.pacto===p.pacto&&c.electo).length; return `<div class="bar-row" style="padding:6px 0"><div class="bar-nom" style="font-size:13px">${dotP(p.pacto)}${limpio(p.pacto)}${e?`<span class="chip-esc">${e} escaño${e>1?'s':''}</span>`:''}</div><div class="pista" style="height:16px"><i style="width:${Math.max(1.5,p.votos/mx*100)}%;background:${cp(p.pacto)}"></i></div><div class="bar-val" style="font-size:13px">${p.pct.toFixed(2)}%<small>${fmt(p.votos)}</small></div></div>`; }).join('') +
+      `<h5 style="margin-top:14px; font-size:14px;">Todas las candidaturas (${d.candidatos.length})</h5><div class="tabla-wrap"><table class="tp">${cab(false)}<tbody>${d.candidatos.map(c=>filaC({...c, pactoL:limpio(c.pacto), partidoL:limpio(c.partido)}, false)).join('')}</tbody></table></div>`; };
+  zs.addEventListener('change', pintarZona); pintarZona();
+  $('#'+pref+'-zona-busca').addEventListener('input', e=>{ const q = norm(e.target.value); if(q.length<3) return; const k = keys.find(k=>norm(zonaInfo(k)+' '+zonaNom(k)).includes(q)); if(k){ zs.value=k; pintarZona(); } });
+  // --- más votad@s
+  const card = c => `<div>${c.electo?'✔ ':''}<strong>${c.nombre}</strong> · ${fmt(c.votos)} votos (${c.pct.toFixed(1)}%)<b>${zonaNom(c.zona)} · ${c.pactoL||'IND'}${c.partidoL?' · '+c.partidoL:''}</b></div>`;
+  $('#'+pref+'-top').innerHTML = '<div style="grid-column:1/-1;font-weight:800">🏆 Top 15 en votos</div>' + TODOS.slice().sort((a,b)=>b.votos-a.votos).slice(0,15).map(card).join('');
+  $('#'+pref+'-top-pct').innerHTML = '<div style="grid-column:1/-1;font-weight:800">📈 Top 10 en porcentaje dentro de su '+opts.zonaLabel+'</div>' + TODOS.slice().sort((a,b)=>b.pct-a.pct).slice(0,10).map(card).join('');
+  // --- buscador
+  const bi = $('#'+pref+'-busca'), bt = $('#'+pref+'-busca-tabla'), bn = $('#'+pref+'-busca-nota');
+  bn.textContent = `Busca entre las ${fmt(TODOS.length)} candidaturas de esta elección.`;
+  bi.addEventListener('input', ()=>{ const q = norm(bi.value); if(q.length<3){ bt.innerHTML=''; bn.textContent = `Busca entre las ${fmt(TODOS.length)} candidaturas de esta elección.`; return; }
+    const xs = TODOS.filter(c=>norm(c.nombre+' '+c.pactoL+' '+c.partidoL).includes(q)).sort((a,b)=>b.votos-a.votos).slice(0,60);
+    bt.innerHTML = xs.length ? cab() + '<tbody>' + xs.map(c=>filaC(c)).join('') + '</tbody>' : '';
+    bn.textContent = xs.length ? `${xs.length} resultado${xs.length!==1?'s':''} (máx. 60) · ✔ = elect@` : 'Sin resultados. Prueba con el apellido.'; });
+  // --- tabla completa
+  const tf = $('#'+pref+'-tabla-full'); let sk=null, sd=true;
+  const pactosTop = (data.resumen_nacional||[]).slice(0,5).map(p=>p.pacto);
+  const pintarTabla = ()=>{ const cols = [{k:'z',t:opts.zonaTit},{k:'esc',t:'Escaños',num:true},{k:'cand',t:'Candidaturas',num:true},{k:'ganp',t:'Pacto más votado'}].concat(pactosTop.map(p=>({k:p,t:limpio(p),num:true}))).concat([{k:'tv',t:'Válidos',num:true},{k:'part',t:'Particip.',num:true}]);
+    let rows = keys.map(k=>{ const d=Z[k]; const o={z:zonaNom(k),_n:Number(k),esc:d.electos.length,cand:d.candidatos.length,ganp:d.pactos[0]?d.pactos[0].pacto:'—',tv:d.total_validos,part:(d.total_validos+d.nulos+d.blancos)/d.electores*100}; pactosTop.forEach(p=>{ o[p]=(d.pactos.find(x=>x.pacto===p)||{pct:0}).pct; }); return o; });
+    if(sk) rows.sort((a,b)=>{ const x=a[sk],y=b[sk]; const c = typeof x==='number'?x-y:String(x).localeCompare(String(y)); return sd?-c:c; }); else rows.sort((a,b)=>a._n-b._n);
+    tf.innerHTML = `<thead><tr>${cols.map(c=>`<th data-k="${c.k}">${c.t}${sk===c.k?(sd?' ▼':' ▲'):''}</th>`).join('')}</tr></thead><tbody>` + rows.map(r=>`<tr>${cols.map(c=>{ const v=r[c.k]; if(c.k==='ganp') return `<td class="gan">${dotP(v)}${limpio(v)}</td>`; if(c.k==='tv') return `<td class="num">${fmt(v)}</td>`; if(c.k==='esc'||c.k==='cand') return `<td class="num">${v}</td>`; if(c.num) return `<td class="num" ${r.ganp===c.k?'style="font-weight:800;color:var(--verde)"':''}>${v.toFixed(1)}%</td>`; return `<td><b>${v}</b></td>`; }).join('')}</tr>`).join('') + '</tbody>'; };
+  tf.addEventListener('click', e=>{ const th=e.target.closest('th'); if(!th) return; if(sk===th.dataset.k) sd=!sd; else { sk=th.dataset.k; sd=true; } pintarTabla(); });
+  pintarTabla();
+}
+(function(){
+  const di = k => (typeof DI_INFO!=='undefined' && DI_INFO[k]) ? DI_INFO[k] : ['—',''];
+  exploradorParlamentario('dip', DATA.diputados, {zonaTit:'Distrito', zonaLabel:'distrito', zonaPlural:'distritos', nombreZona:k=>`Distrito ${k} · ${di(k)[0]}`, infoZona:k=>di(k)[1]});
+  const circ = {}; if(typeof MAPA_ROWS!=='undefined') MAPA_ROWS.forEach(r=>{ circ[r[1]] = {reg:r[0], dists:r[2]}; });
+  exploradorParlamentario('sen', DATA.senadores, {zonaTit:'Circunscripción', zonaLabel:'circunscripción', zonaPlural:'circunscripciones', nombreZona:k=>`Circunscripción ${k} · ${circ[k]?circ[k].reg:'—'}`, infoZona:k=>circ[k]?('Región de '+circ[k].reg+' · distritos '+circ[k].dists.map(d=>'D'+d).join(', ')+ (Number(k)%2===1?' · circunscripción impar (se renovó en 2025)':'')):''});
 })();
 
 </script>

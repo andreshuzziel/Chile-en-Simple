@@ -272,6 +272,17 @@ EXPLORADOR PRESIDENCIAL COMPLETO (IMPLEMENTADO, en elecciones_chile.html)
    los votos, región por región) y tabla completa ordenable (28 distritos ×
    8 candidaturas o 16 regiones). Todo desde el mismo snapshot del Servel.
 
+EXPLORADORES PARLAMENTARIOS Y MUNICIPALES (IMPLEMENTADOS)
+   Diputados y Senado (elecciones_chile.html): 6 subpestañas cada uno —
+   Elect@s (filtro por pacto), Pactos y partidos (votos vs. escaños,
+   eficiencia), Por distrito/circunscripción (TODAS las candidaturas, búsqueda
+   por comuna), Más votad@s, Buscar candidat@ (1.096 dip. / 125 sen., elect@s o
+   no) y Tabla completa ordenable. Snapshot regenerado del Servel con todas
+   las candidaturas (antes solo top 12 por distrito).
+   Alcaldes, concejales, gobernadores y CORE (proxima_eleccion.html): el mismo
+   explorador (5 subpestañas) se activa solo al cargar los ZIP del Servel.
+   Pestaña "Regionales y municipales" enlaza al tablero preparado.
+
 PÁGINA 4: 🔜 PRÓXIMA ELECCIÓN (LISTA PARA RELLENAR CON EL SERVEL)
    Botón en el tablero (sección Fechas clave) + enlace en la nav → proxima_eleccion.html
    (ruta /proxima en el servidor en vivo). Muestra cuenta regresiva, cargos en

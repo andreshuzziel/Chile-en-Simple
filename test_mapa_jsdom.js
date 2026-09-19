@@ -201,5 +201,31 @@ t('tabla completa: ordena por participación desc', v[0] >= v[1] && v[1] >= v[27
 $('#tabla-modo').value = 'reg'; $('#tabla-modo').dispatchEvent(new window.Event('change'));
 t('tabla completa: modo regiones 16 filas', $$('#tabla-full tbody tr').length === 16);
 
+console.log('== 15. exploradores parlamentarios (diputados y senado) ==');
+const DATA = JSON.parse(fs.readFileSync('/home/user/elecciones_resultados.json', 'utf8'));
+const nEscD = Object.values(DATA.diputados.distritos).reduce((s,d)=>s+d.electos.length,0);
+const nEscS = Object.values(DATA.senadores.distritos).reduce((s,d)=>s+d.electos.length,0);
+t('diputados: explorador con 6 subpestañas', $$('#dip-subtabs button').length === 6);
+t('diputados: tabla de elect@s = escaños del snapshot ('+nEscD+')', $$('#dip-electos-tabla tbody tr').length === nEscD, 'hay '+$$('#dip-electos-tabla tbody tr').length);
+const selPac = $('#dip-electos-pacto'); selPac.value = DATA.diputados.resumen_nacional[0].pacto; selPac.dispatchEvent(new window.Event('change'));
+t('diputados: filtro por pacto = escaños del pacto', $$('#dip-electos-tabla tbody tr').length === DATA.diputados.resumen_nacional[0].escanos);
+t('diputados: tabla pactos con escaños por 1%', $$('#dip-pactos-tabla tbody tr').length === DATA.diputados.resumen_nacional.length && $('#dip-pactos-tabla').textContent.includes('Escaños por 1 %'));
+t('diputados: tabla partidos', $$('#dip-partidos-tabla tbody tr').length > 10);
+const dz = $('#dip-zona-sel'); dz.value = '20'; dz.dispatchEvent(new window.Event('change'));
+t('diputados: distrito 20 lista TODAS sus candidaturas', $('#dip-zona-det').textContent.includes('Todas las candidaturas ('+DATA.diputados.distritos['20'].candidatos.length+')') && $('#dip-zona-det').textContent.includes('Concepción'));
+const dzb = $('#dip-zona-busca'); dzb.value = 'valdivia'; dzb.dispatchEvent(new window.Event('input'));
+t('diputados: buscar comuna "valdivia" → distrito 24', $('#dip-zona-det').textContent.includes('Distrito 24'));
+t('diputados: top 15 más votad@s', $$('#dip-top div').length === 16);
+const db = $('#dip-busca'); db.value = 'unidad por chile'; db.dispatchEvent(new window.Event('input'));
+t('diputados: buscador por pacto devuelve filas', $$('#dip-busca-tabla tbody tr').length >= 20);
+t('diputados: tabla completa 28 filas ordenable', $$('#dip-tabla-full tbody tr').length === 28);
+$$('#dip-tabla-full thead th').find(th=>th.textContent.startsWith('Particip')).click();
+const pv = [...$$('#dip-tabla-full tbody tr')].map(tr=>parseFloat(tr.lastElementChild.textContent));
+t('diputados: orden por participación desc', pv[0] >= pv[1] && pv[1] >= pv[27]);
+t('senado: explorador elect@s = '+nEscS, $$('#sen-electos-tabla tbody tr').length === nEscS);
+t('senado: zona muestra región y distritos', /Región de .* · distritos D/.test($('#sen-zona-det').textContent));
+t('senado: tabla completa = circunscripciones en disputa', $$('#sen-tabla-full tbody tr').length === Object.keys(DATA.senadores.distritos).length);
+t('regionales: enlace al tablero de próxima elección', !!$('#tab-regionales a[href="proxima_eleccion.html"]'));
+
 console.log(`\nRESULTADO: ${pass} pass, ${fail} fail`);
 process.exit(fail ? 1 : 0);

@@ -29,11 +29,19 @@ def descargar(clave):
     if os.path.exists(ruta) and os.path.getsize(ruta) > 1000:
         return ruta
     url = ARCHIVOS[clave]
-    req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept-Encoding': 'gzip'})
-    with urllib.request.urlopen(req, timeout=300) as r:
-        data = r.read()
-        if r.headers.get('Content-Encoding') == 'gzip':
-            data = gzip.GzipFile(fileobj=io.BytesIO(data)).read()
+    data = None
+    for intento in range(4):  # descargas grandes del Servel a veces se cortan (IncompleteRead)
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': UA})
+            with urllib.request.urlopen(req, timeout=600) as r:
+                data = r.read()
+            zipfile.ZipFile(io.BytesIO(data)).testzip()
+            break
+        except Exception as e:
+            print(f'  intento {intento+1} falló ({type(e).__name__}); reintentando…')
+            data = None
+    if data is None:
+        raise SystemExit(f'No se pudo descargar {url}')
     open(ruta, 'wb').write(data)
     print(f'  descargado {clave}: {len(data)//1024} KB')
     return ruta
@@ -92,7 +100,7 @@ def agregar_parlamentaria(dfs, campo):
             'candidatos': [{'nombre': r['nombre'], 'pacto': str(r['pacto']), 'partido': str(r['partido']),
                             'votos': int(r['votos']),
                             'pct': round(r['votos']/total_validos*100, 2) if total_validos else 0,
-                            'electo': bool(r['electo'] == 1)} for _, r in gp.head(12).iterrows()],
+                            'electo': bool(r['electo'] == 1)} for _, r in gp.iterrows()],
         }
         todos.append(cand)
     todo = pd.concat(todos, ignore_index=True)

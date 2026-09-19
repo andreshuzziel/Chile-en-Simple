@@ -52,6 +52,12 @@ t('resumen nacional por pacto', B.doc.querySelector('#cargo-alc').textContent.in
 t('electo marcado con ✔', B.doc.querySelector('#cargo-alc .electo') !== null && B.doc.querySelector('#zona-alc').textContent.includes('Ana Prueba'));
 const sel = B.doc.querySelector('.sel-zona'); sel.value = 'Talcahuano'; sel.dispatchEvent(new B.win.Event('change'));
 t('selector de comuna cambia el detalle', B.doc.querySelector('#zona-alc').textContent.includes('Carla Demo') && !B.doc.querySelector('#zona-alc').textContent.includes('Ana Prueba'));
+t('explorador por cargo: 5 subpestañas', B.doc.querySelectorAll('#cargo-alc .subtabs button').length === 5);
+t('explorador: tabla de elect@s con ✔', B.doc.querySelector('#s-alc-electos').textContent.includes('Ana Prueba') && B.doc.querySelector('#s-alc-electos').textContent.includes('Carla Demo'));
+const cb = B.doc.querySelector('.cand-busca'); cb.value = 'beto'; cb.dispatchEvent(new B.win.Event('input'));
+t('explorador: buscador de candidat@s (no elect@s también)', B.doc.querySelector('#b-alc').textContent.includes('Beto Test'));
+const zb = B.doc.querySelector('.zona-busca'); zb.value = 'talca'; zb.dispatchEvent(new B.win.Event('input'));
+t('explorador: búsqueda de comuna', B.doc.querySelector('#zona-alc').textContent.includes('Carla Demo'));
 t('KPI cargos con datos = 1/2', B.doc.querySelector('#kpis').textContent.includes('1/2'));
 
 console.log('== 3. configuración editable ==');

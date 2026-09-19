@@ -73,6 +73,21 @@
   .paso{background:var(--tarjeta); border:1px solid var(--borde); border-radius:12px; padding:12px 14px 12px 50px; position:relative; font-size:14px;}
   .paso::before{counter-increment:p; content:counter(p); position:absolute; left:14px; top:12px; width:26px; height:26px; border-radius:50%; background:var(--azul); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:13px;}
   code{background:#eef2fd; padding:2px 6px; border-radius:6px; font-size:12.5px;}
+  .subtabs{display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;}
+  .subtabs button{border:1px solid var(--borde); background:#fff; color:var(--texto2); font-weight:700; font-size:12.5px; padding:6px 11px; border-radius:999px; cursor:pointer;}
+  .subtabs button.on{background:var(--azul); border-color:var(--azul); color:#fff;}
+  .sub{display:none;} .sub.on{display:block;}
+  .tabla-wrap{overflow-x:auto; margin-top:10px; border:1px solid var(--borde); border-radius:12px;}
+  table.tp{width:100%; border-collapse:collapse; font-size:13.5px; min-width:560px;}
+  table.tp th{background:#f3f5fb; text-align:left; padding:8px 10px; font-size:12px; text-transform:uppercase; color:var(--texto2); cursor:pointer; white-space:nowrap;}
+  table.tp td{padding:7px 10px; border-top:1px solid var(--borde); white-space:nowrap;}
+  table.tp td.num{text-align:right; font-variant-numeric:tabular-nums;}
+  .mini-kpis{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .mini-kpis span{background:#f3f5fb; border:1px solid var(--borde); border-radius:999px; padding:4px 11px; font-size:12.5px; font-weight:600;}
+  .busca-tp{padding:8px 12px; border-radius:10px; border:1px solid var(--borde); font-size:14px; min-width:220px;}
+  .ranking-dist{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px; margin-top:10px;}
+  .ranking-dist div{border:1px solid var(--borde); border-radius:10px; padding:8px 10px; font-size:13px;}
+  .ranking-dist b{display:block; font-size:12px; color:var(--texto2); font-weight:600;}
   footer{margin:40px 0 30px; font-size:12.5px; color:var(--gris); border-top:1px solid var(--borde); padding-top:14px; line-height:1.7;}
   @media (max-width:720px){ .bar-row{grid-template-columns:1fr; gap:4px;} .bar-val{text-align:left;} .cuenta b{font-size:24px;} }
   @media (prefers-reduced-motion: reduce){ *{animation:none !important;} }
@@ -186,9 +201,19 @@ $('#lista-cargos').innerHTML = (DATA.cargos||[]).map(c=>{
   if(c.estado==='con_datos'){
     const zonas = Object.keys(c.datos.zonas);
     const nac = c.datos.resumen_nacional.slice(0,8); const maxN = Math.max(...nac.map(x=>x.votos),1);
-    cuerpo = `<h4 style="margin-top:14px; font-size:14px;">🇨🇱 Total país por pacto</h4>` +
-      nac.map(x=>`<div class="bar-row"><span class="bar-nom">${x.pacto}</span><span class="bar-track"><span class="bar-fill" style="width:${x.votos/maxN*100}%"></span></span><span class="bar-val">${x.pct}%${x.escanos?' · '+x.escanos+' electos':''}</span></div>`).join('') +
-      `<div class="mt"><label style="font-weight:700; font-size:14px;">Tu ${c.ambito_nombre}: </label><select data-c="${c.id}" class="sel-zona">${zonas.map(z=>`<option>${z}</option>`).join('')}</select></div><div id="zona-${c.id}">${pintarZona(c, zonas[0])}</div>`;
+    const TODOS = []; zonas.forEach(z=>c.datos.zonas[z].candidatos.forEach(x=>TODOS.push({...x, zona:z})));
+    const electos = TODOS.filter(x=>x.electo).sort((a,b)=>b.votos-a.votos);
+    const lim = s => (s==='nan'||s==='None'||!s) ? '' : String(s).replace('PARTIDO ','P. ');
+    const fila = x => `<tr><td>${x.electo?'<span style="color:var(--verde);font-weight:900">✔</span> ':''}<b>${x.nombre}</b></td><td>${x.zona}</td><td>${lim(x.pacto)||'—'}</td><td>${lim(x.partido)||'IND'}</td><td class="num">${fmt(x.votos)}</td><td class="num">${x.pct}%</td></tr>`;
+    const cab = `<thead><tr><th>Candidat@</th><th>${c.ambito_nombre}</th><th>Pacto</th><th>Partido</th><th>Votos</th><th>%</th></tr></thead>`;
+    cuerpo = `<div class="mini-kpis"><span>✅ ${electos.length} elect@s</span><span>🧑‍🤝‍🧑 ${fmt(TODOS.length)} candidaturas</span><span>📍 ${zonas.length} ${c.ambito_nombre}s</span><span>🏫 ${fmt(c.datos.mesas||0)} mesas</span><span>✅ ${fmt(c.datos.total_validos)} válidos</span></div>
+      <div class="subtabs" data-c="${c.id}"><button data-s="electos" class="on">✅ Elect@s</button><button data-s="pactos">🏛️ Pactos</button><button data-s="zona">📍 Por ${c.ambito_nombre}</button><button data-s="top">⭐ Más votad@s</button><button data-s="busca">🔎 Buscar</button></div>
+      <div class="sub on" id="s-${c.id}-electos"><div class="tabla-wrap"><table class="tp">${cab}<tbody>${electos.map(fila).join('')||'<tr><td colspan="6">El archivo aún no marca elect@s (escrutinio en curso).</td></tr>'}</tbody></table></div></div>
+      <div class="sub" id="s-${c.id}-pactos">` + nac.map(x=>`<div class="bar-row"><span class="bar-nom">${x.pacto}</span><span class="bar-track"><span class="bar-fill" style="width:${x.votos/maxN*100}%"></span></span><span class="bar-val">${x.pct}%${x.escanos?' · '+x.escanos+' elect@s':''}</span></div>`).join('') + `</div>
+      <div class="sub" id="s-${c.id}-zona"><div class="mt"><label style="font-weight:700; font-size:14px;">Tu ${c.ambito_nombre}: </label><select data-c="${c.id}" class="sel-zona">${zonas.map(z=>`<option>${z}</option>`).join('')}</select> <input class="busca-tp zona-busca" data-c="${c.id}" placeholder="o escríbela"></div><div id="zona-${c.id}">${pintarZona(c, zonas[0])}</div></div>
+      <div class="sub" id="s-${c.id}-top"><div class="ranking-dist">${TODOS.slice().sort((a,b)=>b.votos-a.votos).slice(0,15).map(x=>`<div>${x.electo?'✔ ':''}<strong>${x.nombre}</strong> · ${fmt(x.votos)} votos (${x.pct}%)<b>${x.zona} · ${lim(x.pacto)||'IND'}</b></div>`).join('')}</div></div>
+      <div class="sub" id="s-${c.id}-busca"><input class="busca-tp cand-busca mt" data-c="${c.id}" placeholder="Nombre, partido o pacto (mín. 3 letras)" style="min-width:min(100%,360px)"><div class="tabla-wrap"><table class="tp" id="b-${c.id}"></table></div></div>`;
+    c._todos = TODOS; c._cab = cab; c._fila = fila;
   }else if(c.estado==='error'){
     cuerpo = `<div class="espera">⚠️ El archivo del Servel no se pudo leer: <code>${c.error}</code><br>Revisa la URL o las columnas en <code>proxima_eleccion.json</code>.</div>`;
   }else{
@@ -197,6 +222,10 @@ $('#lista-cargos').innerHTML = (DATA.cargos||[]).map(c=>{
   return `<div class="card cargo" id="cargo-${c.id}"><h3>${c.emoji} ${c.nombre}<span class="chip ${c.estado}">${c.estado==='con_datos'?'✅ con datos':c.estado==='error'?'⚠️ error':'⏳ esperando'}</span></h3><p style="font-size:14px; color:var(--texto2); margin-top:6px;">${c.explica||''}</p>${cuerpo}</div>`;
 }).join('');
 document.querySelectorAll('.sel-zona').forEach(s=>s.addEventListener('change', ()=>{ const c = DATA.cargos.find(x=>x.id===s.dataset.c); $('#zona-'+c.id).innerHTML = pintarZona(c, s.value); }));
+const normT = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+document.querySelectorAll('.subtabs').forEach(st=>st.addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; st.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x===b)); const card = st.closest('.card'); card.querySelectorAll('.sub').forEach(s=>s.classList.toggle('on', s.id==='s-'+st.dataset.c+'-'+b.dataset.s)); }));
+document.querySelectorAll('.zona-busca').forEach(i=>i.addEventListener('input', ()=>{ const q=normT(i.value); if(q.length<3) return; const c = DATA.cargos.find(x=>x.id===i.dataset.c); const z = Object.keys(c.datos.zonas).find(z=>normT(z).includes(q)); if(z){ const s=document.querySelector(`.sel-zona[data-c="${c.id}"]`); s.value=z; $('#zona-'+c.id).innerHTML = pintarZona(c, z); } }));
+document.querySelectorAll('.cand-busca').forEach(i=>i.addEventListener('input', ()=>{ const q=normT(i.value); const c = DATA.cargos.find(x=>x.id===i.dataset.c); const tb = $('#b-'+c.id); if(q.length<3){ tb.innerHTML=''; return; } const xs = c._todos.filter(x=>normT(x.nombre+' '+x.pacto+' '+x.partido).includes(q)).sort((a,b)=>b.votos-a.votos).slice(0,60); tb.innerHTML = xs.length ? c._cab + '<tbody>' + xs.map(c._fila).join('') + '</tbody>' : '<tbody><tr><td>Sin resultados</td></tr></tbody>'; }));
 </script>
 </body>
 </html>
