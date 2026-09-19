@@ -232,6 +232,8 @@ ARCHIVOS DEL PROYECTO (carpeta plana, sin subcarpetas)
    template_elecciones.html  plantilla del tablero electoral (con mapa;
                              marcadores __DATA__ y __GEOM__)
    gen_dashboard.py          genera index.html (estático)
+   gen_excel.py              genera datos_congreso.xlsx (lee solo archivos del repo:
+                             votaciones_2026, boletines_nombres, senado_presidencia)
    gen_vivo.py               genera dashboard_vivo.html (modo en vivo)
    gen_elecciones.py         descarga y procesa los ZIP del Servel
                              (preserva claves extra como segunda_vuelta)

@@ -8,9 +8,9 @@ from openpyxl.utils import get_column_letter
 
 master = json.load(open('/home/user/congreso_data.json'))
 destacadas = json.load(open('/home/user/votaciones_destacadas.json'))
-vots = json.load(open('/tmp/votaciones2026.json'))
-nombres_bol = json.load(open('/tmp/boletines_nombres.json'))
-senado = json.load(open('/tmp/senado_presidencia.json'))
+vots = json.load(open('/home/user/votaciones_2026.json'))  # persistente en el repo (no /tmp)
+nombres_bol = json.load(open('/home/user/boletines_nombres.json'))
+senado = json.load(open('/home/user/senado_presidencia.json'))  # voto por senador/a (mesa del Senado)
 
 kpi, bancadas, dips = master['kpi'], master['bancadas'], master['diputados']
 
