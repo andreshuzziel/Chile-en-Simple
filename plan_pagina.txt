@@ -272,10 +272,10 @@ DISEÑO RESPONSIVE — TODOS LOS DISPOSITIVOS (IMPLEMENTADO)
    - touch-action:manipulation + botones ≥ 40 px (objetivos táctiles).
    - prefers-reduced-motion: sin animaciones si el usuario lo pide.
    - SVG del mapa width:100% y contenedor con scroll/pan en móvil.
-   - Barra de navegación compacta en celular: 1 sola fila horizontal
-     deslizable con el dedo (sin barras de scrollbar, con fundido en el
-     borde derecho), enlaces reducidos a 12,5 px y botón de modo oscuro
-     incluido en el scroll. En escritorio se mantiene el menú completo.
+   - Barra de navegación compacta en celular: TODOS los enlaces siguen
+     visibles (nada recortado) pero con letra a 10 px y pills pequeñas
+     centradas; la barra pasa de ~6 filas grandes a ~4 filas mini,
+     ocupando la mitad de la pantalla. En escritorio, menú completo.
    - Cero dependencias externas: CSS puro, funciona sin internet.
    Verificado por 18 aserciones automáticas (suites jsdom, hito.sh).
 
