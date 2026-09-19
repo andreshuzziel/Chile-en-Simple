@@ -459,6 +459,65 @@
     html{ scroll-behavior:auto; }
     section{ opacity:1 !important; transform:none !important; }
   }
+
+  /* ---------- UTILIDADES CIUDADANAS: modo niñ@s, ranking, accesibilidad, escuchar ---------- */
+  #ninos-toggle, #a11y-btn{border:1px solid #b9c8ec; background:#eef2fd; border-radius:10px; padding:6px 11px; font-size:17px; line-height:1; cursor:pointer; box-shadow:0 1px 4px rgba(20,30,70,.12); transition:background .2s, border-color .2s;}
+  #ninos-toggle:hover{background:#dde6fb; border-color:var(--azul);}
+  #ninos-toggle.on{background:#fff1bf; border-color:var(--ambar);}
+  body.dark #ninos-toggle{background:#25314f; border-color:#4a5c92; box-shadow:none;}
+  body.dark #ninos-toggle.on{background:#4a3c0f; border-color:var(--ambar);}
+  #ninos-banner{display:none; background:linear-gradient(90deg,#fff6d6,#fff1bf); border:1px solid #f3d36b; color:#5a4300; border-radius:12px; padding:10px 14px; margin:14px 0 0; font-size:14px; font-weight:600;}
+  body.modo-ninos #ninos-banner{display:block;}
+  body.modo-ninos p.lead{background:#fff8dc; border-left:5px solid var(--ambar); padding:10px 14px; border-radius:10px; font-size:16.5px;}
+  body.dark #ninos-banner{background:#3a2f0c; border-color:#7a6320; color:#ffe9a8;}
+  body.dark.modo-ninos p.lead{background:#2a2410; color:#f3e9c9;}
+  .leer-btn{margin-left:auto; flex:0 0 auto; border:1px solid var(--borde); background:#fff; color:var(--texto2); border-radius:999px; font-size:12.5px; font-weight:700; padding:5px 11px; cursor:pointer; transition:all .2s; white-space:nowrap;}
+  .leer-btn:hover{border-color:var(--azul); color:var(--azul);}
+  .leer-btn.on{background:var(--azul); border-color:var(--azul); color:#fff; animation:leerpulso 1.2s ease-in-out infinite;}
+  @keyframes leerpulso{0%,100%{box-shadow:0 0 0 0 rgba(44,85,200,.45);}50%{box-shadow:0 0 0 7px rgba(44,85,200,0);}}
+  body.dark .leer-btn{background:#1b2338; color:#c8d2e8; border-color:#3a4766;}
+  body.dark .leer-btn.on{background:var(--azul2); color:#fff;}
+  .leer-nota{font-size:12px; color:var(--gris); margin-top:4px;}
+  /* ranking */
+  .rank-filtros{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 6px;}
+  .rank-filtros select{padding:7px 10px; border-radius:10px; border:1px solid var(--borde); font-size:13.5px; font-weight:600; color:var(--azul);}
+  .rank-row{display:grid; grid-template-columns:34px 1fr 120px; gap:10px; align-items:center; padding:8px 6px; border-bottom:1px solid var(--borde); font-size:14px;}
+  .rank-row:last-child{border-bottom:none;}
+  .rank-row .pos{font-weight:900; color:var(--gris); text-align:center;}
+  .rank-row .pos.oro{color:#c9930a; font-size:18px;}
+  .rank-row .nom{font-weight:700; cursor:pointer;}
+  .rank-row .nom small{display:block; font-weight:500; color:var(--texto2); font-size:12px;}
+  .rank-row .val{text-align:right; font-weight:800; color:var(--azul);}
+  .rank-row .barra{grid-column:2/4; height:6px; background:var(--fondo); border-radius:3px; overflow:hidden; margin-top:-2px;}
+  .rank-row .barra i{display:block; height:100%; background:linear-gradient(90deg,var(--azul2),var(--azul));}
+  .rank-row.mio{background:#fff8dc;}
+  body.dark .rank-row.mio{background:#2a2410;}
+  body.dark .rank-row .val{color:#9db8ff;}
+  body.dark .rank-filtros select{background:#1b2338; color:#c8d2e8; border-color:#3a4766;}
+  /* accesibilidad */
+  #a11y-btn{position:fixed; left:14px; bottom:14px; z-index:90; font-size:20px; padding:9px 12px; border-radius:50%; box-shadow:0 4px 14px rgba(20,30,70,.25);}
+  #a11y-panel{position:fixed; left:14px; bottom:66px; z-index:91; width:min(320px, calc(100vw - 28px)); background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; box-shadow:0 10px 30px rgba(20,30,70,.25); padding:14px; display:none;}
+  #a11y-panel.abierto{display:block;}
+  #a11y-panel h4{font-size:15px; margin-bottom:8px; display:flex; align-items:center; gap:8px;}
+  #a11y-panel .fila{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 0; border-top:1px solid var(--borde); font-size:13.5px; font-weight:600;}
+  #a11y-panel .grupo{display:flex; gap:4px;}
+  #a11y-panel button.opt{border:1px solid var(--borde); background:#fff; color:var(--texto2); border-radius:8px; padding:5px 9px; font-weight:800; cursor:pointer; font-size:13px;}
+  #a11y-panel button.opt.on{background:var(--azul); border-color:var(--azul); color:#fff;}
+  #a11y-panel .cerrar{position:absolute; right:10px; top:8px; border:none; background:none; font-size:18px; cursor:pointer; color:var(--gris);}
+  body.dark #a11y-btn{background:#25314f; border-color:#4a5c92;}
+  body.dark #a11y-panel button.opt{background:#1b2338; color:#c8d2e8; border-color:#3a4766;}
+  body.dark #a11y-panel button.opt.on{background:var(--azul2); color:#fff;}
+  body.letra-g{zoom:1.15;} body.letra-xg{zoom:1.32;}
+  body.contraste{--fondo:#ffffff; --tarjeta:#ffffff; --borde:#000000; --texto:#000000; --texto2:#000000; --gris:#222; --azul:#0000b3; --azul2:#0000b3; --sombra:none;}
+  body.contraste a{text-decoration:underline;}
+  body.contraste .card, body.contraste .kpi-card, body.contraste .gob-card, body.contraste .prox-card, body.contraste .fer-card, body.contraste .paso, body.contraste details{border-width:2px;}
+  body.contraste .nota-metodo{color:#000; font-weight:600;}
+  body.dark.contraste{--fondo:#000; --tarjeta:#000; --borde:#fff; --texto:#fff; --texto2:#fff; --gris:#ddd;}
+  body.dark.contraste .card, body.dark.contraste .kpi-card, body.dark.contraste .gob-card{background:#000;}
+  body.lectura-facil{line-height:1.85; letter-spacing:.02em; word-spacing:.1em;}
+  body.lectura-facil p, body.lectura-facil li{max-width:68ch;}
+  body.lectura-facil p.lead{font-size:17px;}
+  @media (max-width:720px){ nav.menu #ninos-toggle{ margin-left:2px; padding:4px 7px; font-size:12px; min-width:26px; min-height:26px; flex:0 0 auto; } .rank-row{grid-template-columns:28px 1fr 96px; font-size:13px;} }
 </style>
 </head>
 <body>
@@ -516,6 +575,8 @@
     <a href="#comparador">⚖️ Compara</a>
     <a href="#como-ley">🧭 ¿Cómo se hace una ley?</a>
     <a href="#glosario">📖 Glosario</a>
+    <a href="#ranking">🏆 Ranking</a>
+    <button id="ninos-toggle" title="Modo «explícame como si tuviera 12 años»" aria-label="Explicación para niños y niñas" aria-pressed="false">🧒</button>
     <button id="dark-toggle" title="Cambiar entre modo claro y oscuro" aria-label="Modo oscuro">🌙</button>
   </div>
 </nav>
@@ -525,6 +586,7 @@
   <!-- ============ INTRO ============ -->
   <section id="intro">
     <h2 class="tit">👋 ¿Qué estoy mirando?</h2>
+    <div id="ninos-banner">🧒 <b>Modo «explícame como si tuviera 12 años» activado.</b> Cada sección ahora parte con una explicación aún más simple y con ejemplos de la vida diaria. Toca 🧒 arriba para volver a la versión normal.</div>
     <p class="lead">Este tablero cubre los <b>dos poderes</b> que dirigen el país. El <b>Poder Legislativo</b> (el Congreso) discute y aprueba las leyes: la Cámara de Diputadas y Diputados, con <b>155 diputados y diputadas</b> elegidos por voto popular, más el Senado. El <b>Poder Ejecutivo</b> (el Gobierno) administra el Estado, encabezado por el Presidente y sus ministros. Esto es lo que cualquier ciudadano puede (y debería) poder revisar:</p>
     <div class="grid dos">
       <div class="card"><h3>🪑 ¿Van a trabajar?</h3><p style="font-size:14px;color:var(--texto2)">Cada diputado tiene la obligación de asistir a las sesiones de la Sala, donde se votan los proyectos. Aquí ves quién asiste, quién falta y con qué justificación.</p></div>
@@ -698,6 +760,28 @@
       </div>
     </div>
     <div class="caja-dato" id="dato-gasto"></div>
+  </section>
+
+
+  <!-- ══════════ RANKING EN SIMPLE ══════════ -->
+  <section id="ranking">
+    <h2 class="tit">🏆 Ranking en simple</h2>
+    <p class="lead">Los <b>10 primeros</b> de cada lista, para responder rápido las preguntas de siempre: ¿quiénes van más a trabajar?, ¿quiénes faltan más?, ¿quiénes gastan más y quiénes menos? Puedes mirar solo <b>tu región</b> o <b>tu distrito</b>. Recuerda que una inasistencia puede estar justificada (licencia médica, misión oficial) y que gastar más no siempre es malo: un distrito muy grande cuesta más recorrer.</p>
+    <div class="toggles" id="rank-toggles">
+      <button class="on" data-k="presentes">🪑 Más presentes</button>
+      <button data-k="faltan">🚫 Más faltas</button>
+      <button data-k="gastan">💰 Más gastan</button>
+      <button data-k="austeros">🪙 Más austeros</button>
+      <button data-k="asesores">👥 Más asesor@s</button>
+    </div>
+    <div class="rank-filtros">
+      <label style="font-weight:700; font-size:13.5px;">Ver:</label>
+      <select id="rank-region"><option value="">🇨🇱 Todo Chile</option></select>
+      <button id="rank-mio" class="btn-mini" style="margin:0;" hidden>🏠 Solo mi distrito</button>
+      <span id="rank-info" class="nota-metodo"></span>
+    </div>
+    <div class="card mt" id="rank-lista"></div>
+    <div class="caja-explica mt" id="rank-explica"></div>
   </section>
 
   <!-- ============ VOTACIONES ============ -->
@@ -935,6 +1019,17 @@
   </div>
 </footer>
 
+<button id="a11y-btn" title="Opciones de accesibilidad: tamaño de letra, contraste, lectura fácil" aria-label="Accesibilidad" aria-expanded="false">♿</button>
+<div id="a11y-panel" role="dialog" aria-label="Opciones de accesibilidad">
+  <button class="cerrar" id="a11y-cerrar" aria-label="Cerrar">✕</button>
+  <h4>♿ Leer más cómodo</h4>
+  <div class="fila"><span>Tamaño de letra</span><div class="grupo" id="a11y-letra"><button class="opt on" data-v="">A</button><button class="opt" data-v="letra-g">A+</button><button class="opt" data-v="letra-xg">A++</button></div></div>
+  <div class="fila"><span>Alto contraste</span><div class="grupo"><button class="opt" id="a11y-contraste" data-cls="contraste">Activar</button></div></div>
+  <div class="fila"><span>Lectura fácil (más aire entre líneas)</span><div class="grupo"><button class="opt" id="a11y-lectura" data-cls="lectura-facil">Activar</button></div></div>
+  <div class="fila"><span>Modo oscuro</span><div class="grupo"><button class="opt" id="a11y-oscuro">Cambiar</button></div></div>
+  <div class="fila"><span>🧒 Explicación para 12 años</span><div class="grupo"><button class="opt" id="a11y-ninos">Cambiar</button></div></div>
+  <p class="nota-metodo" style="margin-top:8px;">Se guarda solo en este navegador. <button id="a11y-reset" class="btn-mini" style="margin:6px 0 0;">↩️ Restablecer todo</button></p>
+</div>
 <script>
 const DATA = /*__DATA__*/;
 
@@ -942,6 +1037,7 @@ const DATA = /*__DATA__*/;
 /* protección: ambientes sin scrollIntoView (vistas previas/navegadores antiguos) */
 if(!Element.prototype.scrollIntoView){ Element.prototype.scrollIntoView = function(){}; }
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
 const fmt$ = n => '$' + fmt(n);
 const fmtMillones = n => {
@@ -1387,6 +1483,162 @@ renderGastoBanc();
     btn.addEventListener('click', ()=>{ dark=!dark; try{ localStorage.setItem('eps_dark', dark?'1':'0'); }catch(e){} aplicar(); });
   })();
 
+  /* ---------- MODO «EXPLÍCAME COMO SI TUVIERA 12 AÑOS» ---------- */
+  const NINOS = {
+    intro: 'Imagina que Chile es un colegio gigante. El Congreso es como el centro de alumnos que hace las reglas, y el Gobierno es como la dirección que hace que esas reglas se cumplan. Aquí puedes ver si los que hacen las reglas van a clases, en qué gastan la plata y qué votan.',
+    noticias: 'Estas son las noticias de hoy, contadas por el mismo Congreso y el Gobierno. Es como el diario mural del colegio: lo que pasó hoy, dicho por ellos mismos.',
+    fechas: 'Un calendario con los días importantes: feriados, fiestas patrias y cuándo toca votar de nuevo. Así sabes qué se viene, como cuando anotas las pruebas en tu agenda.',
+    resumen: 'Los números grandes de la Cámara: cuántos diputados hay, cuánto asisten y cuánto gastan. Es como la nota final de un curso: un resumen rápido antes de ver el detalle.',
+    asistencia: 'Los diputados tienen que ir a la Sala a votar, igual que tú tienes que ir a clases. Aquí ves quién va casi siempre y quién falta harto. A veces faltar tiene excusa (enfermedad o viaje de trabajo), igual que un certificado médico.',
+    gastos: 'A cada diputado le pasan una mesada del Estado para trabajar: pagar ayudantes, oficina, viajes. No es su sueldo. Aquí ves en qué la gastan, como revisar las boletas de una mesada.',
+    ranking: 'Como el cuadro de honor del colegio, pero para diputados: los 10 que más van, los que más faltan, los que más y menos gastan. Puedes ver solo tu región.',
+    votaciones: 'Cada vez que la Sala vota, queda anotado quién dijo sí, quién dijo no y quién no quiso opinar. Es como levantar la mano en clases, pero quedando escrito para siempre.',
+    'proyectos-clave': 'Un proyecto de ley es una idea para cambiar las reglas del país. Aquí están las ideas que más se discutieron. Antes de ser regla de verdad, tiene que ganar varias votaciones.',
+    periodos: 'Lo más importante de la semana, el mes, el semestre y el año, tanto del Congreso como del Gobierno. Como un resumen de "lo mejor de" cada etapa.',
+    gobierno: 'El Gobierno es el equipo que dirige el país día a día: el Presidente es el capitán y los ministros son los encargados de cada área (salud, educación, transporte…). El Congreso hace las reglas; ellos las aplican.',
+    senado: 'El Congreso tiene dos salas: la Cámara de Diputados (155 personas) y el Senado (50 personas). Una ley tiene que ganar en las dos, como un partido de ida y vuelta.',
+    verificacion: 'Antes de mostrarte estos números, los comparamos con las páginas oficiales del Congreso, como revisar la respuesta con el libro antes de entregar la prueba.',
+    explorador: 'Escribe el nombre de un diputado y mira su ficha: cuánto va, cuánto gasta y a qué grupo pertenece. Como buscar a un compañero en la lista del curso.',
+    distrito: 'Chile está dividido en 28 zonas llamadas distritos. Cada zona elige a sus propios diputados. Elige la tuya y mira quiénes te representan: son "tus" diputados.',
+    comparador: 'Elige dos diputados y míralos lado a lado, como comparar dos jugadores en un álbum de láminas: quién asiste más, quién gasta menos.',
+    'como-ley': 'Una idea se convierte en ley en 6 pasos: alguien la propone, un grupo pequeño la revisa, la Cámara vota, el Senado vota, el Presidente la firma y se publica. Si se traba en un paso, no avanza.',
+    glosario: 'Las palabras raras del Congreso, explicadas con palabras normales. Si algo no lo entiendes, búscalo aquí.'
+  };
+  (function(){
+    const btn = $('#ninos-toggle'); if(!btn) return;
+    let on = false;
+    try{ on = localStorage.getItem('eps_ninos')==='1'; }catch(e){}
+    document.querySelectorAll('section[id]').forEach(sec=>{
+      const lead = sec.querySelector('p.lead'); if(!lead || !NINOS[sec.id]) return;
+      lead.dataset.normal = lead.innerHTML;
+    });
+    const aplicar = ()=>{
+      document.body.classList.toggle('modo-ninos', on);
+      btn.classList.toggle('on', on); btn.setAttribute('aria-pressed', on?'true':'false');
+      document.querySelectorAll('section[id]').forEach(sec=>{
+        const lead = sec.querySelector('p.lead'); if(!lead || !lead.dataset.normal) return;
+        lead.innerHTML = on ? '🧒 ' + NINOS[sec.id] : lead.dataset.normal;
+      });
+      const a = $('#a11y-ninos'); if(a) a.classList.toggle('on', on);
+    };
+    aplicar();
+    window.toggleNinos = ()=>{ on=!on; try{ localStorage.setItem('eps_ninos', on?'1':'0'); }catch(e){} aplicar(); if(on){ const s=$('#intro'); s && s.scrollIntoView({behavior:'smooth'}); } };
+    btn.addEventListener('click', window.toggleNinos);
+  })();
+
+  /* ---------- ESCUCHAR CADA SECCIÓN (voz del navegador, siempre actual) ---------- */
+  (function(){
+    const soporta = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+    let activo = null;
+    const textoDe = sec => {
+      const partes = [];
+      const h = sec.querySelector('h2.tit'); if(h) partes.push(h.textContent.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu,'').trim());
+      const lead = sec.querySelector('p.lead'); if(lead) partes.push(lead.textContent.replace(/^🧒\s*/,''));
+      sec.querySelectorAll('.card h3, .caja-explica, .caja-dato').forEach(el=>{ if(partes.join(' ').length<1400) partes.push(el.textContent.trim()); });
+      return partes.join('. ').replace(/\s+/g,' ').slice(0,1600);
+    };
+    const parar = ()=>{ if(activo){ activo.classList.remove('on'); activo.textContent='🔊 Escuchar'; activo=null; } if(soporta) window.speechSynthesis.cancel(); };
+    const vozES = ()=>{ const vs = window.speechSynthesis.getVoices(); return vs.find(v=>/es[-_](CL|419|MX|US)/i.test(v.lang)) || vs.find(v=>/^es/i.test(v.lang)) || null; };
+    document.querySelectorAll('section[id]').forEach(sec=>{
+      const h = sec.querySelector('h2.tit'); if(!h) return;
+      const b = document.createElement('button');
+      b.className = 'leer-btn'; b.type='button'; b.textContent = '🔊 Escuchar'; b.title = 'Escuchar esta sección en voz alta (se lee lo que ves en pantalla, siempre actualizado)';
+      b.setAttribute('aria-label', 'Escuchar la sección ' + h.textContent.trim());
+      b.addEventListener('click', ()=>{
+        if(activo===b){ parar(); return; }
+        parar();
+        if(!soporta){ alert('Tu navegador no tiene lectura en voz alta. Prueba en Chrome, Edge o Safari.'); return; }
+        const u = new SpeechSynthesisUtterance(textoDe(sec));
+        u.lang = 'es-CL'; u.rate = 0.95; const v = vozES(); if(v) u.voice = v;
+        u.onend = u.onerror = ()=>{ if(activo===b){ b.classList.remove('on'); b.textContent='🔊 Escuchar'; activo=null; } };
+        activo = b; b.classList.add('on'); b.textContent = '⏹️ Detener';
+        window.speechSynthesis.speak(u);
+      });
+      h.appendChild(b);
+    });
+    window.addEventListener('beforeunload', parar);
+    document.addEventListener('visibilitychange', ()=>{ if(document.hidden) parar(); });
+  })();
+
+  /* ---------- RANKING EN SIMPLE ---------- */
+  (function(){
+    const lista = $('#rank-lista'); if(!lista) return;
+    const REG = {
+      '1':'Arica y Parinacota','2':'Tarapacá','3':'Antofagasta','4':'Atacama','5':'Coquimbo','6':'Valparaíso','7':'Valparaíso',
+      '8':'Metropolitana','9':'Metropolitana','10':'Metropolitana','11':'Metropolitana','12':'Metropolitana','13':'Metropolitana','14':'Metropolitana',
+      '15':"O'Higgins",'16':"O'Higgins",'17':'Maule','18':'Maule','19':'Ñuble','20':'Biobío','21':'Biobío','22':'La Araucanía','23':'La Araucanía',
+      '24':'Los Ríos','25':'Los Lagos','26':'Los Lagos','27':'Aysén','28':'Magallanes'
+    };
+    const DEFS = {
+      presentes:{ val:x=>x.asist, fmt:v=>v.toFixed(1)+'%', desc:true, tit:'Quienes casi nunca faltan', exp:'<b>¿Qué significa?</b> Porcentaje de sesiones de Sala a las que asistió cada diputad@. 100% = fue a todas. Es el indicador más simple de si "van a trabajar", aunque el trabajo en comisiones y en el distrito no se cuenta aquí.' },
+      faltan:{ val:x=>x.inas, fmt:v=>Math.round(v)+' faltas', desc:true, tit:'Quienes más han faltado', exp:'<b>Ojo:</b> una falta puede estar <b>justificada</b> (licencia médica, misión oficial, duelo). Antes de sacar conclusiones, revisa la ficha de cada un@: allí se separa lo justificado de lo injustificado.' },
+      gastan:{ val:x=>x.g_tot, fmt:v=>fmt$(v), desc:true, tit:'Quienes más gastan al mes', exp:'<b>Contexto:</b> es la asignación parlamentaria del último mes con datos (no es el sueldo). Los distritos extensos o lejanos de Valparaíso (Aysén, Magallanes, el norte grande) suelen gastar más en traslados: comparar dentro de una misma región es más justo.' },
+      austeros:{ val:x=>x.g_tot, fmt:v=>fmt$(v), desc:false, tit:'Quienes menos gastan al mes', exp:'<b>Contexto:</b> gastar poco puede ser austeridad… o tener menos equipo de asesores. Mira también la columna de asesor@s en la ficha para tener la foto completa.' },
+      asesores:{ val:x=>x.n_ases, fmt:v=>Math.round(v)+' asesor@s', desc:true, tit:'Quienes tienen más equipo', exp:'<b>¿Qué significa?</b> Personas contratadas con la asignación parlamentaria para apoyar el trabajo legislativo y territorial del diputad@.' }
+    };
+    let k = 'presentes', region = '';
+    const selR = $('#rank-region');
+    const regiones = [...new Set(Object.values(REG))];
+    regiones.forEach(r=>{ const o=document.createElement('option'); o.value=r; o.textContent='📍 '+r; selR.appendChild(o); });
+    const miDist = ()=>{ try{ return localStorage.getItem('eps_distrito')||''; }catch(e){ return ''; } };
+    const pintar = ()=>{
+      const d = DEFS[k]; const md = miDist();
+      let pool = DATA.diputados.filter(x=>typeof d.val(x)==='number');
+      let ambito = '🇨🇱 todo Chile';
+      if(region==='__mio__' && md){ pool = pool.filter(x=>String(x.distrito)===String(md)); ambito = '🏠 tu distrito '+md; }
+      else if(region && region!=='__mio__'){ pool = pool.filter(x=>REG[String(x.distrito)]===region); ambito = '📍 región de '+region; }
+      pool.sort((a,b)=> d.desc ? d.val(b)-d.val(a) : d.val(a)-d.val(b));
+      const top = pool.slice(0,10); const max = Math.max(...top.map(d.val), 1);
+      $('#rank-info').textContent = `${d.tit} · ${ambito} · ${pool.length} diputad@s`;
+      lista.innerHTML = top.length ? top.map((x,i)=>`<div class="rank-row ${md && String(x.distrito)===String(md)?'mio':''}">
+          <span class="pos ${i===0?'oro':''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</span>
+          <span class="nom" onclick="explorador.abrir('${x.id}')">${x.nombre}<small>${x.militancia||'IND'} · ${x.grupo} · distrito ${x.distrito||'?'} (${REG[String(x.distrito)]||'—'})</small></span>
+          <span class="val">${d.fmt(d.val(x))}</span>
+          <span class="barra"><i style="width:${Math.max(3, d.val(x)/max*100)}%"></i></span>
+        </div>`).join('') : '<p class="nota-metodo">No hay diputad@s con datos para este filtro.</p>';
+      $('#rank-explica').innerHTML = d.exp + ' Haz clic en cualquier nombre para abrir su ficha completa con fuentes oficiales.';
+      const bm = $('#rank-mio'); if(bm){ bm.hidden = !md; bm.classList.toggle('on', region==='__mio__'); }
+    };
+    $('#rank-toggles').addEventListener('click', e=>{
+      const b = e.target.closest('button'); if(!b) return;
+      $$('#rank-toggles button').forEach(x=>x.classList.toggle('on', x===b)); k = b.dataset.k; pintar();
+    });
+    selR.addEventListener('change', ()=>{ region = selR.value; pintar(); });
+    const bm = $('#rank-mio'); if(bm) bm.addEventListener('click', ()=>{ region = region==='__mio__' ? '' : '__mio__'; selR.value=''; pintar(); });
+    const sd = $('#sel-distrito'); if(sd) sd.addEventListener('change', pintar);
+    pintar();
+  })();
+
+  /* ---------- ACCESIBILIDAD: letra, contraste, lectura fácil ---------- */
+  (function(){
+    const btn = $('#a11y-btn'), panel = $('#a11y-panel'); if(!btn || !panel) return;
+    const K = 'eps_a11y';
+    let st = {letra:'', contraste:false, lectura:false};
+    try{ st = Object.assign(st, JSON.parse(localStorage.getItem(K)||'{}')); }catch(e){}
+    const guardar = ()=>{ try{ localStorage.setItem(K, JSON.stringify(st)); }catch(e){} };
+    const aplicar = ()=>{
+      document.body.classList.remove('letra-g','letra-xg'); if(st.letra) document.body.classList.add(st.letra);
+      document.body.classList.toggle('contraste', !!st.contraste);
+      document.body.classList.toggle('lectura-facil', !!st.lectura);
+      $$('#a11y-letra .opt').forEach(b=>b.classList.toggle('on', (b.dataset.v||'')===(st.letra||'')));
+      const c=$('#a11y-contraste'); c.classList.toggle('on', !!st.contraste); c.textContent = st.contraste?'Activado':'Activar';
+      const l=$('#a11y-lectura'); l.classList.toggle('on', !!st.lectura); l.textContent = st.lectura?'Activado':'Activar';
+      const o=$('#a11y-oscuro'); if(o) o.classList.toggle('on', document.body.classList.contains('dark'));
+      const n=$('#a11y-ninos'); if(n) n.classList.toggle('on', document.body.classList.contains('modo-ninos'));
+    };
+    aplicar();
+    const abrir = v => { panel.classList.toggle('abierto', v); btn.setAttribute('aria-expanded', v?'true':'false'); };
+    btn.addEventListener('click', ()=>abrir(!panel.classList.contains('abierto')));
+    $('#a11y-cerrar').addEventListener('click', ()=>abrir(false));
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') abrir(false); });
+    $('#a11y-letra').addEventListener('click', e=>{ const b=e.target.closest('.opt'); if(!b) return; st.letra=b.dataset.v||''; guardar(); aplicar(); });
+    $('#a11y-contraste').addEventListener('click', ()=>{ st.contraste=!st.contraste; guardar(); aplicar(); });
+    $('#a11y-lectura').addEventListener('click', ()=>{ st.lectura=!st.lectura; guardar(); aplicar(); });
+    $('#a11y-oscuro').addEventListener('click', ()=>{ const d=$('#dark-toggle'); if(d) d.click(); setTimeout(aplicar,0); });
+    $('#a11y-ninos').addEventListener('click', ()=>{ if(window.toggleNinos) window.toggleNinos(); setTimeout(aplicar,0); });
+    $('#a11y-reset').addEventListener('click', ()=>{ st={letra:'',contraste:false,lectura:false}; guardar(); aplicar(); });
+  })();
+
   /* ---------- FRESCURA DEL AUDIO SEMANAL ---------- */
   (function(){
     const card = document.getElementById('card-audio'); if(!card) return;
@@ -1634,6 +1886,7 @@ renderGastoBanc();
     return texto.slice(0,i) + '<mark>' + texto.slice(i, i+q.length) + '</mark>' + texto.slice(i+q.length);
   };
   const secciones = [
+    {t:'🏆 Ranking en simple: más presentes, más faltas, más gastan', id:'ranking', keys:'ranking top 10 mejores peores mas presentes faltan gastan austeros region'},
     {t:'🪑 Asistencia a las sesiones', id:'asistencia', keys:'asistencia faltas inasistencias sesiones quien falta'},
     {t:'💰 Gastos de cada diputado', id:'gastos', keys:'gastos plata lucas asesores presupuesto en que gastan'},
     {t:'🗳️ Votaciones de 2026', id:'votaciones', keys:'votaciones leyes votaron proyectos como votaron'},
@@ -1833,12 +2086,6 @@ renderGastoBanc();
   const io = new IntersectionObserver(es=>es.forEach(e=>{
     if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); }
   }), {threshold:.06});
-  document.querySelectorAll('section').forEach(s=>io.observe(s));
-})();
-</script>
-</body>
-</html>
-});
   document.querySelectorAll('section').forEach(s=>io.observe(s));
 })();
 </script>
