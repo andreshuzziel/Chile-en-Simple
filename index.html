@@ -44,8 +44,8 @@
   html{scroll-padding-top:var(--nav-h, 80px); scroll-behavior:smooth;}
   /* La sección aterriza justo bajo la barra: su propio relleno superior (34px) deja el título a la vista
      y como el corte cae en el borde superior de la sección, no asoma la anterior. */
-  section[id]{scroll-margin-top:calc(var(--nav-h, 80px) - 24px);} /* el relleno de 34px de la sección queda en ~10px visibles sobre el título */
-  @media (max-width:720px){ section[id]{scroll-margin-top:calc(var(--nav-h, 80px) - 2px);} }
+  section[id]{scroll-margin-top:calc(var(--nav-h, 80px) - 29px);} /* de los 34px de relleno de la sección quedan 5px visibles sobre el título */
+  @media (max-width:720px){ section[id]{scroll-margin-top:calc(var(--nav-h, 80px) - 3px);} }
   nav.menu{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
   nav.menu .cont{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:3px 4px; padding-top:5px; padding-bottom:5px; max-width:none; width:100%;}
   nav.menu a{white-space:nowrap; text-decoration:none; color:var(--texto2); font-size:12px; font-weight:600; padding:5px 9px; border-radius:999px; line-height:1.2;}
