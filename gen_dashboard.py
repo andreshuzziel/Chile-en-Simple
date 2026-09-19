@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Genera dashboard_congreso.html a partir de los datos reales descargados de miradaalcongreso.com"""
+"""Genera index.html a partir de los datos reales descargados de miradaalcongreso.com"""
 import json
 from collections import defaultdict, Counter
 from datetime import date
@@ -302,5 +302,5 @@ else:
     html = html.replace('__AUDIO_FECHA__','').replace('__AUDIO_NOTA__','')
     print('aviso: sin audio_resumen.mp3, tarjeta de audio omitida')
 
-open('/home/user/dashboard_congreso.html', 'w', encoding='utf-8').write(html)
-print('OK dashboard_congreso.html', len(html), 'bytes')
+open('/home/user/index.html', 'w', encoding='utf-8').write(html)
+print('OK index.html', len(html), 'bytes')

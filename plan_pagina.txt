@@ -11,7 +11,9 @@ momento desde fuentes oficiales y vive solo en memoria (RAM).
 
 ESTRUCTURA: 2 PÁGINAS CONECTADAS
 --------------------------------
-1) dashboard_congreso.html  → "El Poder en Simple" (tablero principal)
+1) index.html  → "El Poder en Simple" (tablero principal; nombre estándar
+   que navegadores y servidores abren por defecto; con metadatos SEO/Open
+   Graph y favicon. dashboard_congreso.html quedó solo como redirección)
 2) elecciones_chile.html    → "Tablero electoral" (resultados en simple)
    Se llega desde la página 1 por 3 vías: botón grande en la sección de
    fechas clave, botón en el cuadro "Próxima elección" y menú superior.
@@ -131,7 +133,7 @@ PRINCIPIO CENTRAL: "SIN BASE DE DATOS"
      computador y puede borrarlo cuando quiera.
 
 LOS DOS MODOS DE LA PÁGINA 1
-   - MODO ESTÁTICO (dashboard_congreso.html): archivo único y autónomo.
+   - MODO ESTÁTICO (index.html): archivo único y autónomo.
      Trae los datos embebidos dentro del mismo HTML (como una foto fija
      del momento en que se generó). Sirve para abrirlo sin servidor.
    - MODO EN VIVO (dashboard_vivo.html + servidor.py): un pequeño
@@ -229,7 +231,7 @@ ARCHIVOS DEL PROYECTO (carpeta plana, sin subcarpetas)
    template_dashboard.html   plantilla del tablero principal
    template_elecciones.html  plantilla del tablero electoral (con mapa;
                              marcadores __DATA__ y __GEOM__)
-   gen_dashboard.py          genera dashboard_congreso.html (estático)
+   gen_dashboard.py          genera index.html (estático)
    gen_vivo.py               genera dashboard_vivo.html (modo en vivo)
    gen_elecciones.py         descarga y procesa los ZIP del Servel
                              (preserva claves extra como segunda_vuelta)

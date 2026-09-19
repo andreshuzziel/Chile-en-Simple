@@ -793,7 +793,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         p = urllib.parse.urlparse(self.path)
-        if p.path == '/':
+        if p.path in ('/', '/index.html'):
             html = open('/home/user/dashboard_vivo.html', 'rb').read()
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')

@@ -28,7 +28,7 @@ t('explicación ciudadana de cada cargo', [...A.doc.querySelectorAll('.card.carg
 t('KPIs renderizados', A.doc.querySelectorAll('#kpis .kpi').length === 4);
 t('guía para votar (5 pasos)', A.doc.querySelectorAll('#como-votar .paso').length === 5);
 t('instrucciones de administración mencionan proxima_eleccion.json', A.doc.querySelector('#admin').textContent.includes('proxima_eleccion.json'));
-t('enlace de vuelta al tablero y a resultados 2025', !!A.doc.querySelector('a[href="dashboard_congreso.html"]') && !!A.doc.querySelector('a[href="elecciones_chile.html"]'));
+t('enlace de vuelta al tablero y a resultados 2025', !!A.doc.querySelector('a[href="index.html"]') && !!A.doc.querySelector('a[href="elecciones_chile.html"]'));
 t('fuente Servel citada, sin base de datos', /Servel/.test(A.doc.querySelector('footer').textContent) && /bases de datos/.test(A.doc.querySelector('footer').textContent));
 
 console.log('== 2. snapshot con datos (simula noche de elección) ==');

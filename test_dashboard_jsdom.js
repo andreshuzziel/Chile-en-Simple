@@ -1,9 +1,9 @@
-// Tests de funcionamiento del dashboard principal (dashboard_congreso.html)
+// Tests de funcionamiento del dashboard principal (index.html)
 // Estático: la página trae los datos embebidos (DATA), así que basta jsdom.
 const fs = require('fs');
 const { JSDOM, VirtualConsole } = require('jsdom');
 
-const html = fs.readFileSync('/home/user/dashboard_congreso.html', 'utf8');
+const html = fs.readFileSync('/home/user/index.html', 'utf8');
 const errs = [];
 const vc = new VirtualConsole();
 vc.on('jsdomError', e => { if(!/scrollTo\(\) method|IntersectionObserver/.test(e.message)) errs.push('jsdomError: ' + e.message); });
@@ -126,6 +126,8 @@ $('#a11y-reset').click();
 t('restablecer limpia accesibilidad', !doc.body.classList.contains('letra-xg') && !doc.body.classList.contains('contraste'));
 t('nav incluye Próxima elección', $$('nav.menu a').some(a => a.getAttribute('href') === 'proxima_eleccion.html'));
 t('botón Próxima elección en fechas', !!$('#btn-proxima') && $('#btn-proxima').getAttribute('href') === 'proxima_eleccion.html');
+t('SEO: description, robots, og:title y favicon presentes', !!$('meta[name="description"]') && !!$('meta[name="robots"]') && !!$('meta[property="og:title"]') && !!$('link[rel="icon"]'));
+t('archivo antiguo redirige a index.html', fs.readFileSync('/home/user/dashboard_congreso.html','utf8').includes('url=index.html'));
 t('nav incluye Ranking', $$('nav.menu a').some(a => a.getAttribute('href') === '#ranking'));
 t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));

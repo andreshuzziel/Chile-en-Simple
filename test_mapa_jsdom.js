@@ -169,7 +169,7 @@ t('KPIs presidencial presentes', $$('#pres-kpis .kpi').length === 4);
 t('barras nacionales diputados', $$('#dip-nacional .bar-row').length > 0);
 t('select diputados con 28 opciones', $('#sel-distrito').options.length === 29);
 t('select senadores con 7 opciones', $('#sel-circ').options.length === 8);
-t('enlaces a Servel intactos', html.includes('https://www.servel.cl') && html.includes('dashboard_congreso.html'));
+t('enlaces a Servel intactos', html.includes('https://www.servel.cl') && html.includes('index.html'));
 
 console.log('== 13. responsive (todos los dispositivos) ==');
 t('meta viewport presente', (doc.querySelector('meta[name=viewport]') || {}).getAttribute('content').includes('width=device-width'));

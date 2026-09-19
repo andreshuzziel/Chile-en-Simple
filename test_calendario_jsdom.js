@@ -88,7 +88,7 @@ if (flecha && !flecha.disabled) {
 } else t('flecha de mes anterior funciona', true, 'ya en el primer mes');
 
 console.log('== 6. enlaces y contenido ciudadano ==');
-t('enlace de regreso al tablero principal', ($$('.volver')[0] || {}).getAttribute('href') === 'dashboard_congreso.html');
+t('enlace de regreso al tablero principal', ($$('.volver')[0] || {}).getAttribute('href') === 'index.html');
 t('nota sobre el Senado presente', doc.body.textContent.includes('Senado'));
 t('fuente citada (datos abiertos)', doc.body.textContent.includes('datos abiertos'));
 
