@@ -297,6 +297,9 @@ PÁGINA 4: 🔜 PRÓXIMA ELECCIÓN (LISTA PARA RELLENAR CON EL SERVEL)
    3.097.648 votos, escaños UxC 11 / CxC 6 ✔. Sin base de datos.
 
 PÁGINA 3: 🗓️ CALENDARIO DE VOTACIONES DE LEYES (IMPLEMENTADO)
+   Nota: las votaciones anteriores al 11-mar-2026 son de la Cámara 2022–2026;
+   la ficha lo advierte, lista solo a quienes votaron (con exdiputad@s
+   identificados) y no calcula ausencias ficticias sobre el padrón actual.
    calendario_votaciones.html — calendario mensual con las 942
    votaciones de 2026. Cada día con votación de ley (605) muestra un
    chip azul; al hacer clic se abre el detalle ciudadano:

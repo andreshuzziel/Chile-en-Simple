@@ -240,12 +240,12 @@ let diaSel = null;
 function renderMesNav(){
   const idx = meses.indexOf(mesAct);
   $('#mes-nav').innerHTML = `
-    <button class="flecha" id="m-prev" ${idx===0?'disabled':''}>‹</button>
+    <button class="flecha" id="m-prev" aria-label="Mes anterior" ${idx===0?'disabled':''}>‹</button>
     ${meses.map(m=>{
       const [a,mm] = m.split('-');
       return `<button data-m="${m}" class="${m===mesAct?'on':''}">${MES[+mm-1].slice(0,3)} ${a.slice(2)}</button>`;
     }).join('')}
-    <button class="flecha" id="m-next" ${idx===meses.length-1?'disabled':''}>›</button>`;
+    <button class="flecha" id="m-next" aria-label="Mes siguiente" ${idx===meses.length-1?'disabled':''}>›</button>`;
   $('#mes-nav').onclick = e => {
     const b = e.target.closest('button'); if(!b) return;
     if(b.id==='m-prev' && idx>0) mesAct = meses[idx-1];
@@ -341,12 +341,17 @@ function renderDetalle(v){
   const nom = v.nominal;
   const todos = Object.keys(DATA.diputados);
   let S=[], N=[], A=[], X=[];
+  let anteriores = 0, periodoAnterior = false;
   if(nom){
     S = nom.S || []; N = nom.N || []; A = nom.A || [];
     const votaron = new Set([...S, ...N, ...A]);
-    X = todos.filter(id => !votaron.has(id));
+    // Votaciones anteriores al 11-mar-2026 pertenecen a la Cámara 2022-2026:
+    // parte de quienes votaron ya no están en el padrón actual.
+    anteriores = [...votaron].filter(id => !DATA.diputados[id]).length;
+    periodoAnterior = v.fecha < '2026-03-11';
+    X = periodoAnterior ? [] : todos.filter(id => !votaron.has(id));
   }
-  const n155 = todos.length;
+  const n155 = periodoAnterior ? (S.length + N.length + A.length) : todos.length;
   const pct = n => (n/n155*100).toFixed(1);
   let html = `
     <div class="det-head">
@@ -391,7 +396,7 @@ function renderDetalle(v){
     ? `La Cámara la <b>rechazó</b>: los ${v.no} votos en contra superaron a los ${v.si} a favor${v.abst?` (${v.abst} se abstuvieron)`:''}.`
     : `Resultado: <b>${v.resultado}</b> (${v.si} a favor, ${v.no} en contra, ${v.abst} abstención).`;
   html += `
-    <p class="lead" style="font-size:14.5px">${explicacion} De los ${n155} diputad@s en ejercicio, <b>${X.length} no votaron</b> (ausencia, licencia o pareo).</p>
+    <p class="lead" style="font-size:14.5px">${explicacion} ${periodoAnterior ? `⚠️ <b>Esta votación es de la Cámara anterior (período 2022–2026)</b>, antes del cambio del 11 de marzo de 2026: votaron ${n155} diputad@s, de los cuales <b>${anteriores} ya no están en ejercicio</b> (aparecen como "exdiputad@"). Por eso no se calculan ausencias.` : `De los ${n155} diputad@s en ejercicio, <b>${X.length} no votaron</b> (ausencia, licencia o pareo).`}</p>
     <div class="grid cuatro mt">
       <div class="kpi si"><div class="num">${S.length}</div><div class="lbl">👍 a favor (${pct(S.length)}%)</div></div>
       <div class="kpi no"><div class="num">${N.length}</div><div class="lbl">👎 en contra (${pct(N.length)}%)</div></div>
@@ -421,19 +426,21 @@ function renderDetalle(v){
   $('#det-contenido').innerHTML = html;
   const mapa = {}; S.forEach(i=>mapa[i]='S'); N.forEach(i=>mapa[i]='N'); A.forEach(i=>mapa[i]='A'); X.forEach(i=>mapa[i]='X');
   const grupos = {};
-  todos.forEach(id => { const d = DATA.diputados[id]; (grupos[d.g] = grupos[d.g] || []).push(id); });
+  const infoDip = id => DATA.diputados[id] || {n: 'Exdiputad@ ID ' + id + ' (período 2022–2026)', g: 'Exdiputad@s del período anterior'};
+  const universo = periodoAnterior ? [...S, ...N, ...A] : todos;
+  universo.forEach(id => { const d = infoDip(id); (grupos[d.g] = grupos[d.g] || []).push(id); });
   function pintarDips(){
     const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
     let html = '';
     Object.keys(grupos).sort().forEach(g => {
       const ids = grupos[g].filter(id => {
         if(filtro !== 'T' && mapa[id] !== filtro) return false;
-        if(qBusq && !norm(DATA.diputados[id].n).includes(norm(qBusq))) return false;
+        if(qBusq && !norm(infoDip(id).n).includes(norm(qBusq))) return false;
         return true;
       });
       if(!ids.length) return;
       html += `<div class="ley-grupo"><h4><span class="punto" style="background:${colorB(g)}"></span>${g} <span class="nota-metodo">(${ids.length})</span></h4>
-        <div class="dips">${ids.map(id => `<span class="dip ${mapa[id]}" title="${{S:'Votó a favor',N:'Votó en contra',A:'Se abstuvo',X:'No votó'}[mapa[id]]}">${DATA.diputados[id].n}</span>`).join('')}</div></div>`;
+        <div class="dips">${ids.map(id => `<span class="dip ${mapa[id]}" title="${{S:'Votó a favor',N:'Votó en contra',A:'Se abstuvo',X:'No votó'}[mapa[id]]}">${infoDip(id).n}</span>`).join('')}</div></div>`;
     });
     $('#det-dips').innerHTML = html || '<p class="nota-metodo">Ningún diputad@ coincide con el filtro.</p>';
   }

@@ -101,6 +101,15 @@ t('touch-action en controles táctiles', html.includes('touch-action:manipulatio
 t('media queries para móvil chico', html.includes('@media (max-width:600px)') && html.includes('@media (max-width:360px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 
+console.log('== 8. votaciones del período anterior (antes del 11-mar-2026) ==');
+const vAnt = D.votaciones.find(v => v.nominal && v.fecha < '2026-03-11');
+if (vAnt) { window.abrirDetalle(vAnt.id); const nSNA = vAnt.nominal.S.length + vAnt.nominal.N.length + vAnt.nominal.A.length;
+  t('aviso "Cámara anterior" visible', $('#det-contenido').textContent.includes('Cámara anterior'));
+  t('lista solo a quienes votaron (sin ausencias ficticias)', $$('#det-dips .dip').length === nSNA && $('.kpi.au .num').textContent === '0');
+  t('exdiputad@s identificados', $('#det-dips').textContent.includes('Exdiputad')); }
+const vAct = D.votaciones.find(v => v.nominal && v.fecha >= '2026-03-11');
+window.abrirDetalle(vAct.id); t('votación actual: 155 chips con ausencias reales', $$('#det-dips .dip').length === 155);
+
 console.log(`\nRESULTADO: ${pass} pass, ${fail} fail`);
 process.exit(fail ? 1 : 0);
 }, 500);
