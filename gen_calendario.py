@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Genera calendario_votaciones.json: todas las votaciones de leyes de 2026 con el
+"""Genera calendario_votaciones.json: todas las votaciones de 2026 con el
 voto nominal de cada diputad@ (a favor S / en contra N / abstención A; el resto =
-ausente), más el nombre oficial de cada boletín. Sin base de datos: JSON en disco.
+ausente) + la ficha oficial de cada proyecto (qué dice, quién lo presentó, enlace
+al Congreso). Sin base de datos: JSON en disco.
 
 Fuentes (Mirada al Congreso sobre datos abiertos oficiales de la Cámara):
   · api/votacionesxano     → todas las votaciones del año
   · api/votacionesDetalle  → voto de cada diputad@ en una votación (param=id)
-  · api/votaciones         → nombre oficial del proyecto (param=boletín)
+  · api/votaciones         → ficha del proyecto por boletín: nombre, Id interno de
+                             camara.cl, iniciativa (moción/mensaje), autores, fecha
+                             de ingreso y qué se votó en cada trámite (materias,
+                             artículo, trámite constitucional/reglamentario, quórum)
 """
-import json, time, datetime, urllib.request, sys
+import json, time, datetime, urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -47,22 +51,6 @@ def votaciones_anio():
     return filas
 
 
-_cache_nombres = {}
-def nombre_boletin(bol):
-    if bol in _cache_nombres:
-        return _cache_nombres[bol]
-    nom = None
-    try:
-        r = post('https://www.miradaalcongreso.com/api/votaciones', {'param': bol}, timeout=25, tries=2)
-        n = ET.fromstring(r).find('c:Nombre', NS)
-        if n is not None and n.text:
-            nom = (n.text or '').strip()
-    except Exception:
-        pass
-    _cache_nombres[bol] = nom
-    return nom
-
-
 def detalle_nominal(v):
     """Devuelve (id, {'S':[ids],'N':[ids],'A':[ids]}) o (id, None)."""
     try:
@@ -83,6 +71,43 @@ def detalle_nominal(v):
         return v['id'], None
 
 
+def info_proyecto(bol):
+    """Ficha oficial del boletín: nombre, Id camara.cl, iniciativa, autores,
+    ingreso, y qué se votó en cada votación del proyecto (por fecha)."""
+    try:
+        r = post('https://www.miradaalcongreso.com/api/votaciones', {'param': bol}, timeout=25, tries=2)
+        root = ET.fromstring(r)
+
+        def txt(tag):
+            e = root.find('c:' + tag, NS)
+            return (e.text or '').strip() if e is not None else ''
+
+        ti = root.find('c:TipoIniciativa', NS)
+        autores = []
+        for pa in root.findall('c:Autores/c:ParlamentarioAutor', NS):
+            d = pa.find('c:Diputado', NS)
+            if d is not None:
+                partes = [d.find('c:Nombre', NS), d.find('c:ApellidoPaterno', NS), d.find('c:ApellidoMaterno', NS)]
+                nom = ' '.join((x.text or '').strip() for x in partes if x is not None and x.text).strip()
+                if nom:
+                    autores.append(nom)
+        vot = {}
+        for vp in root.findall('c:Votaciones/c:VotacionProyectoLey', NS):
+            def g2(t):
+                e = vp.find('c:' + t, NS)
+                return (e.text or '').strip() if e is not None else ''
+            partes = [g2('Materias'), g2('TramiteConstitucional'), g2('TramiteReglamentario'), g2('Articulo')]
+            que = ' · '.join(p for p in partes if p)[:240]
+            vot[g2('Fecha')[:16]] = {'que': que or None, 'quorum': g2('Quorum') or None}
+        return {'n': txt('Nombre') or None, 'cid': txt('Id') or None,
+                'ini': (ti.text or '').strip() if ti is not None else '',
+                'aut': autores[:15], 'ing': txt('FechaIngreso')[:10] or None,
+                'origen': txt('CamaraOrigen') or None, 'vot': vot}
+    except Exception as e:
+        print(f'    [fallo ficha {bol}: {e}]', flush=True)
+        return None
+
+
 def main():
     print('1/4 votaciones del año…', flush=True)
     filas = votaciones_anio()
@@ -96,39 +121,46 @@ def main():
             vid, votos = fut.result()
             nominales[vid] = votos
             ok += votos is not None
-            if ok % 50 == 0:
+            if ok % 100 == 0:
                 print(f'  …{ok}/{len(leys)}', flush=True)
     print(f'  nominales OK: {ok}/{len(leys)}', flush=True)
-    print('3/4 nombres oficiales de boletines…', flush=True)
+    print('3/4 fichas oficiales de los proyectos…', flush=True)
     bols = sorted({f['desc'].replace('Boletín N° ', '') for f in filas if f['desc'].startswith('Boletín')})
-    nombres = {}
+    proyectos = {}
     with ThreadPoolExecutor(max_workers=6) as ex:
-        futs = {ex.submit(nombre_boletin, b): b for b in bols}
+        futs = {ex.submit(info_proyecto, b): b for b in bols}
         for fut in as_completed(futs):
             b = futs[fut]
             try:
-                n = fut.result()
-                if n:
-                    nombres[b] = n
+                proyectos[b] = fut.result()
             except Exception:
-                pass
-    print(f'  con nombre: {len(nombres)}/{len(bols)}', flush=True)
+                proyectos[b] = None
+    con_ficha = sum(1 for p in proyectos.values() if p and p.get('n'))
+    print(f'  con ficha oficial: {con_ficha}/{len(bols)}', flush=True)
     out = {'fuente': {'organismo': 'Cámara de Diputadas y Diputados (datos abiertos oficiales, vía Mirada al Congreso)',
                       'anio': ANIO,
                       'descargado': datetime.datetime.now().strftime('%Y-%m-%d %H:%M'),
+                      'enlace_base': 'https://www.camara.cl/legislacion/proyectosdeley/tramitacion.aspx?prmID=',
                       'nota': 'S = a favor · N = en contra · A = abstención; l@s demás diputad@s en ejercicio no votaron (ausencia/pareo)'},
-           'votaciones': [], 'nombres': nombres}
+           'votaciones': [], 'proyectos': {}}
+    for b, p in proyectos.items():
+        if p and p.get('n'):
+            out['proyectos'][b] = {k: p[k] for k in ('n', 'cid', 'ini', 'aut', 'ing', 'origen') if p.get(k)}
     for f in filas:
         bol = f['desc'].replace('Boletín N° ', '') if f['desc'].startswith('Boletín') else None
+        p = proyectos.get(bol) or {}
+        vm = (p.get('vot') or {}).get(f['fecha'][:16]) or {}
         out['votaciones'].append({
             'id': f['id'], 'fecha': f['fecha'][:10], 'tipo': f['tipo'],
             'resultado': f['resultado'], 'desc': f['desc'],
-            'boletin': bol, 'titulo': nombres.get(bol),
+            'boletin': bol, 'titulo': p.get('n'),
             'si': f['si'], 'no': f['no'], 'abst': f['abst'],
-            'nominal': nominales.get(f['id'])})
+            'nominal': nominales.get(f['id']),
+            'que': vm.get('que'), 'quorum': vm.get('quorum')})
     json.dump(out, open(SALIDA, 'w'), ensure_ascii=False)
     print(f'OK {SALIDA} · {len(out["votaciones"])} votaciones · '
-          f'{sum(1 for v in out["votaciones"] if v["nominal"])} con voto nominal', flush=True)
+          f'{sum(1 for v in out["votaciones"] if v["nominal"])} con voto nominal · '
+          f'{len(out["proyectos"])} proyectos con ficha y enlace oficial', flush=True)
 
 
 if __name__ == '__main__':

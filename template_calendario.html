@@ -72,6 +72,11 @@
   .voto-item .nums .ab{color:var(--ambar); font-weight:800;}
   /* detalle */
   .det-head{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .caja-ley{background:#eef4ff; border:1px solid #cfdcf9; border-left:5px solid var(--azul2); border-radius:12px; padding:16px 18px; margin-top:16px; font-size:14px; line-height:1.65;}
+  .caja-ley b{color:var(--azul);}
+  .caja-ley .q{margin-top:8px;}
+  .btn-oficial{display:inline-block; margin-top:14px; background:var(--azul); color:#fff; font-weight:800; font-size:14px; text-decoration:none; padding:11px 22px; border-radius:12px; box-shadow:0 4px 14px rgba(29,58,143,.3); transition:.2s;}
+  .btn-oficial:hover{background:var(--azul2); transform:translateY(-1px);}
   .btn-volver{border:1px solid var(--borde); background:#fff; color:var(--azul); font-weight:800; font-size:13.5px; padding:8px 16px; border-radius:10px; cursor:pointer;}
   .btn-volver:hover{background:var(--azul); color:#fff;}
   .filtros{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center;}
@@ -302,6 +307,27 @@ function renderDetalle(v){
       <span class="chip fecha">votación N° ${v.id}</span>
     </div>
     <h2 style="font-size:clamp(19px,3vw,25px); margin-top:12px; line-height:1.35;">${titulo}</h2>`;
+  const p = (DATA.proyectos || {})[v.boletin];
+  if (p && (p.n || v.que || v.quorum)) {
+    const iniciativa = p.ini === 'Mensaje'
+      ? `<b>Mensaje presidencial:</b> lo envió el Presidente de la República${p.aut && p.aut.length ? ' (autores registrados: ' + p.aut.join(', ') + ')' : ''}.`
+      : p.ini === 'Moción'
+      ? `<b>Moción parlamentaria:</b> lo presentaron ${p.aut && p.aut.length ? p.aut.join(', ') : 'diputad@s de la Cámara'}.`
+      : (p.ini ? `<b>Iniciativa:</b> ${p.ini}.` : '');
+    const origen = p.origen ? ` Entró por la <b>${p.origen}</b>.` : '';
+    const ingreso = p.ing ? ` Ingresó al Congreso el <b>${p.ing.split('-').reverse().join('/')}</b>.` : '';
+    const aqui = v.que
+      ? `<div class="q">🎯 <b>¿Qué se está votando exactamente aquí?</b> ${v.que}${v.quorum ? ' · <b>Quórum:</b> ' + v.quorum : ''}.</div>`
+      : (v.quorum ? `<div class="q">🎯 <b>Quórum requerido:</b> ${v.quorum}.</div>` : '');
+    html += `
+    <div class="caja-ley">
+      📜 <b>¿De qué trata este proyecto?</b><br>
+      Su nombre oficial es: <b>“${p.n || titulo}”</b>.
+      ${iniciativa}${origen}${ingreso}
+      ${aqui}
+      ${p.cid ? `<a class="btn-oficial" href="${DATA.fuente.enlace_base}${p.cid}" target="_blank" rel="noopener">🔗 Ver el proyecto completo en el Congreso (camara.cl)</a>` : ''}
+    </div>`;
+  }
   if(!nom){
     html += `<div class="card mt"><p>Esta votación no tiene registro de voto por diputad@ en la fuente oficial (${v.tipo==='Proyecto de Ley'?'el detalle no estaba disponible al generar este tablero':'las resoluciones y acuerdos no siempre se votan de forma nominal'}).</p>
       <div class="nums" style="display:flex; gap:16px; margin-top:10px; font-size:15px;"><span style="color:var(--verde);font-weight:800">👍 ${v.si} a favor</span><span style="color:var(--rojo);font-weight:800">👎 ${v.no} en contra</span><span style="color:var(--ambar);font-weight:800">◻ ${v.abst} abstención</span></div>
