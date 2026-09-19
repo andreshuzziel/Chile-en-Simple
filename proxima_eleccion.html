@@ -32,9 +32,11 @@
   .badges{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
   .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); padding:5px 12px; border-radius:99px; font-size:12px; font-weight:600;}
   .volver{display:inline-block; margin-top:14px; color:#ffd75e; font-weight:700; text-decoration:none; font-size:14px;}
+  html{scroll-padding-top:calc(var(--nav-h, 60px) + 10px); scroll-behavior:smooth;}
+  section[id], [id].card{scroll-margin-top:calc(var(--nav-h, 60px) + 10px);}
   nav.tabs{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
-  nav.tabs .cont{display:flex; gap:6px; flex-wrap:wrap; padding:8px 16px;}
-  nav.tabs button{border:none; background:transparent; padding:8px 14px; border-radius:10px; font-size:13.5px; font-weight:700; color:var(--texto2); cursor:pointer;}
+  nav.tabs .cont{display:flex; gap:4px; flex-wrap:wrap; justify-content:center; padding:5px 12px; max-width:none; width:100%;}
+  nav.tabs button{border:none; background:transparent; padding:6px 11px; border-radius:10px; font-size:12px; font-weight:700; color:var(--texto2); cursor:pointer; line-height:1.2;}
   nav.tabs button.on{background:var(--azul); color:#fff;}
   section{padding:30px 0 8px;}
   h2.tit{font-size:clamp(20px,3vw,26px); position:relative; padding-bottom:10px;}
@@ -198,7 +200,24 @@ const kp = [
 ];
 $('#kpis').innerHTML = kp.map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="lbl">${k.lbl}</div></div>`).join('');
 $('#tabs').innerHTML = (DATA.cargos||[]).map((c,i)=>`<button data-i="${i}" ${i===0?'class="on"':''}>${c.emoji} ${c.nombre}</button>`).join('') + '<button data-i="guia">🧭 Guía para votar</button>';
-$('#tabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on', x===b)); const el = b.dataset.i==='guia' ? $('#como-votar') : document.getElementById('cargo-'+DATA.cargos[b.dataset.i].id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); });
+
+// Barra fija: altura real → variable CSS; y "irA(elemento)" deja el título a 10px bajo la barra
+(function(){
+  const nav = document.querySelector('nav.tabs, nav.menu');
+  function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
+  medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
+  if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
+  window.irA = function(el){
+    if(typeof el === 'string') el = document.getElementById(el);
+    if(!el) return false;
+    const tit = el.matches('h1,h2,h3') ? el : (el.querySelector('h1, h2, h3') || el);
+    const y = tit.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 0) - 10;
+    window.scrollTo({top: Math.max(0, y), behavior: 'smooth'});
+    return true;
+  };
+})();
+
+$('#tabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on', x===b)); const el = b.dataset.i==='guia' ? $('#como-votar') : document.getElementById('cargo-'+DATA.cargos[b.dataset.i].id); el && irA(el); });
 
 const pintarZona = (c, zona) => {
   const d = c.datos.zonas[zona]; if(!d) return '';

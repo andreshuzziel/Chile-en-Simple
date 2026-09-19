@@ -201,6 +201,23 @@
 const DATA = /*__DATA__*/;
 
 if(!Element.prototype.scrollIntoView){ Element.prototype.scrollIntoView = function(){}; }
+
+// Barra fija: altura real → variable CSS; y "irA(elemento)" deja el título a 10px bajo la barra
+(function(){
+  const nav = document.querySelector('nav.tabs, nav.menu');
+  function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
+  medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
+  if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
+  window.irA = function(el){
+    if(typeof el === 'string') el = document.getElementById(el);
+    if(!el) return false;
+    const tit = el.matches('h1,h2,h3') ? el : (el.querySelector('h1, h2, h3') || el);
+    const y = tit.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 0) - 10;
+    window.scrollTo({top: Math.max(0, y), behavior: 'smooth'});
+    return true;
+  };
+})();
+
 const $ = s => document.querySelector(s);
 const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
 const MES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -291,7 +308,7 @@ function renderCal(){
     diaSel = c.dataset.f;
     renderCal(); renderDia();
     $('#sec-dia').style.display = '';
-    $('#sec-dia').scrollIntoView({behavior:'smooth'});
+    irA('sec-dia');
   };
 }
 
@@ -459,7 +476,7 @@ function renderDetalle(v){
 $('#btn-volver').addEventListener('click', ()=>{
   $('#vista-detalle').style.display = 'none';
   $('#vista-calendario').style.display = '';
-  $('#sec-dia').scrollIntoView({behavior:'smooth'});
+  irA('sec-dia');
 });
 
 renderMesNav(); renderCal();

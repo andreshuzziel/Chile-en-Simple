@@ -33,9 +33,11 @@
   .badges{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
   .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); padding:5px 12px; border-radius:99px; font-size:12px; font-weight:600;}
   .volver{display:inline-block; margin-top:14px; color:#ffd75e; font-weight:700; text-decoration:none; font-size:14px;}
+  html{scroll-padding-top:calc(var(--nav-h, 60px) + 10px); scroll-behavior:smooth;}
+  section[id], [id].card{scroll-margin-top:calc(var(--nav-h, 60px) + 10px);}
   nav.tabs{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
-  nav.tabs .cont{display:flex; gap:6px; overflow-x:auto; padding:8px 16px;}
-  nav.tabs button{border:none; background:transparent; padding:8px 14px; border-radius:10px; font-size:13.5px; font-weight:700; color:var(--texto2); cursor:pointer; white-space:nowrap;}
+  nav.tabs .cont{display:flex; gap:4px; flex-wrap:wrap; justify-content:center; padding:5px 12px; max-width:none; width:100%;}
+  nav.tabs button{border:none; background:transparent; padding:6px 11px; border-radius:10px; font-size:12px; font-weight:700; color:var(--texto2); cursor:pointer; line-height:1.2; white-space:nowrap;}
   nav.tabs button.on{background:var(--azul); color:#fff;}
   section{padding:30px 0 8px;}
   h2.tit{font-size:clamp(20px,3vw,26px); position:relative; padding-bottom:10px;}
@@ -97,7 +99,7 @@
   body{ padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right); }
   button, a, select, input, summary{ touch-action:manipulation; }
   #svg-mapa{ width:100%; height:auto; min-width:340px; display:block; }
-  nav.tabs button{ min-height:40px; }
+  nav.tabs button{ min-height:30px; }
   select{ font-size:16px; } /* evita zoom de iOS al enfocar */
   .mapa-tip{ max-width:92vw; }
   @media (max-width:760px){ .mapa-caja{ max-height:66vh; } }
@@ -417,6 +419,23 @@ const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
 const COLORES = ['#2c55c8','#d92632','#1e9e5a','#e8a400','#7c3aed','#0e9aa7','#8a8f98','#c2185b','#5d4037','#455a64'];
 const colorDe = i => COLORES[i % COLORES.length];
 
+
+// Barra fija: altura real → variable CSS; y "irA(elemento)" deja el título a 10px bajo la barra
+(function(){
+  const nav = document.querySelector('nav.tabs, nav.menu');
+  function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
+  medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
+  if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
+  window.irA = function(el){
+    if(typeof el === 'string') el = document.getElementById(el);
+    if(!el) return false;
+    const tit = el.matches('h1,h2,h3') ? el : (el.querySelector('h1, h2, h3') || el);
+    const y = tit.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 0) - 10;
+    window.scrollTo({top: Math.max(0, y), behavior: 'smooth'});
+    return true;
+  };
+})();
+
 /* ---------- pestañas ---------- */
 document.querySelectorAll('nav.tabs button').forEach(b=>{
   b.addEventListener('click', ()=>{
@@ -424,7 +443,7 @@ document.querySelectorAll('nav.tabs button').forEach(b=>{
     ['presidente','mapa','diputados','senadores','regionales'].forEach(t=>{
       $('#tab-'+t).classList.toggle('oculto', t!==b.dataset.tab);
     });
-    window.scrollTo({top:0, behavior:'smooth'});
+    irA('tab-'+b.dataset.tab);   // título de la pestaña justo bajo la barra
   });
 });
 
