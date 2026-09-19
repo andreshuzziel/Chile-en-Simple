@@ -342,7 +342,10 @@
   .voto-item small{color:var(--gris); white-space:nowrap;}
 
   /* botón modo oscuro */
-  #dark-toggle{margin-left:auto; border:1px solid var(--borde); background:var(--tarjeta); border-radius:10px; padding:6px 11px; font-size:15px; cursor:pointer;}
+  #dark-toggle{margin-left:auto; border:1px solid #b9c8ec; background:#eef2fd; border-radius:10px; padding:6px 11px; font-size:17px; line-height:1; cursor:pointer; box-shadow:0 1px 4px rgba(20,30,70,.12); transition:background .2s, border-color .2s;}
+  #dark-toggle:hover{background:#dde6fb; border-color:var(--azul);}
+  body.dark #dark-toggle{background:#25314f; border-color:#4a5c92; box-shadow:none;}
+  body.dark #dark-toggle:hover{background:#2d3c63;}
   nav.menu .cont{display:flex; align-items:center; flex-wrap:wrap;}
 
   /* ---------- modo oscuro ---------- */

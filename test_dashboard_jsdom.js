@@ -85,6 +85,7 @@ t('inputs 16px anti-zoom iOS', /input, select\{ font-size:16px; \}/.test(html));
 t('touch-action en controles táctiles', html.includes('touch-action:manipulation'));
 t('nav compacta en móvil (toda visible, letra achicada)', html.includes('Nav compacta en móvil') && html.includes('nav.menu a{ font-size:10px;') && html.includes('flex-wrap:wrap; justify-content:center'));
 t('modo oscuro legible (KPIs, tablas y chips oscurecidos)', html.includes('texto siempre legible') && html.includes('body.dark .kpi-card .num') && html.includes('body.dark .tabla-wrap{background:#171e30') && html.includes('body.dark .voto-chip.N'));
+t('botón claro/oscuro visible en ambos modos', html.includes('#dark-toggle{margin-left:auto; border:1px solid #b9c8ec; background:#eef2fd') && html.includes('body.dark #dark-toggle{background:#25314f'));
 t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 
