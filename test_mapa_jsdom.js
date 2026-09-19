@@ -179,5 +179,27 @@ t('SVG del mapa fluido', /#svg-mapa\{\s*width:100%/.test(html));
 t('touch-action en controles táctiles', html.includes('touch-action:manipulation'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));
 
+console.log('== 14. explorador presidencial completo ==');
+t('explorador presente con 6 subpestañas', $$('#pres-subtabs button').length === 6);
+t('1ª vuelta: ganadores por distrito suman 28', [...$$('#v1-ganadores div')].reduce((s,d)=>s+ (d.textContent.match(/(\d+) distrito/)? +d.textContent.match(/(\d+) distrito/)[1] : 0), 0) === 28);
+t('1ª vuelta: mejor/peor distrito por candidatura (8)', $$('#v1-extremos div').length === 8);
+t('2ª vuelta: tabla con 16 regiones', $$('#v2-tabla tbody tr').length === 16);
+t('2ª vuelta: nota cuenta regiones ganadas', /ganó en \d+ de 16 regiones/.test($('#v2-nota').textContent));
+t('Chile vs extranjero: tarjetas 2ª vuelta con países', $('#ext-cards').textContent.includes('Extranjero') && $('#ext-cards').textContent.includes('España'));
+t('comparación 1ª→2ª: dos finalistas con ▲ votos', $$('#cmp-cards .flecha b').length === 2 && $('#cmp-cards').textContent.includes('▲'));
+t('comparación regional: 16 filas', $$('#cmp-tabla tbody tr').length === 16);
+const zv = $('#zona-valor'); zv.value = '20'; zv.dispatchEvent(new window.Event('change'));
+t('zona: distrito 20 muestra comunas y 2ª vuelta Biobío', $('#zona-detalle').textContent.includes('Concepción') && $('#zona-detalle').textContent.includes('2ª vuelta en la región de Biobío'));
+const zb = $('#zona-busca'); zb.value = 'temuco'; zb.dispatchEvent(new window.Event('input'));
+t('zona: buscar comuna "temuco" → distrito 23', $('#zona-detalle').textContent.includes('Distrito 23'));
+$('#zona-tipo').value = 'reg'; $('#zona-tipo').dispatchEvent(new window.Event('change'));
+t('zona: modo región lista distritos de la región', $('#zona-detalle').textContent.includes('1ª vuelta en sus distritos'));
+t('tabla completa: 28 distritos × candidaturas', $$('#tabla-full tbody tr').length === 28 && $$('#tabla-full thead th').length >= 12);
+const thPart = [...$$('#tabla-full thead th')].find(th => th.textContent.startsWith('Particip')); thPart.click();
+const v = [...$$('#tabla-full tbody tr')].map(tr => parseFloat(tr.lastElementChild.textContent));
+t('tabla completa: ordena por participación desc', v[0] >= v[1] && v[1] >= v[27]);
+$('#tabla-modo').value = 'reg'; $('#tabla-modo').dispatchEvent(new window.Event('change'));
+t('tabla completa: modo regiones 16 filas', $$('#tabla-full tbody tr').length === 16);
+
 console.log(`\nRESULTADO: ${pass} pass, ${fail} fail`);
 process.exit(fail ? 1 : 0);

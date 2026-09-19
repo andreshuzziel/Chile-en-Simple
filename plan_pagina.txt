@@ -263,6 +263,15 @@ UTILIDADES CIUDADANAS (IMPLEMENTADAS)
       Al no ser un archivo grabado, se renueva solo: siempre lee los datos
       del momento (incluida la versión en vivo). Sin base de datos.
 
+EXPLORADOR PRESIDENCIAL COMPLETO (IMPLEMENTADO, en elecciones_chile.html)
+   6 subpestañas dentro de la pestaña Presidencial: 1ª vuelta (ganadores por
+   distrito, mejor/peor distrito de cada candidatura), 2ª vuelta (tabla de 16
+   regiones), Chile vs. extranjero (ambas vueltas + países), por distrito y
+   región (selector + búsqueda por comuna, con comparación contra el país),
+   de la 1ª a la 2ª vuelta (cuánto creció cada finalista, de dónde salieron
+   los votos, región por región) y tabla completa ordenable (28 distritos ×
+   8 candidaturas o 16 regiones). Todo desde el mismo snapshot del Servel.
+
 PÁGINA 4: 🔜 PRÓXIMA ELECCIÓN (LISTA PARA RELLENAR CON EL SERVEL)
    Botón en el tablero (sección Fechas clave) + enlace en la nav → proxima_eleccion.html
    (ruta /proxima en el servidor en vivo). Muestra cuenta regresiva, cargos en

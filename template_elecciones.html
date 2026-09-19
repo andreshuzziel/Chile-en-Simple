@@ -120,6 +120,31 @@
   @media (max-width:760px){ .mapa-flex{grid-template-columns:1fr;} }
   footer{margin-top:40px; padding:26px 0 40px; border-top:1px solid var(--borde); color:var(--gris); font-size:12.5px; line-height:1.7;}
   @media (max-width:720px){ .bar-row{grid-template-columns:1fr; gap:4px;} .bar-val{text-align:left;} }
+
+  /* ---------- explorador presidencial completo ---------- */
+  .subtabs{display:flex; flex-wrap:wrap; gap:6px; margin-top:16px;}
+  .subtabs button{border:1px solid var(--borde); background:#fff; color:var(--texto2); font-weight:700; font-size:13px; padding:7px 13px; border-radius:999px; cursor:pointer;}
+  .subtabs button.on{background:var(--azul); border-color:var(--azul); color:#fff;}
+  .sub{display:none;} .sub.on{display:block;}
+  .tabla-wrap{overflow-x:auto; margin-top:12px; border:1px solid var(--borde); border-radius:12px;}
+  table.tp{width:100%; border-collapse:collapse; font-size:13.5px; min-width:640px;}
+  table.tp th{background:#f3f5fb; text-align:left; padding:9px 10px; font-size:12px; text-transform:uppercase; letter-spacing:.4px; color:var(--texto2); cursor:pointer; white-space:nowrap; position:sticky; top:0;}
+  table.tp th:hover{color:var(--azul);}
+  table.tp td{padding:8px 10px; border-top:1px solid var(--borde); white-space:nowrap;}
+  table.tp tr:hover td{background:#f8faff;}
+  table.tp td.num{text-align:right; font-variant-numeric:tabular-nums;}
+  table.tp td.gan{font-weight:800;}
+  .dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle;}
+  .cmp-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px;}
+  .flecha{font-size:13px; color:var(--texto2);} .flecha b{color:var(--verde);} .flecha b.neg{color:var(--rojo);}
+  .zona-sel{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  .mini-kpis{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .mini-kpis span{background:#f3f5fb; border:1px solid var(--borde); border-radius:999px; padding:4px 11px; font-size:12.5px; font-weight:600;}
+  .ranking-dist{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px; margin-top:10px;}
+  .ranking-dist div{border:1px solid var(--borde); border-radius:10px; padding:8px 10px; font-size:13px;}
+  .ranking-dist b{display:block; font-size:12px; color:var(--texto2); font-weight:600;}
+  .busca-tp{padding:8px 12px; border-radius:10px; border:1px solid var(--borde); font-size:14px; min-width:220px;}
+  @media (max-width:720px){ .subtabs button{font-size:11.5px; padding:6px 10px;} }
 </style>
 </head>
 <body>
@@ -165,6 +190,66 @@
       <div class="mt" id="sv-barras"></div>
       <div class="grid mt" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));" id="sv-desglose"></div>
       <p class="nota-metodo" id="sv-nota"></p>
+    </div>
+
+    <!-- ══ EXPLORADOR PRESIDENCIAL COMPLETO ══ -->
+    <div class="card mt" id="pres-explorador" style="border-top:4px solid var(--azul2);">
+      <h3 style="font-size:17px;">🔎 Explorador completo de la elección presidencial</h3>
+      <p style="font-size:14px; color:var(--texto2); margin-top:6px;">Revisa <b>todos</b> los resultados: primera y segunda vuelta, Chile y el extranjero, cada distrito y cada región, quién subió y quién bajó entre vueltas, y una tabla ordenable para comparar lo que quieras.</p>
+      <div class="subtabs" id="pres-subtabs">
+        <button data-s="v1" class="on">1️⃣ Primera vuelta</button>
+        <button data-s="v2">2️⃣ Segunda vuelta</button>
+        <button data-s="ext">🌎 Chile vs. extranjero</button>
+        <button data-s="zona">📍 Por distrito y región</button>
+        <button data-s="cmp">🔁 De la 1ª a la 2ª vuelta</button>
+        <button data-s="tabla">📋 Tabla completa</button>
+      </div>
+
+      <div class="sub on" id="sub-v1">
+        <div class="mini-kpis" id="v1-mini"></div>
+        <h4 style="margin-top:14px; font-size:15px;">🏆 ¿Dónde ganó cada candidatura? (1ª mayoría por distrito)</h4>
+        <div class="ranking-dist" id="v1-ganadores"></div>
+        <h4 style="margin-top:16px; font-size:15px;">📈 Mejor y peor distrito de cada candidatura</h4>
+        <div class="ranking-dist" id="v1-extremos"></div>
+      </div>
+
+      <div class="sub" id="sub-v2">
+        <div class="mini-kpis" id="v2-mini"></div>
+        <h4 style="margin-top:14px; font-size:15px;">🗺️ Resultado región por región</h4>
+        <div class="tabla-wrap"><table class="tp" id="v2-tabla"></table></div>
+        <p class="nota-metodo" id="v2-nota"></p>
+      </div>
+
+      <div class="sub" id="sub-ext">
+        <div class="cmp-grid mt" id="ext-cards"></div>
+        <p class="nota-metodo">El voto en el extranjero solo aplica a la elección presidencial (y primarias y plebiscitos). Los chilenos fuera del país no eligen diputados ni senadores.</p>
+      </div>
+
+      <div class="sub" id="sub-zona">
+        <div class="zona-sel mt">
+          <label style="font-weight:700;">Elige:</label>
+          <select id="zona-tipo"><option value="dist">📍 Distrito (1ª vuelta)</option><option value="reg">🗺️ Región (2ª vuelta)</option></select>
+          <select id="zona-valor"></select>
+          <input class="busca-tp" id="zona-busca" placeholder="o escribe tu comuna (ej: Concepción)">
+        </div>
+        <div id="zona-detalle" class="mt"></div>
+      </div>
+
+      <div class="sub" id="sub-cmp">
+        <p style="font-size:14px; color:var(--texto2); margin-top:10px;">En la segunda vuelta solo quedaron dos nombres, así que los votos de las demás candidaturas tuvieron que "moverse". Así cambió cada finalista:</p>
+        <div class="cmp-grid mt" id="cmp-cards"></div>
+        <h4 style="margin-top:16px; font-size:15px;">📊 Región por región: cuánto creció cada finalista respecto de su 1ª vuelta</h4>
+        <div class="tabla-wrap"><table class="tp" id="cmp-tabla"></table></div>
+        <p class="nota-metodo">La 1ª vuelta se publica por distrito y la 2ª por región; aquí sumamos los distritos de cada región para poder compararlas. Las cifras son preliminares oficiales del Servel.</p>
+      </div>
+
+      <div class="sub" id="sub-tabla">
+        <div class="zona-sel mt">
+          <select id="tabla-modo"><option value="dist">📍 28 distritos · 1ª vuelta (% por candidatura)</option><option value="reg">🗺️ 16 regiones · 2ª vuelta</option></select>
+          <span class="nota-metodo" style="margin:0">Haz clic en un encabezado para ordenar.</span>
+        </div>
+        <div class="tabla-wrap"><table class="tp" id="tabla-full"></table></div>
+      </div>
     </div>
   </section>
 
@@ -802,6 +887,112 @@ pintarMapa();
     (sv.fuente && sv.fuente.descargado ? sv.fuente.descargado : '') + ' · generado por <b>gen_segunda_vuelta.py</b> con el ZIP oficial <a href="' + (sv.fuente ? sv.fuente.archivo : '#') + '" target="_blank" rel="noopener" style="color:var(--azul2)">Datos_SegundaVotacion.zip</a>. ' +
     'Regla: en 2ª vuelta gana la primera mayoría (mayoría simple); no se exige 50%. ' +
     'En 1ª vuelta Kast había sacado 23,95% y pasado segundo; en el balotaje multiplicó su apoyo y Jara no logró traspasar el techo de la oficialista.';
+})();
+
+/* ---------- EXPLORADOR PRESIDENCIAL COMPLETO ---------- */
+(function(){
+  const P = DATA.presidencial, SV = DATA.segunda_vuelta; if(!P || !$('#pres-explorador')) return;
+  const PD = P.por_distrito || {}; const SVR = SV && SV.chile ? SV.chile.por_region : {};
+  const corto = n => { const m = {'Jeannette Jara Roman':'Jara','Jose Antonio Kast Rist':'Kast','Franco Parisi Fernandez':'Parisi','Johannes Kaiser Barents-Von Hohenhagen':'Kaiser','Evelyn Matthei Fornet':'Matthei','Harold Mayne-Nicholls Secul':'Mayne-Nicholls','Marco Antonio Enriquez-Ominami Gumucio':'Enríquez-Ominami','Eduardo Antonio Artes Brichetti':'Artés'}; return m[n] || n.split(' ')[0]; };
+  const col = n => (typeof PRESI_COLOR!=='undefined' && PRESI_COLOR[n]) || '#8a8f98';
+  const dot = n => `<span class="dot" style="background:${col(n)}"></span>`;
+  const regDe = k => (typeof DI_INFO!=='undefined' && DI_INFO[k]) ? DI_INFO[k][0] : '—';
+  const comunasDe = k => (typeof DI_INFO!=='undefined' && DI_INFO[k]) ? DI_INFO[k][1] : '';
+  const pct = (a,b) => b ? (a/b*100) : 0;
+  const CANDS = P.candidatos.map(c=>c.nombre);
+
+  // subtabs
+  $('#pres-subtabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return;
+    document.querySelectorAll('#pres-subtabs button').forEach(x=>x.classList.toggle('on', x===b));
+    document.querySelectorAll('#pres-explorador .sub').forEach(s=>s.classList.toggle('on', s.id==='sub-'+b.dataset.s)); });
+
+  // --- 1ª vuelta
+  const emitidos = P.total_validos + P.nulos + P.blancos;
+  $('#v1-mini').innerHTML = [`📅 16 de noviembre de 2025`, `🏫 ${fmt(P.mesas)} mesas`, `👥 ${fmt(P.electores)} habilitados`, `🗳️ ${fmt(emitidos)} emitidos (${pct(emitidos,P.electores).toFixed(1)}%)`, `✅ ${fmt(P.total_validos)} válidos`, `⚪ ${fmt(P.blancos)} blancos`, `❌ ${fmt(P.nulos)} nulos`, `🧑‍🤝‍🧑 ${P.candidatos.length} candidaturas`].map(x=>`<span>${x}</span>`).join('');
+  const gan = {}; Object.entries(PD).forEach(([k,d])=>{ (gan[d.ganador] = gan[d.ganador]||[]).push(Number(k)); });
+  $('#v1-ganadores').innerHTML = Object.entries(gan).sort((a,b)=>b[1].length-a[1].length).map(([n,ds])=>`<div>${dot(n)}<strong>${corto(n)}</strong> · ${ds.length} distrito${ds.length!==1?'s':''}<b>D${ds.sort((a,b)=>a-b).join(', D')}</b></div>`).join('') || '<div>Sin desglose por distrito.</div>';
+  $('#v1-extremos').innerHTML = CANDS.map(n=>{
+    const xs = Object.entries(PD).map(([k,d])=>({k, p:(d.candidatos.find(c=>c.nombre===n)||{pct:0}).pct})).sort((a,b)=>b.p-a.p);
+    if(!xs.length) return ''; const mx = xs[0], mn = xs[xs.length-1];
+    return `<div>${dot(n)}<strong>${corto(n)}</strong> · país ${P.candidatos.find(c=>c.nombre===n).pct.toFixed(2)}%<b>▲ mejor: D${mx.k} (${regDe(mx.k)}) ${mx.p.toFixed(1)}% · ▼ peor: D${mn.k} (${regDe(mn.k)}) ${mn.p.toFixed(1)}%</b></div>`; }).join('');
+
+  // --- 2ª vuelta
+  if(SV){
+    const em2 = SV.total_validos + SV.nulos + SV.blancos;
+    $('#v2-mini').innerHTML = [`📅 14 de diciembre de 2025`, `🏫 ${fmt(SV.mesas)} mesas`, `👥 ${fmt(SV.electores)} habilitados`, `🗳️ ${fmt(em2)} emitidos (${pct(em2,SV.electores).toFixed(1)}%)`, `✅ ${fmt(SV.total_validos)} válidos`, `⚪ ${fmt(SV.blancos)} blancos`, `❌ ${fmt(SV.nulos)} nulos`].map(x=>`<span>${x}</span>`).join('');
+    const K = SV.candidatos[0].nombre, J = SV.candidatos[1].nombre;
+    const filas = Object.entries(SVR).map(([r,d])=>({r, k:(d.candidatos.find(c=>c.nombre===K)||{}), j:(d.candidatos.find(c=>c.nombre===J)||{}), d}));
+    const ordenReg = (typeof REG_ROWS!=='undefined') ? null : null;
+    filas.sort((a,b)=> (b.k.pct||0)-(a.k.pct||0));
+    $('#v2-tabla').innerHTML = `<thead><tr><th>Región</th><th>Ganó</th><th>${corto(K)} %</th><th>${corto(K)} votos</th><th>${corto(J)} %</th><th>${corto(J)} votos</th><th>Diferencia</th><th>Válidos</th></tr></thead><tbody>` +
+      filas.map(f=>`<tr><td><b>${f.r}</b></td><td class="gan">${dot(f.d.ganador)}${corto(f.d.ganador)}</td><td class="num">${(f.k.pct||0).toFixed(2)}%</td><td class="num">${fmt(f.k.votos||0)}</td><td class="num">${(f.j.pct||0).toFixed(2)}%</td><td class="num">${fmt(f.j.votos||0)}</td><td class="num">${Math.abs((f.k.pct||0)-(f.j.pct||0)).toFixed(1)} pts</td><td class="num">${fmt(f.d.total_validos)}</td></tr>`).join('') + '</tbody>';
+    const nk = filas.filter(f=>f.d.ganador===K).length;
+    $('#v2-nota').textContent = `${corto(K)} ganó en ${nk} de ${filas.length} regiones; ${corto(J)} en ${filas.length-nk}. La región más pareja fue ${filas.slice().sort((a,b)=>Math.abs(a.k.pct-a.j.pct)-Math.abs(b.k.pct-b.j.pct))[0].r}. Ordenado de mayor a menor apoyo a ${corto(K)}.`;
+    // --- Chile vs extranjero
+    const card = (tit, d, cands) => { const tv = d.total_validos; const mx = Math.max(...cands.map(c=>c.votos),1);
+      return `<div class="card"><h4 style="font-size:15px;">${tit}</h4><div class="mini-kpis"><span>🏫 ${fmt(d.mesas)} mesas</span><span>✅ ${fmt(tv)} válidos</span>${d.electores?`<span>👥 ${fmt(d.electores)} habilitados</span>`:''}</div>` +
+        cands.map(c=>`<div class="bar-row" style="grid-template-columns:120px 1fr 110px; padding:6px 0;"><div class="bar-nom" style="font-size:13px">${dot(c.nombre)}${corto(c.nombre)}</div><div class="pista" style="height:16px"><i style="width:${Math.max(1.5,c.votos/mx*100)}%; background:${col(c.nombre)}"></i></div><div class="bar-val" style="font-size:13px">${pct(c.votos,tv).toFixed(2)}%<small>${fmt(c.votos)}</small></div></div>`).join('') + '</div>'; };
+    const v1cl = P.desglose && P.desglose.chile ? Object.entries(P.desglose.chile).map(([n,v])=>({nombre:n,votos:v})).sort((a,b)=>b.votos-a.votos) : null;
+    const v1ex = P.desglose && P.desglose.extranjero ? Object.entries(P.desglose.extranjero).map(([n,v])=>({nombre:n,votos:v})).sort((a,b)=>b.votos-a.votos) : null;
+    const sum = xs => xs.reduce((s,c)=>s+c.votos,0);
+    let ext = '';
+    if(v1cl) ext += card('1️⃣ Primera vuelta · 🇨🇱 Chile', {mesas:P.mesas, total_validos:sum(v1cl)}, v1cl);
+    if(v1ex && sum(v1ex)>0) ext += card('1️⃣ Primera vuelta · 🌎 Extranjero', {mesas:0, total_validos:sum(v1ex)}, v1ex);
+    else if(v1ex) ext += `<div class="card"><h4 style="font-size:15px;">1️⃣ Primera vuelta · 🌎 Extranjero</h4><p class="nota-metodo">El ZIP preliminar de la 1ª vuelta no trae desglosado el voto en el extranjero por candidatura (aparece en 0). El total nacional sí lo incluye.</p></div>`;
+    if(SV.chile) ext += card('2️⃣ Segunda vuelta · 🇨🇱 Chile', SV.chile, SV.chile.candidatos);
+    if(SV.extranjero){ ext += card('2️⃣ Segunda vuelta · 🌎 Extranjero', SV.extranjero, SV.extranjero.candidatos);
+      if(SV.extranjero.top_paises) ext += `<div class="card"><h4 style="font-size:15px;">🌍 Países con más votos (2ª vuelta)</h4><div class="tabla-wrap" style="margin-top:8px"><table class="tp" style="min-width:0"><thead><tr><th>País</th><th>Ganó</th><th>Válidos</th></tr></thead><tbody>${Object.entries(SV.extranjero.top_paises).slice(0,12).map(([p,d])=>`<tr><td><b>${p}</b></td><td class="gan">${(d.ganador||(d.candidatos&&d.candidatos[0]&&d.candidatos[0].nombre))?dot(d.ganador||d.candidatos[0].nombre)+corto(d.ganador||d.candidatos[0].nombre)+(d.candidatos&&d.candidatos[0]?' '+d.candidatos[0].pct.toFixed(1)+'%':''):'—'}</td><td class="num">${fmt(d.total_validos||d.votos||0)}</td></tr>`).join('')}</tbody></table></div></div>`; }
+    $('#ext-cards').innerHTML = ext;
+    // --- comparación 1ª → 2ª
+    const v1 = n => P.candidatos.find(c=>c.nombre===n) || {votos:0,pct:0};
+    $('#cmp-cards').innerHTML = SV.candidatos.map(c=>{ const a=v1(c.nombre); const dv=c.votos-a.votos, dp=c.pct-a.pct;
+      return `<div class="card" style="border-top:4px solid ${col(c.nombre)}"><h4 style="font-size:16px;">${dot(c.nombre)}${corto(c.nombre)}</h4><div class="mini-kpis"><span>1ª: ${a.pct.toFixed(2)}% · ${fmt(a.votos)}</span><span>2ª: ${c.pct.toFixed(2)}% · ${fmt(c.votos)}</span></div><p class="flecha mt"><b class="${dv<0?'neg':''}">${dv>=0?'▲':'▼'} ${fmt(Math.abs(dv))} votos</b> (${dp>=0?'+':''}${dp.toFixed(1)} puntos). ${dv>0?`Es decir, sumó ${fmt(dv)} personas más que en la primera vuelta`: 'Perdió apoyo respecto de la primera vuelta'}.</p></div>`; }).join('') +
+      `<div class="card"><h4 style="font-size:16px;">🧮 ¿De dónde salieron los votos?</h4><p style="font-size:13.5px; color:var(--texto2); margin-top:6px;">En 1ª vuelta, las candidaturas que no pasaron sumaron <b>${fmt(P.candidatos.slice(2).reduce((s,c)=>s+c.votos,0))}</b> votos (${P.candidatos.slice(2).reduce((s,c)=>s+c.pct,0).toFixed(1)}%). Además, en 2ª vuelta votaron <b>${fmt((SV.total_validos+SV.nulos+SV.blancos)-emitidos)}</b> personas ${((SV.total_validos+SV.nulos+SV.blancos)-emitidos)>=0?'más':'menos'} y los nulos+blancos ${SV.nulos+SV.blancos>P.nulos+P.blancos?'subieron':'bajaron'} a <b>${fmt(SV.nulos+SV.blancos)}</b>. Eso explica que ambos finalistas puedan crecer en votos.</p></div>`;
+    // por región: sumar distritos
+    const regV1 = {}; Object.entries(PD).forEach(([k,d])=>{ const r=regDe(k); const o = regV1[r] = regV1[r]||{tv:0}; o.tv+=d.total_validos; d.candidatos.forEach(c=>{ o[c.nombre]=(o[c.nombre]||0)+c.votos; }); });
+    const rows = Object.entries(SVR).filter(([r])=>regV1[r]).map(([r,d])=>{ const a=regV1[r]; const k2=d.candidatos.find(c=>c.nombre===K)||{}, j2=d.candidatos.find(c=>c.nombre===J)||{};
+      return {r, k1:pct(a[K]||0,a.tv), k2:k2.pct||0, j1:pct(a[J]||0,a.tv), j2:j2.pct||0, gan:d.ganador}; }).sort((x,y)=>(y.k2-y.k1)-(x.k2-x.k1));
+    $('#cmp-tabla').innerHTML = `<thead><tr><th>Región</th><th>${corto(K)} 1ª</th><th>${corto(K)} 2ª</th><th>Cambio</th><th>${corto(J)} 1ª</th><th>${corto(J)} 2ª</th><th>Cambio</th><th>Ganó 2ª</th></tr></thead><tbody>` +
+      rows.map(x=>`<tr><td><b>${x.r}</b></td><td class="num">${x.k1.toFixed(1)}%</td><td class="num">${x.k2.toFixed(1)}%</td><td class="num" style="color:var(--verde);font-weight:700">+${(x.k2-x.k1).toFixed(1)}</td><td class="num">${x.j1.toFixed(1)}%</td><td class="num">${x.j2.toFixed(1)}%</td><td class="num" style="color:var(--verde);font-weight:700">+${(x.j2-x.j1).toFixed(1)}</td><td class="gan">${dot(x.gan)}${corto(x.gan)}</td></tr>`).join('') + '</tbody>';
+  } else { $('#sub-v2').innerHTML = $('#sub-cmp').innerHTML = $('#sub-ext').innerHTML = '<p class="nota-metodo">Aún no hay datos de segunda vuelta.</p>'; }
+
+  // --- por distrito / región
+  const zt = $('#zona-tipo'), zv = $('#zona-valor'), zd = $('#zona-detalle');
+  const llenar = ()=>{ zv.innerHTML = zt.value==='dist' ? Object.keys(PD).sort((a,b)=>a-b).map(k=>`<option value="${k}">Distrito ${k} · ${regDe(k)}</option>`).join('') : Object.keys(SVR).sort().map(r=>`<option>${r}</option>`).join(''); pintarZona(); };
+  const bloque = (d, cands, extra) => { const mx = Math.max(...cands.map(c=>c.votos),1); const em = d.total_validos+d.nulos+d.blancos;
+    return `<div class="mini-kpis">${d.electores?`<span>👥 ${fmt(d.electores)} habilitados</span><span>🗳️ participación ${pct(em,d.electores).toFixed(1)}%</span>`:''}<span>🏫 ${fmt(d.mesas)} mesas</span><span>✅ ${fmt(d.total_validos)} válidos</span><span>⚪ ${fmt(d.blancos)} blancos</span><span>❌ ${fmt(d.nulos)} nulos</span></div>${extra||''}` +
+      cands.map((c,i)=>`<div class="bar-row"><div class="bar-nom">${dot(c.nombre)}${c.nombre}${i===0?'<span class="chip-gana">1ª MAYORÍA</span>':''}</div><div class="pista"><i style="width:${Math.max(1.5,c.votos/mx*100)}%; background:${col(c.nombre)}"></i></div><div class="bar-val">${c.pct.toFixed(2)}%<small>${fmt(c.votos)} votos</small></div></div>`).join(''); };
+  const pintarZona = ()=>{
+    if(zt.value==='dist'){ const k = zv.value, d = PD[k]; if(!d) return;
+      const nac = P.candidatos; const dif = d.candidatos.map(c=>{ const n = nac.find(x=>x.nombre===c.nombre); return {n:corto(c.nombre), d:c.pct-(n?n.pct:0)}; }).sort((a,b)=>b.d-a.d);
+      zd.innerHTML = `<h4 style="font-size:16px;">📍 Distrito ${k} · ${regDe(k)}</h4><p class="nota-metodo" style="margin-top:2px">${comunasDe(k)}</p>` + bloque(d, d.candidatos, `<p class="flecha mt">Comparado con el país: <b>${dif[0].n} +${dif[0].d.toFixed(1)} pts</b> (su mejor diferencia aquí) · <b class="neg">${dif[dif.length-1].n} ${dif[dif.length-1].d.toFixed(1)} pts</b>.</p>`) +
+        (SV && SVR[regDe(k)] ? `<h4 style="font-size:15px; margin-top:16px;">🔁 2ª vuelta en la región de ${regDe(k)}</h4>` + bloque(SVR[regDe(k)], SVR[regDe(k)].candidatos) : '');
+    } else { const r = zv.value, d = SVR[r]; if(!d) return;
+      const dists = Object.keys(PD).filter(k=>regDe(k)===r);
+      zd.innerHTML = `<h4 style="font-size:16px;">🗺️ Región de ${r} · 2ª vuelta</h4>` + bloque(d, d.candidatos) +
+        (dists.length ? `<h4 style="font-size:15px; margin-top:16px;">1️⃣ 1ª vuelta en sus distritos</h4><div class="ranking-dist">${dists.map(k=>`<div><strong>D${k}</strong> · ganó ${dot(PD[k].ganador)}${corto(PD[k].ganador)} ${PD[k].candidatos[0].pct.toFixed(1)}%<b>${comunasDe(k)}</b></div>`).join('')}</div>` : ''); }
+  };
+  zt.addEventListener('change', llenar); zv.addEventListener('change', pintarZona);
+  $('#zona-busca').addEventListener('input', e=>{ const q = e.target.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); if(q.length<3) return;
+    const k = Object.keys(PD).find(k=>comunasDe(k).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q) || regDe(k).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(q));
+    if(k){ zt.value='dist'; llenar(); zv.value=k; pintarZona(); } });
+  llenar();
+
+  // --- tabla completa ordenable
+  const tm = $('#tabla-modo'), tf = $('#tabla-full'); let sortKey = null, sortDesc = true;
+  const pintarTabla = ()=>{
+    let cols, rows;
+    if(tm.value==='dist'){ cols = [{k:'z',t:'Distrito'},{k:'reg',t:'Región'},{k:'gan',t:'1ª mayoría'}].concat(CANDS.map(n=>({k:n,t:corto(n),num:true}))).concat([{k:'tv',t:'Válidos',num:true},{k:'part',t:'Particip.',num:true}]);
+      rows = Object.entries(PD).map(([k,d])=>{ const o={z:'D'+k, _n:Number(k), reg:regDe(k), gan:d.ganador, tv:d.total_validos, part:pct(d.total_validos+d.nulos+d.blancos,d.electores)}; CANDS.forEach(n=>{ o[n]=(d.candidatos.find(c=>c.nombre===n)||{pct:0}).pct; }); return o; });
+    } else { const K = SV.candidatos[0].nombre, J = SV.candidatos[1].nombre; cols = [{k:'z',t:'Región'},{k:'gan',t:'Ganó'},{k:K,t:corto(K)+' %',num:true},{k:'kv',t:corto(K)+' votos',num:true},{k:J,t:corto(J)+' %',num:true},{k:'jv',t:corto(J)+' votos',num:true},{k:'tv',t:'Válidos',num:true},{k:'part',t:'Particip.',num:true}];
+      rows = Object.entries(SVR).map(([r,d])=>{ const kk=d.candidatos.find(c=>c.nombre===K)||{}, jj=d.candidatos.find(c=>c.nombre===J)||{}; return {z:r, _n:0, gan:d.ganador, [K]:kk.pct||0, kv:kk.votos||0, [J]:jj.pct||0, jv:jj.votos||0, tv:d.total_validos, part:pct(d.total_validos+d.nulos+d.blancos,d.electores)}; }); }
+    if(sortKey){ rows.sort((a,b)=>{ const x=a[sortKey], y=b[sortKey]; const c = typeof x==='number' ? x-y : String(x).localeCompare(String(y)); return sortDesc ? -c : c; }); } else rows.sort((a,b)=>a._n-b._n || String(a.z).localeCompare(b.z));
+    tf.innerHTML = `<thead><tr>${cols.map(c=>`<th data-k="${c.k}">${c.t}${sortKey===c.k?(sortDesc?' ▼':' ▲'):''}</th>`).join('')}</tr></thead><tbody>` +
+      rows.map(r=>`<tr>${cols.map(c=>{ const v=r[c.k]; if(c.k==='gan') return `<td class="gan">${dot(v)}${corto(v)}</td>`; if(c.k==='tv'||c.k==='kv'||c.k==='jv') return `<td class="num">${fmt(v)}</td>`; if(c.num) return `<td class="num" ${CANDS.includes(c.k)&&r.gan===c.k?'style="font-weight:800;color:var(--verde)"':''}>${v.toFixed(1)}%</td>`; return `<td>${v}</td>`; }).join('')}</tr>`).join('') + '</tbody>';
+  };
+  tf.addEventListener('click', e=>{ const th=e.target.closest('th'); if(!th) return; if(sortKey===th.dataset.k) sortDesc=!sortDesc; else { sortKey=th.dataset.k; sortDesc=true; } pintarTabla(); });
+  tm.addEventListener('change', ()=>{ sortKey=null; pintarTabla(); });
+  pintarTabla();
 })();
 
 </script>
