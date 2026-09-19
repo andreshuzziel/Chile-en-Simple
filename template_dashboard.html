@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Poder en Simple · Congreso y Gobierno de Chile</title>
+<style>
+  :root{
+    --azul:#1d3a8f; --azul2:#2c55c8; --rojo:#d92632; --verde:#1e9e5a; --ambar:#e8a400;
+    --gris:#6b7280; --fondo:#f3f5fb; --tarjeta:#ffffff; --borde:#e4e8f2;
+    --texto:#1c2333; --texto2:#4a5468;
+    --sombra:0 2px 10px rgba(20,30,70,.07);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.5;}
+  .cont{max-width:1080px; margin:0 auto; padding:0 16px;}
+
+  /* ---------- hero ---------- */
+  header.hero{background:linear-gradient(135deg,#14265e 0%,#1d3a8f 55%,#2c55c8 100%); color:#fff; padding:36px 0 30px;}
+  .hero .franja{height:6px; background:linear-gradient(90deg,var(--rojo) 33%,#fff 33% 66%,var(--azul2) 66%); border-radius:3px; margin-bottom:22px; opacity:.85;}
+  .hero h1{font-size:clamp(26px,4.5vw,40px); letter-spacing:-.5px;}
+  .hero h1 .simple{color:#ffd75e;}
+  .hero p.sub{margin-top:10px; font-size:clamp(14px,2vw,17px); color:#dbe4ff; max-width:760px;}
+  .hero .badges{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
+  .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.25); padding:4px 12px; border-radius:999px; font-size:12.5px;}
+
+  /* ---------- nav ---------- */
+  nav.menu{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
+  nav.menu .cont{display:flex; gap:6px; overflow-x:auto; padding-top:8px; padding-bottom:8px;}
+  nav.menu a{white-space:nowrap; text-decoration:none; color:var(--texto2); font-size:14px; font-weight:600; padding:7px 13px; border-radius:999px;}
+  nav.menu a:hover{background:#eef2fd; color:var(--azul);}
+
+  section{padding:34px 0 8px;}
+  h2.tit{font-size:clamp(21px,3vw,28px); display:flex; align-items:center; gap:10px;}
+  p.lead{color:var(--texto2); margin-top:6px; max-width:820px; font-size:15px;}
+
+  .caja-explica{background:#eef4ff; border:1px solid #cfdcf9; border-left:5px solid var(--azul2); border-radius:10px; padding:14px 16px; margin-top:16px; font-size:14.5px;}
+  .caja-explica b{color:var(--azul);}
+  .caja-dato{background:#fff8e8; border:1px solid #f2dfae; border-left:5px solid var(--ambar); border-radius:10px; padding:14px 16px; margin-top:14px; font-size:14.5px;}
+
+  .grid{display:grid; gap:14px; margin-top:18px;}
+  .grid.kpis{grid-template-columns:repeat(auto-fit,minmax(158px,1fr));}
+  .grid.dos{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
+  .card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; box-shadow:var(--sombra); padding:18px;}
+  .card h3{font-size:16px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+  .kpi-card .num{font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:-.5px; color:var(--azul);}
+  .kpi-card .lbl{font-size:13px; color:var(--texto2); margin-top:2px;}
+  .kpi-card .nota{font-size:12px; color:var(--gris); margin-top:6px;}
+
+  /* ---------- barras horizontales ---------- */
+  .fila-barra{display:grid; grid-template-columns:150px 1fr 84px; gap:10px; align-items:center; padding:5px 0; font-size:13.5px;}
+  .fila-barra .nom{font-weight:600; text-align:right; color:var(--texto2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .pista{background:#edf0f7; border-radius:6px; height:20px; overflow:hidden;}
+  .barra{height:100%; border-radius:6px; min-width:2px;}
+  .fila-barra .val{font-weight:700; font-variant-numeric:tabular-nums; text-align:left;}
+  @media(max-width:620px){ .fila-barra{grid-template-columns:104px 1fr 70px; font-size:12.5px;} }
+
+  /* ---------- rankings ---------- */
+  .rank-item{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px dashed var(--borde); font-size:14px;}
+  .rank-item:last-child{border-bottom:none;}
+  .rank-pos{width:30px; height:30px; flex:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; color:#fff;}
+  .rank-item .info{flex:1; min-width:0;}
+  .rank-item .info .n{font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rank-item .info .d{font-size:12px; color:var(--gris);}
+  .rank-item .cifra{font-weight:800; font-variant-numeric:tabular-nums;}
+
+  /* ---------- toggles ---------- */
+  .toggles{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 4px;}
+  .toggles button{border:1px solid var(--borde); background:#fff; color:var(--texto2); font-weight:600; font-size:13px; padding:7px 14px; border-radius:999px; cursor:pointer;}
+  .toggles button.on{background:var(--azul); border-color:var(--azul); color:#fff;}
+
+  /* ---------- donut ---------- */
+  .donut-wrap{display:flex; align-items:center; gap:18px; flex-wrap:wrap;}
+  .leyenda{font-size:13.5px; display:grid; gap:6px;}
+  .leyenda .it{display:flex; align-items:center; gap:8px;}
+  .sw{width:12px; height:12px; border-radius:3px; flex:none;}
+
+  /* ---------- votaciones ---------- */
+  .chip{display:inline-block; font-size:12px; font-weight:800; padding:3px 10px; border-radius:999px;}
+  .chip.aprobado{background:#e3f6ec; color:var(--verde); border:1px solid #b7e6cd;}
+  .chip.rechazado{background:#fdeaea; color:var(--rojo); border:1px solid #f5c2c2;}
+  .vot-card .tot{display:flex; gap:14px; flex-wrap:wrap; margin:10px 0 4px;}
+  .vot-card .tot .t{font-size:13.5px;}
+  .vot-card .tot .t b{font-size:17px;}
+  .fila-voto{display:grid; grid-template-columns:118px 1fr; gap:10px; align-items:center; padding:3px 0; font-size:12.5px;}
+  .fila-voto .nom{font-weight:600; text-align:right; color:var(--texto2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .stack{display:flex; height:18px; border-radius:5px; overflow:hidden; background:#edf0f7;}
+  .stack span{height:100%;}
+  .fila-voto .nums{grid-column:2; font-size:11.5px; color:var(--gris); margin-top:-1px;}
+  @media(max-width:620px){ .fila-voto{grid-template-columns:92px 1fr;} }
+
+  .meses{display:flex; gap:6px; align-items:flex-end; height:130px; margin-top:10px;}
+  .meses .col{flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:4px; height:100%;}
+  .meses .b{width:100%; max-width:44px; background:var(--azul2); border-radius:5px 5px 0 0;}
+  .meses .l{font-size:11px; color:var(--gris);}
+  .meses .v{font-size:11px; font-weight:700;}
+
+  /* ---------- tabla explorador ---------- */
+  .buscador{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 10px;}
+  .buscador input, .buscador select{padding:10px 14px; border:1px solid var(--borde); border-radius:10px; font-size:14px; background:#fff;}
+  .buscador input{flex:1; min-width:220px;}
+  .tabla-wrap{overflow-x:auto; background:#fff; border:1px solid var(--borde); border-radius:14px; box-shadow:var(--sombra);}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:640px;}
+  th{position:sticky; top:0; background:#f7f9fe; text-align:left; padding:10px 12px; font-size:12.5px; color:var(--texto2); cursor:pointer; user-select:none; border-bottom:2px solid var(--borde); white-space:nowrap;}
+  th:hover{color:var(--azul);}
+  td{padding:9px 12px; border-bottom:1px solid var(--borde); vertical-align:middle;}
+  tr.fila-d:hover{background:#f4f7ff; cursor:pointer;}
+  .punto{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:7px;}
+  .mini-barra{width:70px; height:8px; background:#edf0f7; border-radius:4px; overflow:hidden; display:inline-block; vertical-align:middle; margin-left:8px;}
+  .mini-barra i{display:block; height:100%; border-radius:4px;}
+  tr.detalle td{background:#f8faff; padding:14px 18px;}
+  .perfil{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; font-size:13px;}
+  .perfil .p .v{font-size:18px; font-weight:800; color:var(--azul);}
+  .perfil .p .l{color:var(--gris); font-size:12px;}
+
+  /* ---------- glosario ---------- */
+  details{background:#fff; border:1px solid var(--borde); border-radius:12px; padding:12px 16px; margin-top:10px; box-shadow:var(--sombra);}
+  summary{font-weight:700; cursor:pointer; font-size:14.5px; color:var(--azul);}
+  details p{margin-top:8px; font-size:14px; color:var(--texto2);}
+
+  footer{margin-top:40px; background:#14265e; color:#c9d5f5; padding:28px 0; font-size:13px;}
+  footer a{color:#ffd75e;}
+  footer .titulo{color:#fff; font-weight:800; font-size:15px; margin-bottom:8px;}
+  .mt{margin-top:14px;}
+  .nota-metodo{font-size:12.5px; color:var(--gris);}
+
+  /* ================= REDISEÑO 2.0 ================= */
+  html{scroll-behavior:smooth;}
+  section{opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s ease;}
+  section.vis{opacity:1; transform:none;}
+
+  /* hero mejorado */
+  header.hero{position:relative; overflow:hidden; background:
+    radial-gradient(900px 420px at 85% -10%, rgba(255,215,94,.16), transparent 60%),
+    radial-gradient(700px 380px at -10% 110%, rgba(217,38,50,.20), transparent 55%),
+    linear-gradient(135deg,#101f4e 0%,#1d3a8f 55%,#2c55c8 100%);
+    padding:44px 0 40px; text-align:center;}
+  header.hero::after{content:""; position:absolute; inset:0; background:
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.35), transparent 40%),
+    radial-gradient(2px 2px at 70% 20%, rgba(255,255,255,.25), transparent 40%),
+    radial-gradient(2px 2px at 45% 75%, rgba(255,255,255,.22), transparent 40%);
+    pointer-events:none;}
+  .hero .inner{position:relative; z-index:2; max-width:860px; margin:0 auto; padding:0 16px;}
+  .hero .franja{max-width:220px; margin:0 auto 20px;}
+  .hero h1{font-size:clamp(28px,5vw,46px); text-shadow:0 2px 18px rgba(0,0,0,.25);}
+  .hero p.sub{margin:12px auto 0; color:#e3eaff;}
+  .hero .badges{justify-content:center; margin-top:18px;}
+
+  /* buscador ciudadano (hero) */
+  .busq-hero{position:relative; max-width:660px; margin:26px auto 0; z-index:5; text-align:left;}
+  .busq-caja{display:flex; align-items:center; gap:10px; background:#fff; border-radius:16px; padding:6px 8px 6px 16px;
+    box-shadow:0 12px 34px rgba(6,14,45,.45), 0 0 0 1px rgba(255,255,255,.25); transition:box-shadow .25s, transform .25s;}
+  .busq-caja:focus-within{transform:translateY(-1px); box-shadow:0 16px 44px rgba(6,14,45,.55), 0 0 0 3px rgba(255,215,94,.65);}
+  .busq-lupa{font-size:18px; filter:grayscale(.2);}
+  .busq-caja input{flex:1; border:none; outline:none; font-size:16px; padding:10px 4px; color:var(--texto); background:transparent; min-width:0;}
+  .busq-hint{font-size:11px; color:#9aa6c0; border:1px solid #dfe4f0; border-radius:6px; padding:3px 7px; white-space:nowrap;}
+  @media(max-width:520px){ .busq-hint{display:none;} }
+  .busq-panel{position:absolute; top:calc(100% + 8px); left:0; right:0; background:#fff; color:var(--texto);
+    border-radius:14px; box-shadow:0 22px 60px rgba(6,14,45,.5); overflow:hidden; display:none; z-index:60; max-height:420px; overflow-y:auto;}
+  .busq-panel.show{display:block; animation:pop .16s ease;}
+  @keyframes pop{from{opacity:0; transform:translateY(-6px)} to{opacity:1; transform:none}}
+  .busq-grupo{font-size:11px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color:#8a94ad; padding:10px 16px 4px; background:#f7f9fe;}
+  .busq-item{display:flex; align-items:center; gap:10px; padding:9px 16px; cursor:pointer; border-bottom:1px solid #f0f2f8;}
+  .busq-item:last-child{border-bottom:none;}
+  .busq-item:hover, .busq-item.sel{background:#eef4ff;}
+  .busq-item .busq-ico{width:9px; margin:0 4px; color:var(--azul2); font-weight:800;}
+  .busq-main{flex:1; min-width:0;}
+  .busq-main b{display:block; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .busq-main small{color:var(--gris); font-size:12px;}
+  .busq-nums{display:flex; flex-direction:column; align-items:flex-end; font-size:12px; color:var(--texto2); font-variant-numeric:tabular-nums;}
+  .busq-vacio{padding:16px; font-size:13.5px; color:var(--texto2);}
+  mark{background:#ffe58a; color:inherit; border-radius:3px; padding:0 1px;}
+  .busq-chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; position:relative; z-index:4;}
+  .busq-chips button{background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.3); color:#fff; font-size:12.5px;
+    font-weight:600; padding:6px 13px; border-radius:999px; cursor:pointer; transition:background .2s, transform .2s;}
+  .busq-chips button:hover{background:rgba(255,255,255,.28); transform:translateY(-1px);}
+
+  /* tarjetas y números mejorados */
+  .card{border-radius:16px; transition:transform .22s ease, box-shadow .22s ease;}
+  .card:hover{transform:translateY(-3px); box-shadow:0 10px 26px rgba(20,30,70,.12);}
+  .kpi-card{position:relative; overflow:hidden;}
+  .kpi-card::before{content:""; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,var(--azul2),#7a9df0);}
+  .kpi-card .num{background:linear-gradient(120deg,#1d3a8f,#3f6ae0); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  h2.tit{position:relative; padding-bottom:10px;}
+  h2.tit::after{content:""; position:absolute; left:0; bottom:0; width:56px; height:4px; border-radius:4px;
+    background:linear-gradient(90deg,var(--rojo),var(--azul2));}
+  .rank-item{transition:background .2s; border-radius:8px; padding-left:4px; padding-right:4px;}
+  .rank-item:hover{background:#f6f8fe;}
+  .toggles button{transition:all .2s;}
+  details[open] summary{color:var(--azul2);}
+
+  /* flash al encontrar un diputado */
+  tr.flash td{animation:flashrow 2.2s ease;}
+  @keyframes flashrow{0%{background:#fff3c4} 60%{background:#fff8dd} 100%{background:transparent}}
+
+  /* proyectos clave del mes y del año */
+  .proy-item{display:flex; gap:14px; align-items:flex-start; padding:15px 4px; border-bottom:1px solid var(--borde);}
+  .proy-item:last-child{border-bottom:none;}
+  .proy-rank-num{flex:0 0 36px; height:36px; border-radius:11px; background:linear-gradient(135deg,var(--azul),var(--azul2)); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:15px; box-shadow:0 2px 6px rgba(29,58,143,.25);}
+  .proy-item:first-child .proy-rank-num{background:linear-gradient(135deg,var(--rojo),#f05545);}
+  .proy-body{flex:1; min-width:0;}
+  .proy-body b{font-size:14.5px; line-height:1.4; display:block; color:var(--texto);}
+  .proy-meta{display:flex; flex-wrap:wrap; gap:7px; margin-top:7px; align-items:center; font-size:12px; color:var(--gris);}
+  .proy-meta .chip-bol{background:#eef2ff; color:var(--azul); padding:2.5px 9px; border-radius:99px; font-weight:700;}
+  .proy-bar{height:8px; border-radius:99px; background:#e8ecf4; overflow:hidden; display:flex; margin-top:9px;}
+  .proy-bar i{display:block; height:100%;}
+  .proy-stats{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12.5px; margin-top:7px; color:var(--texto2);}
+  .proy-stats .up{color:var(--verde); font-weight:700;}
+  .proy-stats .down{color:var(--rojo); font-weight:700;}
+
+  /* carrusel rotativo de proyectos */
+  .rotador{position:relative;}
+  .rot-stage{position:relative; min-height:100px;}
+  .proy-slide{position:absolute; top:0; left:0; right:0; opacity:0; transform:translateY(10px); transition:opacity .55s ease, transform .55s ease; pointer-events:none; background:var(--tarjeta);}
+  .proy-slide.on{opacity:1; transform:none; pointer-events:auto;}
+  .proy-slide .proy-item{border-bottom:none; padding-top:4px;}
+  .rot-ctrl{display:flex; align-items:center; gap:10px; margin-top:10px; padding-top:12px; border-top:1px dashed var(--borde);}
+  .rot-ctrl button{width:32px; height:32px; border-radius:99px; border:1px solid var(--borde); background:#fff; color:var(--azul); font-size:18px; font-weight:800; cursor:pointer; line-height:1; transition:.2s;}
+  .rot-ctrl button:hover{background:var(--azul); color:#fff; border-color:var(--azul);}
+  .rot-dots{display:flex; gap:7px;}
+  .rot-dot{width:9px; height:9px; border-radius:99px; background:#cfd6e6; cursor:pointer; transition:.25s;}
+  .rot-dot.on{background:var(--rojo); width:22px;}
+  .rot-hint{margin-left:auto; font-size:11.5px; color:var(--gris); white-space:nowrap;}
+
+  /* hero rediseñado: dos poderes */
+  .eyebrow{display:inline-block; font-size:12px; font-weight:800; letter-spacing:2.6px; color:#ffd75e; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); padding:7px 18px; border-radius:99px; margin-bottom:18px;}
+  .poderes{display:flex; gap:14px; justify-content:center; margin:28px auto 4px; max-width:780px; flex-wrap:wrap;}
+  .poder{flex:1 1 300px; display:flex; flex-direction:column; gap:4px; align-items:flex-start; text-align:left; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.17); padding:17px 22px; border-radius:16px; color:#fff; text-decoration:none; transition:.22s; box-shadow:0 2px 12px rgba(0,0,0,.12);}
+  .poder:hover{background:rgba(255,255,255,.15); transform:translateY(-3px); box-shadow:0 10px 26px rgba(0,0,0,.22);}
+  .poder span{font-size:25px;}
+  .poder b{font-size:16.5px; letter-spacing:.3px;}
+  .poder small{color:#cfd9f7; font-size:12.5px; line-height:1.5;}
+
+  /* el gobierno */
+  .gob-pres{display:flex; gap:18px; align-items:center; margin-top:10px;}
+  .gob-escudo{flex:0 0 74px; width:74px; height:74px; border-radius:20px; background:linear-gradient(135deg,var(--azul) 48%,#fff 48%,#fff 52%,var(--rojo) 52%); display:flex; align-items:center; justify-content:center; font-size:34px; box-shadow:0 3px 10px rgba(20,30,70,.18);}
+  .gob-pres b{font-size:21px; line-height:1.25; display:block;}
+  .gob-pres .mandato{font-size:13.5px; color:var(--texto2); margin-top:5px;}
+  .gob-pres .src{font-size:12px; color:var(--gris); margin-top:7px;}
+  .gob-pres .src a{color:var(--azul2);}
+  .gob-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(235px,1fr)); gap:12px;}
+  .gob-card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:14px 15px; box-shadow:var(--sombra); position:relative; transition:.22s; border-top:3px solid var(--azul);}
+  .gob-card:hover{transform:translateY(-3px); box-shadow:0 8px 22px rgba(20,30,70,.13);}
+  .gob-card .ministerio{font-size:11.5px; font-weight:800; letter-spacing:.4px; text-transform:uppercase; color:var(--azul2); padding-right:58px;}
+  .gob-card .ministro{font-size:15.5px; font-weight:700; margin-top:6px; color:var(--texto); line-height:1.35;}
+  .gob-card .reg{font-size:11.5px; color:var(--gris); margin-top:8px;}
+  .chip-s{position:absolute; top:10px; right:10px; background:#fff3cd; color:#8a6d00; border:1px solid #eedc9a; font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:99px;}
+  @media (max-width:720px){ .gob-grid{grid-template-columns:1fr 1fr;} .gob-pres{flex-direction:column; text-align:center;} }
+
+  /* hitos por período (ambos poderes) */
+  .per-row{display:grid; grid-template-columns:185px 1fr 1fr; gap:12px; margin-top:12px; align-items:stretch;}
+  .per-lbl{background:linear-gradient(160deg,var(--azul),var(--azul2)); color:#fff; border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; justify-content:center; box-shadow:0 3px 10px rgba(29,58,143,.22);}
+  .per-lbl b{font-size:17px;}
+  .per-lbl small{color:#cfd9f7; font-size:12px; margin-top:4px; line-height:1.4;}
+  .per-card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:16px 18px; box-shadow:var(--sombra); transition:.22s;}
+  .per-card:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(20,30,70,.12);}
+  .per-card h4{font-size:11.5px; letter-spacing:.4px; text-transform:uppercase; color:var(--gris); margin:0 0 8px;}
+  .per-card .nom{font-size:15.5px; font-weight:700; line-height:1.4; color:var(--texto);}
+  .per-card .det{font-size:12.5px; color:var(--texto2); margin-top:8px; line-height:1.55;}
+  .per-card .det a{color:var(--azul2);}
+  .per-card.leg{border-top:3px solid var(--azul);}
+  .per-card.eje{border-top:3px solid var(--rojo);}
+  @media (max-width:860px){ .per-row{grid-template-columns:1fr;} .per-lbl{flex-direction:row; gap:10px; align-items:baseline; flex-wrap:wrap;} }
+
+  /* noticias del día */
+  .not-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px;}
+  .not-lista{margin-top:8px;}
+  .not-item{display:block; padding:10px 2px; border-bottom:1px solid var(--borde); text-decoration:none; color:inherit; transition:.15s; border-radius:8px;}
+  .not-item:hover{background:rgba(44,85,200,.06);}
+  .not-item:last-child{border-bottom:none;}
+  .not-item .fecha{font-size:11px; font-weight:800; color:var(--rojo); text-transform:uppercase; letter-spacing:.4px;}
+  .not-item b{display:block; font-size:13.5px; line-height:1.4; margin-top:3px; color:var(--texto); font-weight:600;}
+  .not-item:hover b{color:var(--azul2);}
+  .not-vacio{color:var(--gris); font-size:13px; padding:10px 0;}
+
+  /* fechas clave */
+  .fechas-banner{display:none; margin-top:16px; background:linear-gradient(120deg,#b21f2d,#d92632 55%,#1d3a8f); color:#fff; border-radius:16px; padding:18px 22px; font-size:16px; font-weight:700; box-shadow:0 6px 18px rgba(217,38,50,.3); line-height:1.5;}
+  .fechas-proximas{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:12px;}
+  .prox-card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:15px 17px; box-shadow:var(--sombra); position:relative; transition:.22s;}
+  .prox-card:hover{transform:translateY(-3px); box-shadow:0 8px 22px rgba(20,30,70,.13);}
+  .prox-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .prox-card.cerca{border:2px solid var(--rojo); background:#fff8f4;}
+  .prox-card .cuando{font-size:12px; font-weight:800; color:var(--azul2); text-transform:uppercase; letter-spacing:.5px;}
+  .prox-card b{display:block; font-size:15.5px; margin-top:5px; line-height:1.35;}
+  .prox-card small{display:block; color:var(--texto2); font-size:12.5px; margin-top:6px; line-height:1.5;}
+  .cuenta-chip{flex-shrink:0; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px; background:#eef2ff; color:var(--azul); white-space:nowrap;}
+  .prox-card.cerca .cuenta-chip{background:var(--rojo); color:#fff;}
+  .fechas-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:10px;}
+  .fer-card{background:var(--tarjeta); border:1px solid var(--borde); border-left:4px solid var(--azul); border-radius:12px; padding:12px 14px; box-shadow:var(--sombra); transition:.2s;}
+  .fer-card:hover{transform:translateY(-2px);}
+  .fer-card .dia{font-size:12px; font-weight:800; color:var(--rojo);}
+  .fer-card b{display:block; font-size:13.5px; margin-top:3px; line-height:1.35;}
+  .fer-card small{display:block; color:var(--texto2); font-size:11.5px; margin-top:4px; line-height:1.45;}
+  .fer-card.eleccion{border-left-color:var(--rojo);}
+  .fer-card.legislativo{border-left-color:var(--ambar);}
+
+  /* tu distrito */
+  .dis-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px;}
+
+  /* comparador */
+  .cmp-wrap{overflow-x:auto;}
+  .btn-mini{margin-top:10px; padding:6px 12px; border-radius:8px; border:1px solid var(--azul); background:#fff; color:var(--azul); font-size:12px; font-weight:700; cursor:pointer; transition:.2s;}
+  .btn-mini:hover{background:var(--azul); color:#fff;}
+
+  /* cuenta regresiva electoral */
+  .countdown{margin-top:16px; display:none; align-items:center; gap:10px; flex-wrap:wrap; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.35); border-radius:14px; padding:10px 16px; font-size:14.5px; max-width:640px;}
+  .countdown b{font-size:17px; color:#ffd75e;}
+
+  /* enlaces oficiales */
+  .enlaces-of{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;}
+  .enlaces-of a{display:inline-block; padding:8px 13px; border-radius:10px; background:#eef2ff; color:var(--azul); font-size:13px; font-weight:700; text-decoration:none; border:1px solid #d9e1fb; transition:.2s;}
+  .enlaces-of a:hover{background:var(--azul); color:#fff;}
+
+  /* histórico de gastos */
+  .hist-wrap{display:flex; align-items:flex-end; gap:14px; padding:14px 4px 4px; overflow-x:auto;}
+  .hist-col{flex:1; min-width:78px; text-align:center;}
+  .hist-col .v{font-size:12px; font-weight:800; color:var(--texto2); margin-bottom:4px;}
+  .hist-col .b{background:linear-gradient(180deg,#4a6fd8,#1d3a8f); border-radius:8px 8px 3px 3px; min-height:8px;}
+  .hist-col:last-child .b{background:linear-gradient(180deg,#e8636d,#d92632);}
+  .hist-col .l{font-size:12px; color:var(--gris); margin-top:5px; text-transform:capitalize;}
+
+  /* cómo se hace una ley */
+  .ley-pasos{display:flex; align-items:stretch; flex-wrap:wrap; gap:8px;}
+  .paso{flex:1; min-width:150px; background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:16px 14px; box-shadow:var(--sombra); position:relative;}
+  .paso-n{position:absolute; top:-11px; left:12px; width:24px; height:24px; border-radius:50%; background:var(--rojo); color:#fff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .paso-e{font-size:26px; margin-top:4px;}
+  .paso b{display:block; font-size:14.5px; margin-top:6px;}
+  .paso p{font-size:12.5px; color:var(--texto2); margin-top:5px; line-height:1.5;}
+  .flecha{align-self:center; font-size:22px; font-weight:800; color:var(--azul2);}
+  @media (max-width:860px){ .flecha{display:none;} }
+
+  /* votos en la ficha */
+  .votos-ley{margin-top:12px; border-top:1px dashed var(--borde); padding-top:12px;}
+  .votos-ley h4{font-size:13.5px; margin-bottom:8px;}
+  .voto-item{display:flex; gap:8px; align-items:baseline; font-size:12.8px; padding:5px 0; border-bottom:1px solid var(--borde); flex-wrap:wrap;}
+  .voto-item:last-child{border-bottom:none;}
+  .voto-chip{flex-shrink:0; font-size:11px; font-weight:800; padding:2px 9px; border-radius:99px; min-width:86px; text-align:center;}
+  .voto-chip.S{background:#e6f7ee; color:var(--verde);}
+  .voto-chip.N{background:#fdeaea; color:var(--rojo);}
+  .voto-chip.A{background:#fdf3dc; color:#a06e00;}
+  .voto-chip.X{background:#eef0f4; color:var(--gris);}
+  .voto-item small{color:var(--gris); white-space:nowrap;}
+
+  /* botón modo oscuro */
+  #dark-toggle{margin-left:auto; border:1px solid var(--borde); background:var(--tarjeta); border-radius:10px; padding:6px 11px; font-size:15px; cursor:pointer;}
+  nav.menu .cont{display:flex; align-items:center; flex-wrap:wrap;}
+
+  /* ---------- modo oscuro ---------- */
+  body.dark{--fondo:#0d1220; --tarjeta:#171e30; --borde:#293450; --texto:#e9edf7; --texto2:#a9b3ca; --sombra:0 2px 12px rgba(0,0,0,.5);}
+  body.dark header.hero{background:linear-gradient(135deg,#0a1128 0%,#14265e 55%,#1d3a8f 100%);}
+  body.dark nav.menu{background:#121828; border-bottom-color:#293450;}
+  body.dark nav.menu a{color:#c8d2e8;}
+  body.dark nav.menu a:hover{background:#212b46;}
+  body.dark .card, body.dark .prox-card, body.dark .fer-card, body.dark .paso, body.dark .gob-card, body.dark .kpi-card{background:#171e30; border-color:#293450;}
+  body.dark table.cmp th, body.dark #tabla th{background:#1b2338; color:#c8d2e8;}
+  body.dark table.cmp td, body.dark #tabla td{border-color:#293450;}
+  body.dark table.cmp td.gana{background:#12291d;}
+  body.dark select, body.dark input, body.dark .busq-caja{background:#1b2338; color:#e9edf7; border-color:#293450;}
+  body.dark .caja-explica{background:#1b2338; border-color:#293450;}
+  body.dark .nota-metodo{color:#8b96b0;}
+  body.dark .hist-col .b{background:linear-gradient(180deg,#5a7ce0,#2c4aa8);}
+  body.dark .hist-col:last-child .b{background:linear-gradient(180deg,#ef7079,#c11f2c);}
+  table.cmp{width:100%; border-collapse:collapse; background:var(--tarjeta); border-radius:14px; overflow:hidden; box-shadow:var(--sombra);}
+  table.cmp th, table.cmp td{padding:11px 14px; font-size:13.5px; text-align:center; border-bottom:1px solid var(--borde);}
+  table.cmp th{background:#f6f8fd; font-size:12px; text-transform:uppercase; letter-spacing:.4px; color:var(--gris);}
+  table.cmp td.metrica{text-align:left; font-weight:700; color:var(--texto2); white-space:nowrap;}
+  table.cmp td.gana{color:var(--verde); font-weight:800; background:#f2fbf6;}
+  table.cmp tr:last-child td{border-bottom:none;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="inner">
+    <div class="franja"></div>
+    <div class="eyebrow">PODER LEGISLATIVO · PODER EJECUTIVO</div>
+    <h1>El Poder <span class="simple">en Simple</span></h1>
+    <p class="sub">Un tablero ciudadano para entender, sin tecnicismos, cómo funcionan los dos poderes del Estado de Chile: el <b>Congreso Nacional</b>, que hace las leyes, y el <b>Gobierno</b>, que las lleva a la práctica. Asistencia, gastos, votaciones, proyectos y gabinete — todo explicado para cualquier persona.</p>
+
+    <div class="poderes">
+      <a class="poder" href="#asistencia"><span>🏛️</span><b>Poder Legislativo</b><small>155 diputad@s y el Senado: asistencia, gastos, votaciones y proyectos de ley</small></a>
+      <a class="poder" href="#gobierno"><span>🎖️</span><b>Poder Ejecutivo</b><small>El Presidente de la República y su gabinete de 25 ministerios</small></a>
+    </div>
+
+    <div class="busq-hero" id="busq-wrap">
+      <div class="busq-caja">
+        <span class="busq-lupa">🔍</span>
+        <input id="busq" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Busca a tu diputad@, una bancada o el gabinete…" aria-label="Buscar diputados y secciones">
+        <span class="busq-hint">↑↓ · Enter</span>
+      </div>
+      <div class="busq-panel" id="busq-res" role="listbox"></div>
+    </div>
+    <div class="busq-chips" id="busq-chips"></div>
+
+    <div class="badges">
+      <span class="badge">📊 Fuentes oficiales: Cámara, BCN e InfoLobby</span>
+      <span class="badge">🔎 Recopilados por Mirada al Congreso</span>
+      <span class="badge">✅ Constados con los sitios oficiales</span>
+      <span class="badge">🗓️ Actualizado al 17 de septiembre de 2026</span>
+    </div>
+    <div class="countdown" id="elecciones-countdown"></div>
+  </div>
+</header>
+
+<nav class="menu">
+  <div class="cont">
+    <a href="#resumen">📌 Resumen</a>
+    <a href="#noticias">📰 Noticias</a>
+    <a href="#fechas">📅 Fechas clave</a>
+    <a href="elecciones_chile.html">🗳️ Elecciones</a>
+    <a href="#asistencia">🪑 Asistencia</a>
+    <a href="#gastos">💰 Gastos</a>
+    <a href="#votaciones">🗳️ Votaciones</a>
+    <a href="#proyectos-clave">📌 Proyectos clave</a>
+    <a href="#gobierno">🇨🇱 El Gobierno</a>
+    <a href="#periodos">📜 Por período</a>
+    <a href="#senado">🏛️ El Senado</a>
+    <a href="#verificacion">✅ Verificación</a>
+    <a href="#explorador">🔎 Tu diputad@</a>
+    <a href="#distrito">🏠 Tu distrito</a>
+    <a href="#comparador">⚖️ Compara</a>
+    <a href="#como-ley">🧭 ¿Cómo se hace una ley?</a>
+    <a href="#glosario">📖 Glosario</a>
+    <button id="dark-toggle" title="Cambiar entre modo claro y oscuro" aria-label="Modo oscuro">🌙</button>
+  </div>
+</nav>
+
+<div class="cont">
+
+  <!-- ============ INTRO ============ -->
+  <section id="intro">
+    <h2 class="tit">👋 ¿Qué estoy mirando?</h2>
+    <p class="lead">Este tablero cubre los <b>dos poderes</b> que dirigen el país. El <b>Poder Legislativo</b> (el Congreso) discute y aprueba las leyes: la Cámara de Diputadas y Diputados, con <b>155 diputados y diputadas</b> elegidos por voto popular, más el Senado. El <b>Poder Ejecutivo</b> (el Gobierno) administra el Estado, encabezado por el Presidente y sus ministros. Esto es lo que cualquier ciudadano puede (y debería) poder revisar:</p>
+    <div class="grid dos">
+      <div class="card"><h3>🪑 ¿Van a trabajar?</h3><p style="font-size:14px;color:var(--texto2)">Cada diputado tiene la obligación de asistir a las sesiones de la Sala, donde se votan los proyectos. Aquí ves quién asiste, quién falta y con qué justificación.</p></div>
+      <div class="card"><h3>💰 ¿Cómo usan la plata?</h3><p style="font-size:14px;color:var(--texto2)">El Estado asigna a cada diputado un presupuesto mensual para contratar asesores y cubrir gastos de su trabajo (traslados, telefonía, oficina). Aquí ves cuánto gasta cada uno.</p></div>
+      <div class="card"><h3>🗳️ ¿Qué votan?</h3><p style="font-size:14px;color:var(--texto2)">Cada votación queda registrada: quién votó a favor, en contra o se abstuvo. Aquí resumimos las votaciones de 2026 y destacamos las más importantes.</p></div>
+      <div class="card"><h3>🧭 ¿De dónde salen los datos?</h3><p style="font-size:14px;color:var(--texto2)">De <b>fuentes oficiales</b>: los datos abiertos de la Cámara (vía el proyecto independiente <b>Mirada al Congreso</b>), la <b>Biblioteca del Congreso Nacional</b> y el portal <b>InfoLobby</b> del Consejo para la Transparencia, para el Gobierno.</p></div>
+      <div class="card"><h3>🎖️ ¿Y el Gobierno?</h3><p style="font-size:14px;color:var(--texto2)">Más abajo encontrarás la sección <b>El Gobierno</b>: quién es el Presidente, quiénes forman su gabinete de ministros y desde cuándo, según los registros oficiales de transparencia.</p></div>
+    </div>
+  </section>
+
+  <!-- ══════════ NOTICIAS DEL DÍA ══════════ -->
+  <section id="noticias">
+    <h2 class="tit">📰 Hoy en el Congreso y el Gobierno</h2>
+    <p class="lead">Titulares oficiales, leídos directamente de las salas de prensa de la <b>Cámara</b>, el <b>Senado</b> y la <b>Presidencia</b> cada vez que abres este tablero. Pincha cualquier titular para leer la nota completa en el sitio oficial.</p>
+    <div class="not-grid mt">
+      <div class="card"><h3>🏛️ Cámara de Diputadas y Diputados</h3><div id="not-camara" class="not-lista"></div></div>
+      <div class="card"><h3>🏛️ Senado</h3><div id="not-senado" class="not-lista"></div></div>
+      <div class="card"><h3>🎖️ Presidencia / Gobierno</h3><div id="not-gobierno" class="not-lista"></div></div>
+    </div>
+    <p class="nota-metodo mt" id="not-nota">Fuentes oficiales: <a href="https://www.camara.cl/cms/" target="_blank" rel="noopener" style="color:var(--azul2)">prensa de la Cámara</a> · <a href="https://www.senado.cl/comunicaciones/noticias" target="_blank" rel="noopener" style="color:var(--azul2)">comunicaciones del Senado</a> · <a href="https://prensa.presidencia.cl/" target="_blank" rel="noopener" style="color:var(--azul2)">prensa de la Presidencia</a>. Se descargan al momento, sin base de datos.</p>
+  </section>
+
+  <!-- ============ FECHAS CLAVE ============ -->
+  <section id="fechas">
+    <h2 class="tit">📅 Fechas clave para la ciudadanía</h2>
+    <p class="lead">Fiestas patrias, feriados, hitos del Congreso y del Gobierno, y las próximas elecciones: el calendario que todo ciudadano debiera tener a mano. Lo que está <b>próximo</b> se destaca solo, según la fecha en que abras este tablero.</p>
+    <div id="fechas-banner"></div>
+
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>🗓️ ¿Qué se discute esta semana en el Congreso?</h3>
+        <p style="font-size:14px; color:var(--texto2); margin-top:6px;">La <b>Tabla Semanal</b> es la lista oficial de los temas que la Sala de la Cámara discutirá y votará estos días. La publica camara.cl y siempre está al día:</p>
+        <div class="enlaces-of mt">
+          <a href="https://www.camara.cl/verDoc.aspx?prmId=0&prmTipo=TABLASEMANAL" target="_blank" rel="noopener">📄 Tabla Semanal (PDF oficial)</a>
+          <a href="https://www.camara.cl/legislacion/sesiones_sala/sesiones_sala.aspx" target="_blank" rel="noopener">🏛️ Sesiones de Sala</a>
+          <a href="https://www.camara.cl/legislacion/comisiones/citaciones_todas.aspx" target="_blank" rel="noopener">👥 Citaciones de comisiones</a>
+        </div>
+        <p class="nota-metodo mt">Dato ciudadano: en <b>febrero</b> el Congreso está en receso (sin sesiones de Sala) y en Fiestas Patrias la actividad también se detiene.</p>
+      </div>
+      <div class="card" id="card-audio" data-fecha="__AUDIO_FECHA__">
+        <h3>🎧 Resumen al oído</h3>
+        <p style="font-size:14px; color:var(--texto2); margin-top:6px;">¿Sin tiempo para leer? Escucha en medio minuto lo más importante del Congreso y el Gobierno esta semana.</p>
+        <audio id="audio-resumen" controls preload="metadata" style="width:100%; margin-top:10px;" src="__AUDIO_SRC__"></audio>
+        <p class="nota-metodo mt" id="audio-nota">__AUDIO_NOTA__</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:22px; font-size:19px;">🔜 Lo que se viene</h3>
+    <div class="fechas-proximas mt" id="fechas-proximas"></div>
+
+    <h3 style="margin-top:26px; font-size:19px;">🗳️ Las próximas elecciones de Chile</h3>
+    <p class="nota-metodo">Calendario oficial del Servel. Después de las elecciones de 2025, no hay elecciones nacionales hasta 2028.</p>
+    <div class="grid dos mt" id="fechas-elecciones"></div>
+
+    <div class="card mt" id="elecciones-cta" style="background:linear-gradient(120deg,#1d3a8f,#2c55c8); color:#fff; text-align:center; border:none; padding:26px 22px;">
+      <h3 style="color:#fff; justify-content:center; font-size:18px;">📊 ¿Cómo quedaron las elecciones de 2025?</h3>
+      <p style="font-size:14.5px; color:#dbe4ff; max-width:640px; margin:8px auto 0;">Presidente, Diputados, Senado y las próximas elecciones regionales y municipales, explicados como en «Decide Chile»: quién ganó, cuántos votos sacó cada pacto y quiénes salieron electos. Datos oficiales del Servel, sin tecnicismos.</p>
+      <a id="btn-elecciones" href="elecciones_chile.html"
+         style="display:inline-block; margin-top:16px; background:#ffd75e; color:#1d3a8f; font-weight:800; font-size:16px; text-decoration:none; padding:14px 28px; border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.28); transition:transform .18s;"
+         onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">🗳️ Ver el tablero electoral →</a>
+      <p style="font-size:11.5px; color:#c9d5f5; margin-top:12px;">Se abre en la misma ventana · resultados preliminares oficiales del Servel (16-nov-2025)</p>
+    </div>
+
+    <h3 style="margin-top:26px; font-size:19px;">🇨🇱 Feriados y conmemoraciones del año</h3>
+    <p class="nota-metodo">Los marcados con * pueden trasladarse a lunes según la ley. El Día de los Pueblos Indígenas se fija por decreto cada año (solsticio de invierno).</p>
+    <div class="fechas-grid mt" id="fechas-feriados"></div>
+
+    <h3 style="margin-top:26px; font-size:19px;">🏛️ Hitos institucionales</h3>
+    <div class="fechas-grid mt" id="fechas-institucionales"></div>
+  </section>
+
+  <!-- ============ RESUMEN ============ -->
+  <section id="resumen">
+    <h2 class="tit">📌 La Cámara en cifras</h2>
+    <p class="lead">Los números grandes para partir. Período legislativo <b>2026–2030</b>.</p>
+    <div class="grid kpis" id="kpis"></div>
+    <div class="caja-explica" id="caja-periodo"></div>
+
+    <h3 style="margin-top:24px; font-size:19px;">👔 ¿Quiénes conducen el Congreso hoy?</h3>
+    <p class="lead">Cada cámara elige su propia mesa directiva entre sus integrantes. Estas autoridades fueron confirmadas en los sitios oficiales de cada cámara.</p>
+    <div class="grid dos mt" id="cards-mesas"></div>
+  </section>
+
+  <!-- ============ ASISTENCIA ============ -->
+  <section id="asistencia">
+    <h2 class="tit">🪑 Asistencia a las sesiones</h2>
+    <p class="lead">Cuando la Cámara se reúne en la Sala para votar, la asistencia de cada diputado queda registrada. Aquí comparamos a las bancadas y a quienes más y menos asisten.</p>
+
+    <div class="caja-explica">
+      <b>¿Cómo se lee?</b> Hay dos formas de contar las faltas:<br>
+      • <b>Inasistencia real</b>: cuenta <u>todas</u> las ausencias, aunque tengan justificación (licencia médica, comisión oficial, etc.).<br>
+      • <b>Inasistencia efectiva</b>: cuenta solo las ausencias <u>sin justificación válida</u> — las más cuestionables.
+    </div>
+
+    <div class="toggles" id="tg-asist">
+      <button data-m="real" class="on">📋 Inasistencia real</button>
+      <button data-m="efectiva">⚠️ Solo inasistencias sin justificación</button>
+    </div>
+
+    <div class="grid dos">
+      <div class="card">
+        <h3>🏛️ Asistencia promedio por bancada <span class="nota-metodo" id="lbl-asist"></span></h3>
+        <div id="chart-asist-banc"></div>
+      </div>
+      <div class="card">
+        <h3>📉 Inasistencias promedio por bancada <span class="nota-metodo" id="lbl-inas"></span></h3>
+        <div id="chart-inas-banc"></div>
+      </div>
+    </div>
+
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>🏅 Los que más asisten <span class="nota-metodo">(de 69 sesiones)</span></h3>
+        <div id="rank-mas-asist"></div>
+      </div>
+      <div class="card">
+        <h3>🚨 Los que menos asisten</h3>
+        <div id="rank-menos-asist"></div>
+      </div>
+    </div>
+    <div class="caja-dato" id="dato-asist"></div>
+  </section>
+
+  <!-- ============ GASTOS ============ -->
+  <section id="gastos">
+    <h2 class="tit">💰 Gastos de cada diputado</h2>
+    <p class="lead">Cada mes, el Estado entrega a cada diputado un presupuesto para su labor parlamentaria. <b>No es su sueldo</b>: sirve para contratar equipo de apoyo y cubrir gastos de trabajo. Datos de <b>mayo de 2026</b>.</p>
+
+    <div class="caja-explica">
+      <b>Los dos grandes ítems:</b><br>
+      • <b>Personal de apoyo (asesores)</b>: sueldos del equipo que ayuda al diputado a estudiar proyectos, redactar indicaciones y atender a la ciudadanía.<br>
+      • <b>Gastos operacionales</b>: traslados, telefonía, arriendo y equipamiento de oficina, actividades con la comunidad, entre otros.
+    </div>
+
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>🥧 ¿En qué se va la plata de toda la Cámara?</h3>
+        <div class="donut-wrap" id="donut-gasto"></div>
+        <p class="nota-metodo mt" id="txt-gasto-total"></p>
+      </div>
+      <div class="card">
+        <h3>🧾 Desglose del gasto operacional</h3>
+        <div id="chart-desglose"></div>
+      </div>
+    </div>
+
+    <div class="card mt" id="card-gastos-hist" hidden>
+      <h3>📊 ¿Cómo ha evolucionado el gasto total de la Cámara?</h3>
+      <p class="nota-metodo">Suma del presupuesto usado por los 155 diputados, mes a mes, según la Transparencia de la Cámara (los meses más recientes demoran unas semanas en publicarse).</p>
+      <div class="hist-wrap" id="gastos-hist"></div>
+    </div>
+
+    <div class="card mt">
+      <h3>🏛️ Gasto promedio mensual por bancada</h3>
+      <div class="toggles" id="tg-gasto">
+        <button data-m="g_tot" class="on">Gasto total</button>
+        <button data-m="g_per">Solo asesores</button>
+        <button data-m="g_op">Solo operacional</button>
+      </div>
+      <div id="chart-gasto-banc"></div>
+    </div>
+
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>📈 Los de mayor gasto mensual</h3>
+        <div id="rank-mas-gasto"></div>
+      </div>
+      <div class="card">
+        <h3>📉 Los de menor gasto mensual</h3>
+        <div id="rank-menos-gasto"></div>
+      </div>
+    </div>
+    <div class="caja-dato" id="dato-gasto"></div>
+  </section>
+
+  <!-- ============ VOTACIONES ============ -->
+  <section id="votaciones">
+    <h2 class="tit">🗳️ Votaciones de 2026</h2>
+    <p class="lead">Cada vez que la Sala vota algo — una ley, una resolución o un acuerdo — queda un registro público. Esto es lo que ha votado la Cámara entre enero y septiembre de 2026.</p>
+
+    <div class="grid kpis" id="kpis-vot"></div>
+
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>📚 ¿Qué se votó?</h3>
+        <div class="donut-wrap" id="donut-tipos"></div>
+        <p class="nota-metodo mt">Un <b>proyecto de ley</b> crea o modifica leyes. Las <b>resoluciones</b> y <b>acuerdos</b> son pronunciamientos de la Cámara (por ejemplo, pedir algo al Presidente); no se convierten en ley.</p>
+      </div>
+      <div class="card">
+        <h3>📅 Votaciones por mes</h3>
+        <div class="meses" id="chart-meses"></div>
+        <p class="nota-metodo mt">En febrero casi no hay sesiones de Sala: es el período de receso legislativo (las comisiones siguen trabajando).</p>
+      </div>
+    </div>
+
+    <div class="card mt">
+      <h3>🔥 Los proyectos con más votaciones del año</h3>
+      <p class="nota-metodo">Un proyecto se vota varias veces: en general, por artículos, con indicaciones… Por eso los más discutidos acumulan decenas de votaciones.</p>
+      <div id="lista-proyectos" class="mt"></div>
+    </div>
+
+    <h3 style="margin-top:26px; font-size:19px;">⭐ Votaciones destacadas</h3>
+    <p class="lead">Dos votaciones que muestran cómo se dividió la Cámara. Cada barra representa a una bancada y se divide según cómo votaron sus integrantes.</p>
+    <div class="grid dos mt" id="cards-destacadas"></div>
+
+    <div class="caja-explica">
+      <b>💡 ¿Sabías que…?</b> La votación del proyecto sobre <b>obligaciones a organizadores de espectáculos de fútbol</b> (9 de septiembre) se rechazó por <b>un solo voto</b> de diferencia: 68 a favor contra 67 en contra. En estos casos, cada diputado que falta a la sesión puede cambiar el resultado. Por eso importa tanto la asistencia.
+    </div>
+  </section>
+
+  <!-- ============ SENADO ============ -->
+  <!-- ══════════ PROYECTOS CLAVE DEL MES Y DEL AÑO ══════════ -->
+  <section id="proyectos-clave">
+    <h2 class="tit">📌 Los proyectos que marcaron la pauta</h2>
+    <p class="lead">Un <b>proyecto de ley</b> es una propuesta para crear o cambiar una ley. La Cámara suele votarlo varias veces (en general, artículo por artículo, con indicaciones…), por eso un solo proyecto puede acumular decenas de votaciones. Aquí están los que más tiempo de Sala concentraron: los líderes de <b id="pk-mes-lbl">este mes</b> y los de todo <b id="pk-anio-lbl">2026</b>.</p>
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>🗓️ Este mes: <span id="pk-mes-tit">…</span></h3>
+        <div id="pk-mes"></div>
+      </div>
+      <div class="card">
+        <h3>🏆 Todo el año: <span id="pk-anio-tit">…</span></h3>
+        <div id="pk-anio"></div>
+      </div>
+    </div>
+    <p class="nota-metodo mt">Fuente: registros públicos de votación de la Sala de la Cámara (enero–septiembre de 2026). Los nombres de los proyectos son los oficiales de la Biblioteca del Congreso Nacional. La barra muestra cuántas votaciones de cada proyecto terminaron aprobadas (verde) o rechazadas (rojo). Los proyectos <b>van rotando solos cada 6 segundos</b>; pasa el mouse encima para pausar o usa las flechas y los puntos. La lista se recalcula con los datos del momento: nada queda guardado.</p>
+  </section>
+
+  <!-- ══════════ LO MÁS IMPORTANTE POR PERÍODO (AMBOS PODERES) ══════════ -->
+  <section id="periodos">
+    <h2 class="tit">📜 Lo más importante, período por período</h2>
+    <p class="lead">El hito de cada poder en la <b>semana</b>, el <b>mes</b>, el <b>semestre</b> y el <b>año</b>. Para el Congreso, el proyecto <b>más votado</b> del período (más votaciones = más horas de discusión). Para el Gobierno, la <b>última ley promulgada</b>: las leyes las firma el Presidente al publicarlas en el Diario Oficial.</p>
+    <div id="per-lista"></div>
+    <p class="nota-metodo mt" id="per-nota"></p>
+  </section>
+
+  <!-- ══════════ EL GOBIERNO (PODER EJECUTIVO) ══════════ -->
+  <section id="gobierno">
+    <h2 class="tit">🇨🇱 El Gobierno: quienes administran el país</h2>
+    <p class="lead">Mientras el <b>Congreso hace las leyes</b>, el <b>Gobierno (Poder Ejecutivo)</b> las lleva a la práctica y dirige la administración del Estado. Lo encabeza el <b>Presidente de la República</b>, quien gobierna por un período de 4 años junto a su <b>gabinete</b>: un ministro o ministra a cargo de cada ministerio (salud, educación, hacienda…). Cuando el ministro titular no está, ejerce un <b>subrogante</b>, marcado aquí con <b>(S)</b>.</p>
+
+    <div class="grid dos mt">
+      <div class="card gob-pres-card">
+        <h3>🎖️ Presidente de la República</h3>
+        <div id="gob-pres"></div>
+      </div>
+      <div class="card">
+        <h3>📋 ¿Cómo leer esta sección?</h3>
+        <p style="font-size:14.5px;color:var(--texto2);line-height:1.6">Cada ministerio registra oficialmente a su ministro/a en el <b>portal de transparencia de la Ley del Lobby</b> (Consejo para la Transparencia). La <b>fecha</b> de cada tarjeta es cuándo se hizo ese registro. Si una misma persona aparece en más de un ministerio, es porque el registro oficial la individualiza así (por ejemplo, al subrogar carteras).</p>
+        <p style="font-size:14.5px;color:var(--texto2);line-height:1.6;margin-top:8px">El Presidente se verifica en la <b>Biblioteca del Congreso Nacional (BCN)</b>, que mantiene la historia oficial de todos los mandatarios.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:26px; font-size:19px;">🏛️ El gabinete ministerial <span class="nota-metodo" id="gob-n-min"></span></h3>
+    <div class="gob-grid mt" id="gob-gabinete"></div>
+
+    <p class="nota-metodo mt" id="gob-nota"></p>
+  </section>
+
+  <section id="senado">
+    <h2 class="tit">🏛️ Bonus: ¿y el Senado?</h2>
+    <p class="lead">El Congreso tiene dos cámaras: la <b>Cámara de Diputadas y Diputados</b> (155 integrantes, representa a los distritos) y el <b>Senado</b> (50 senadores y senadoras, representan a las regiones). Para ser ley, un proyecto normalmente debe aprobarse en ambas.</p>
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>🗓️ Así se eligió la Presidencia del Senado 2026–2030</h3>
+        <p class="nota-metodo">Votación interna del 11 de marzo de 2026, al inicio del período. Cada senador votó por un candidato o se abstuvo.</p>
+        <div id="chart-senado" class="mt"></div>
+        <p class="nota-metodo mt" id="nota-senado"></p>
+      </div>
+      <div class="card">
+        <h3>🧭 ¿Por qué no hay asistencia y gastos del Senado aquí?</h3>
+        <p style="font-size:14px;color:var(--texto2)">La fuente de este tablero, <b>Mirada al Congreso</b>, hace seguimiento de <b>asistencia y gastos solo para la Cámara de Diputadas y Diputados</b>. Del Senado publica, por ahora, la elección de su presidencia y votaciones puntuales de proyectos de ley.</p>
+        <p style="font-size:14px;color:var(--texto2)" class="mt">Si quieres datos de asistencia y gastos de senadores, puedes consultarlos directamente en el portal de <b>Transparencia del Senado</b> (senado.cl), que publica esa información mes a mes.</p>
+        <div class="caja-dato" style="margin-top:14px">💡 Dato ciudadano: la presidencia del Senado importa porque quien la ejerce organiza la tabla de proyectos que se votan y, además, está en la línea de sucesión del Presidente de la República.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VERIFICACION ============ -->
+  <section id="verificacion">
+    <h2 class="tit">✅ Constatación con fuentes oficiales</h2>
+    <p class="lead">Antes de publicar este tablero, cada dato fue cruzado contra los sitios oficiales del Congreso: <b>camara.cl</b>, <b>senado.cl</b>, los <b>datos abiertos oficiales</b> (opendata.camara.cl) y la <b>BCN</b>. Esto fue lo que verificamos:</p>
+    <div class="grid dos mt">
+      <div class="card">
+        <h3>✔ Lo que coincidió exactamente</h3>
+        <div style="font-size:14px;color:var(--texto2);display:grid;gap:8px">
+          <p>🏛️ <b>Mesa de la Cámara</b> — Jorge Alessandri (Presidente), Felipe Camaño y Ximena Ossandón (vicepresidencias): confirmado en camara.cl.</p>
+          <p>🏛️ <b>Mesa del Senado</b> — Paulina Núñez presidenta con 39 votos; Iván Moreira vicepresidente con 37 votos: confirmado en senado.cl y la BCN.</p>
+          <p>🔢 <b>155 diputad@s y 50 senadores</b>: confirmado en ambas cámaras.</p>
+          <p>📅 <b>69 sesiones de Sala</b> entre el 11 de marzo y el 17 de septiembre de 2026: coincide exactamente con el registro oficial de sesiones (datos abiertos de la Cámara).</p>
+          <p>💰 <b>Gastos de mayo 2026</b> — chequeo puntual contra el portal de Transparencia de camara.cl: los totales de asesores y el gasto operacional coinciden peso a peso en los casos revisados (incluyendo el mayor y el menor gasto).</p>
+          <p>🗳️ <b>Votaciones</b>: provienen directamente del servicio de datos abiertos oficial de la Cámara (opendata.camara.cl).</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3>📝 Diferencias detectadas (y su explicación)</h3>
+        <div style="font-size:14px;color:var(--texto2);display:grid;gap:8px">
+          <p>🩺 El resumen oficial de asistencia de camara.cl <b>descuenta las licencias médicas y otras justificaciones válidas</b>. Por ejemplo, <b>María Francisca Bello</b> asistió a 2 de las sesiones, pero registra 83 inasistencias justificadas (licencia): oficialmente su asistencia "válida" es 100%, mientras que este tablero muestra ambos números (asistencia real 2% y efectiva 100%).</p>
+          <p>📊 En 140 de 155 diputad@s la asistencia efectiva coincide con la oficial con menos de 1 punto de diferencia; en el resto, la brecha se explica por licencias y permisos válidos.</p>
+          <p>🗂️ El resumen oficial de la Cámara excluye las sesiones de <b>Congreso Pleno</b>; este tablero sigue el criterio de Mirada al Congreso (69 sesiones incluidas esas 2).</p>
+        </div>
+      </div>
+    </div>
+    <div class="caja-explica">
+      <b>🧾 ¿Qué significa esto?</b> Que los números de este tablero son <b>confiables y trazables</b>: cada cifra se puede verificar en los portales oficiales de la Cámara y del Senado. Cuando hay dos formas legítimas de contar algo (por ejemplo, faltas con o sin licencia médica), este tablero te muestra ambas.
+    </div>
+  </section>
+
+  <!-- ============ EXPLORADOR ============ -->
+  <section id="explorador">
+    <h2 class="tit">🔎 Busca a tu diputad@</h2>
+    <p class="lead">Escribe un nombre y haz clic en la fila para ver su ficha completa con enlaces a las fuentes oficiales. También puedes usar el <b>buscador de arriba</b> o los botones de sugerencia. Ordena por cualquier columna haciendo clic en los títulos.</p>
+    <div class="buscador">
+      <input id="buscar" type="text" placeholder="Ej: Jiles, Kast, Bello, Winter…">
+      <select id="filtro-banc"></select>
+    </div>
+    <div class="tabla-wrap">
+      <table id="tabla">
+        <thead><tr>
+          <th data-k="nombre">Diputad@ ⇅</th>
+          <th data-k="grupo">Bancada ⇅</th>
+          <th data-k="asist">Asistencia ⇅</th>
+          <th data-k="inas">Inasistencias ⇅</th>
+          <th data-k="g_tot">Gasto mensual ⇅</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="nota-metodo mt" id="contador-tabla"></p>
+  </section>
+
+  <!-- ============ GLOSARIO ============ -->
+  <!-- ══════════ TU DISTRITO ══════════ -->
+  <section id="distrito">
+    <h2 class="tit">🏠 ¿Quiénes representan tu distrito?</h2>
+    <p class="lead">Chile se divide en <b>28 distritos electorales</b> y cada uno elige a sus propios diputados. Escoge el tuyo y mira quiénes te representan, cómo asisten y cuánto gastan. ¿No sabes cuál es tu distrito? Puedes consultarlo con tu comuna en el <a href="https://www.servel.cl" target="_blank" rel="noopener" style="color:var(--azul2)">sitio oficial del Servel</a>.</p>
+    <div class="card mt" style="text-align:center">
+      <label style="font-weight:700; margin-right:10px;">Tu distrito electoral:</label>
+      <select id="sel-distrito" style="padding:9px 14px; border-radius:10px; border:1px solid var(--borde); font-size:15px; font-weight:700; color:var(--azul); cursor:pointer;"></select>
+      <button id="olvidar-distrito" class="btn-mini" style="margin-left:8px;" hidden>🗑️ Olvidar mi distrito</button>
+      <p class="nota-metodo mt" style="text-align:center">💾 Si vuelves a abrir este tablero, recordaremos tu distrito en <b>este navegador</b> (se guarda solo en tu equipo; ningún servidor guarda nada).</p>
+    </div>
+    <div id="distrito-res" class="mt"></div>
+  </section>
+
+  <!-- ══════════ COMPARADOR ══════════ -->
+  <section id="comparador">
+    <h2 class="tit">⚖️ Compara dos diputad@s</h2>
+    <p class="lead">Elige dos nombres y mira lado a lado su asistencia, sus gastos y su bancada. El mejor indicador de cada fila se destaca en <b>verde</b>. También puedes comparar a alguien contra el <b>promedio de la Cámara</b>, o dejar que el azar elija por ti.</p>
+    <div class="card mt" style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center; align-items:center;">
+      <select id="cmp-a" style="padding:9px 12px; border-radius:10px; border:1px solid var(--borde); font-size:14px; max-width:300px;"></select>
+      <span style="font-weight:800; color:var(--gris); align-self:center;">vs.</span>
+      <select id="cmp-b" style="padding:9px 12px; border-radius:10px; border:1px solid var(--borde); font-size:14px; max-width:300px;"></select>
+      <button id="cmp-azar" class="btn-mini" style="margin:0;">🎲 Comparar al azar</button>
+    </div>
+    <div id="cmp-res" class="mt"></div>
+  </section>
+
+  <!-- ══════════ CÓMO SE HACE UNA LEY ══════════ -->
+  <section id="como-ley">
+    <h2 class="tit">🧭 ¿Cómo se hace una ley? En 6 pasos simples</h2>
+    <p class="lead">Cualquier ley en Chile sigue este camino. Entenderlo te ayuda a saber <b>dónde está trabado</b> cualquier proyecto que veas en las noticias.</p>
+    <div class="ley-pasos mt">
+      <div class="paso"><div class="paso-n">1</div><div class="paso-e">💡</div><b>Nace la idea</b><p>El Presidente envía un <b>mensaje</b>, o diputados/senadores presentan una <b>moción</b>. Al proyecto se le asigna un número de boletín.</p></div>
+      <div class="flecha">→</div>
+      <div class="paso"><div class="paso-n">2</div><div class="paso-e">🔍</div><b>Se estudia en comisión</b><p>Un grupo pequeño de parlamentarios especialistas lo revisa, escucha expertos y puede cambiarlo (<b>indicaciones</b>).</p></div>
+      <div class="flecha">→</div>
+      <div class="paso"><div class="paso-n">3</div><div class="paso-e">🗳️</div><b>Lo vota la Sala</b><p>Todas y todos los diputados de la Cámara lo discuten y votan. Si se aprueba, pasa al Senado.</p></div>
+      <div class="flecha">→</div>
+      <div class="paso"><div class="paso-n">4</div><div class="paso-e">🏛️</div><b>Lo revisa el Senado</b><p>El Senado hace lo mismo. Si lo aprueba igual que la Cámara, el proyecto queda listo.</p></div>
+      <div class="flecha">→</div>
+      <div class="paso"><div class="paso-n">5</div><div class="paso-e">🔀</div><b>Si hay diferencias…</b><p>Si el Senado cambia el texto, se arma una <b>comisión mixta</b> (mitad Cámara, mitad Senado) para acordar una sola versión.</p></div>
+      <div class="flecha">→</div>
+      <div class="paso"><div class="paso-n">6</div><div class="paso-e">✍️</div><b>Se promulga</b><p>El Presidente la firma y se publica en el <b>Diario Oficial</b>. ¡Ya es ley y todos debemos cumplirla!</p></div>
+    </div>
+    <p class="nota-metodo mt">⚡ Algunos proyectos urgentes tienen <b>discusión inmediata</b> (se votan más rápido). Otros, como las reformas constitucionales, necesitan mayorías especiales (4/7 o 2/3).</p>
+  </section>
+
+  <section id="glosario">
+    <h2 class="tit">📖 Glosario ciudadano</h2>
+    <p class="lead">Las palabras del Congreso, explicadas como para conversar en la mesa.</p>
+    <details><summary>Bancada</summary><p>Es el grupo que forman los diputados de un mismo partido (o de partidos aliados) para trabajar coordinados dentro de la Cámara. Es como la "selección" de cada partido en el Congreso.</p></details>
+    <details><summary>Sesión de Sala</summary><p>Es la reunión donde los 155 diputados se juntan (presencial o telemáticamente) a discutir y votar los proyectos. Es el momento donde se decide.</p></details>
+    <details><summary>Inasistencia efectiva vs. real</summary><p>"Real" cuenta todas las veces que un diputado no estuvo, aunque tenga justificación (licencia médica, por ejemplo). "Efectiva" solo cuenta las faltas sin justificación válida: esas son las que la Cámara considera injustificadas.</p></details>
+    <details><summary>Boletín</summary><p>Es el número de identificación de cada proyecto. Por ejemplo, "Boletín 18216-05". Los últimos dígitos indican la materia (05 = Hacienda, 07 = Salud, 04 = Educación, etc.).</p></details>
+    <details><summary>Quórum</summary><p>Es el mínimo de votos que necesita un proyecto para aprobarse. Algunos proyectos requieren mayoría simple (más votos a favor que en contra) y otros mayorías más altas, como la de los diputados en ejercicio.</p></details>
+    <details><summary>Gasto operacional y de personal</summary><p>No es el sueldo del diputado. Es el presupuesto que el Estado entrega para que contrate asesores y cubra gastos de su trabajo parlamentario: traslados, telefonía, oficinas y actividades en el distrito.</p></details>
+    <details><summary>Período legislativo</summary><p>Los diputados se eligen por 4 años. Los datos de este tablero corresponden al período 2026–2030, que comenzó en marzo de 2026.</p></details>
+  </section>
+</div>
+
+<footer>
+  <div class="cont">
+    <div class="titulo">El Poder en Simple — tablero ciudadano no oficial del Congreso y el Gobierno de Chile</div>
+    <p><b>Fuente de los datos:</b> <a href="https://www.miradaalcongreso.com/">Mirada al Congreso</a>, proyecto independiente que monitorea la Cámara usando los datos abiertos oficiales de la <a href="https://www.camara.cl/transparencia/datosAbiertos.aspx">Cámara de Diputadas y Diputados</a> y la <a href="https://www.bcn.cl/portal/">Biblioteca del Congreso Nacional (BCN)</a>.</p>
+    <p class="mt"><b>Período legislativo:</b> 2026–2030 · <b>Asistencia:</b> 69 sesiones hasta el 17 de septiembre de 2026 · <b>Gastos:</b> mayo de 2026 · <b>Votaciones:</b> enero–septiembre de 2026.</p>
+    <p class="mt"><b>Verificación oficial (17-sep-2026):</b> mesas directivas confirmadas en <a href="https://www.camara.cl/camara/mesa_directiva.aspx">camara.cl</a> y <a href="https://www.senado.cl/">senado.cl</a>; sesiones y votaciones contrastadas con los datos abiertos oficiales de la Cámara; gastos y asistencia chequeados contra el portal de Transparencia de la Cámara. <a href="#verificacion">Ver detalle</a>.</p>
+    <p class="mt nota-metodo" style="color:#9fb0dd;">Este tablero es un resumen educativo. Para el detalle oficial y actualizado, visita miradaalcongreso.com y los portales de transparencia de la Cámara y del Senado. Los montos están en pesos chilenos (CLP).</p>
+  </div>
+</footer>
+
+<script>
+const DATA = /*__DATA__*/;
+
+/* ---------- utilidades ---------- */
+/* protección: ambientes sin scrollIntoView (vistas previas/navegadores antiguos) */
+if(!Element.prototype.scrollIntoView){ Element.prototype.scrollIntoView = function(){}; }
+const $ = s => document.querySelector(s);
+const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
+const fmt$ = n => '$' + fmt(n);
+const fmtMillones = n => {
+  const m = n/1e6;
+  return (m >= 1000 ? (m/1000).toLocaleString('es-CL',{maximumFractionDigits:2}) + ' mil millones' : fmt(m) + ' millones');
+};
+const COL = {
+  'Republicanos':'#2b3a8f','PNL':'#5ab6e8','Social Cristiano':'#2e9e5b','UDI':'#f5821f',
+  'RN/EVO':'#0f72c4','PPD':'#8e44ad','Frente Amplio':'#e4445e','Comunistas':'#a6202e',
+  'PS/PL/PR':'#f08a80','DC':'#17a2a2','PDG':'#6c2d9c','Demócratas/Amarillos':'#d9ae00',
+  'Independientes':'#8a8f98','Otros/IND':'#8a8f98'
+};
+const colorB = g => COL[g] || '#8a8f98';
+
+function filaBarra(nombre, valor, max, color, texto){
+  const w = Math.max(2, valor/max*100);
+  return `<div class="fila-barra"><div class="nom" title="${nombre}">${nombre}</div>
+    <div class="pista"><div class="barra" style="width:${w}%;background:${color}"></div></div>
+    <div class="val">${texto}</div></div>`;
+}
+
+/* ---------- carrusel de proyectos clave (rota solo, sin guardar nada) ---------- */
+window.__pkTimers = window.__pkTimers || new Map();   // rotador -> interval (nada se guarda fuera de la página)
+function iniciarRotadores(){
+  window.__pkTimers.forEach(t=>clearInterval(t));
+  window.__pkTimers.clear();
+  document.querySelectorAll('.rotador').forEach(rot=>{
+    const slides = rot.querySelectorAll('.proy-slide');
+    if(slides.length < 2) return;
+    const dots = rot.querySelectorAll('.rot-dot');
+    const stage = rot.querySelector('.rot-stage');
+    stage.style.minHeight = Math.max(...[...slides].map(s=>s.offsetHeight)) + 'px';
+    let idx = 0;
+    const mostrar = i=>{
+      idx = (i + slides.length) % slides.length;
+      slides.forEach((s,j)=>s.classList.toggle('on', j===idx));
+      dots.forEach((d,j)=>d.classList.toggle('on', j===idx));
+    };
+    const arrancar = ()=>{
+      clearInterval(window.__pkTimers.get(rot));
+      window.__pkTimers.set(rot, setInterval(()=>mostrar(idx+1), 6000));
+    };
+    const parar = ()=>clearInterval(window.__pkTimers.get(rot));
+    dots.forEach((d,j)=>d.addEventListener('click', ()=>{ mostrar(j); arrancar(); }));
+    rot.querySelector('.rot-prev').addEventListener('click', ()=>{ mostrar(idx-1); arrancar(); });
+    rot.querySelector('.rot-next').addEventListener('click', ()=>{ mostrar(idx+1); arrancar(); });
+    rot.addEventListener('mouseenter', parar);
+    rot.addEventListener('mouseleave', arrancar);
+    arrancar();
+  });
+}
+
+/* ---------- enlaces externos: funcionan con clic en cualquier entorno ---------- */
+function avisarEnlace(url){
+  const viejo = document.getElementById('aviso-link'); if(viejo) viejo.remove();
+  const aviso = document.createElement('div');
+  aviso.id = 'aviso-link';
+  aviso.style.cssText = 'position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c2333;color:#fff;padding:13px 18px;border-radius:13px;font-size:13px;z-index:9999;max-width:92%;box-shadow:0 8px 30px rgba(0,0,0,.4);text-align:center;line-height:1.55;';
+  aviso.innerHTML = '📋 Este visor no permite abrir el enlace aquí, así que lo copiamos por ti.<br><b style="word-break:break-all;font-size:12px;background:rgba(255,255,255,.14);padding:2px 8px;border-radius:8px;">'+url+'</b><br><span style="opacity:.8;font-size:11.5px">Pégalo en la barra de direcciones de tu navegador.</span>';
+  document.body.appendChild(aviso);
+  let copiado = false;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(()=>{ copiado=true; }).catch(()=>{});
+    }
+  }catch(err){}
+  try{
+    if(!copiado){
+      const ta = document.createElement('textarea');
+      ta.value = url; ta.style.cssText='position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand && document.execCommand('copy'); ta.remove();
+    }
+  }catch(err){}
+  setTimeout(()=>{ if(aviso.parentNode) aviso.remove(); }, 9000);
+}
+document.addEventListener('click', e=>{
+  const a = e.target.closest && e.target.closest('a[href^="http"]');
+  if(!a) return;
+  let win = null;
+  try{ win = window.open(a.href, '_blank', 'noopener'); }catch(err){ win = null; }
+  if(!win){ e.preventDefault(); avisarEnlace(a.href); }
+  else { e.preventDefault(); }
+});
+
+/* ---------- KPIs principales ---------- */
+(function(){
+  const k = DATA.kpi, v = DATA.votaciones;
+  const pctApr = (v.aprobadas/v.total*100).toFixed(1);
+  const tarjetas = [
+    {num:'155', lbl:'Diputadas y diputados', nota:'elegidos por voto popular'},
+    {num:k.total_sesiones, lbl:'Sesiones de Sala', nota:`hasta el ${k.fecha_actualizacion.split('-').reverse().join('/')} · período 2026–2030`},
+    {num:k.asistencia_promedio+'%', lbl:'Asistencia promedio', nota:'a las sesiones de Sala'},
+    {num:fmt$(k.gasto_total_camara), lbl:'Gasto mensual de la Cámara', nota:'asesores + operación · mayo 2026'},
+    {num:fmt(v.total), lbl:'Votaciones en 2026', nota:'enero–septiembre'},
+    {num:pctApr+'%', lbl:'Se aprobó', nota:`${v.aprobadas} de ${v.total} votaciones`},
+  ];
+  $('#kpis').innerHTML = tarjetas.map(t=>`<div class="card kpi-card"><div class="num">${t.num}</div><div class="lbl">${t.lbl}</div><div class="nota">${t.nota}</div></div>`).join('');
+  $('#caja-periodo').innerHTML = `<b>Período legislativo 2026–2030:</b> la Cámara actual asumió en marzo de 2026. La asistencia se mide sobre <b>${k.total_sesiones} sesiones de Sala</b>; los gastos corresponden al último mes publicado (<b>${k.mes_gastos}</b>).`;
+})();
+
+/* ---------- MESAS DIRECTIVAS (verificadas) ---------- */
+(function(){
+  const m = DATA.mesas;
+  $('#cards-mesas').innerHTML = `
+    <div class="card">
+      <h3>🏛️ Cámara de Diputadas y Diputados <span class="chip aprobado">✔ camara.cl</span></h3>
+      <p style="font-size:20px;font-weight:800;color:var(--azul)">${m.camara.presidente}</p>
+      <p class="nota-metodo">Presidente de la Cámara</p>
+      <div style="font-size:14px;color:var(--texto2);margin-top:8px">
+        <p>${m.camara.vice1}</p>
+        <p>${m.camara.vice2}</p>
+      </div>
+      <p class="nota-metodo mt">${m.camara.detalle}</p>
+    </div>
+    <div class="card">
+      <h3>🏛️ Senado <span class="chip aprobado">✔ senado.cl</span></h3>
+      <p style="font-size:20px;font-weight:800;color:var(--azul)">${m.senado.presidenta}</p>
+      <p class="nota-metodo">Presidenta del Senado</p>
+      <div style="font-size:14px;color:var(--texto2);margin-top:8px">
+        <p>${m.senado.vice}</p>
+      </div>
+      <p class="nota-metodo mt">${m.senado.detalle}</p>
+    </div>`;
+})();
+
+/* ---------- ASISTENCIA ---------- */
+let modoAsist = 'real';
+function renderAsistBanc(){
+  const asKey = modoAsist==='real' ? 'asist' : 'asist_ef';
+  const inKey = modoAsist==='real' ? 'inas' : 'inas_ef';
+  const bA = [...DATA.bancadas].sort((a,b)=>b[asKey]-a[asKey]);
+  const bI = [...DATA.bancadas].sort((a,b)=>b[inKey]-a[inKey]);
+  $('#chart-asist-banc').innerHTML = bA.map(b=>filaBarra(b.grupo, b[asKey], 100, colorB(b.grupo), b[asKey].toFixed(1)+'%')).join('');
+  const maxI = Math.max(...bI.map(b=>b[inKey])) || 1;
+  $('#chart-inas-banc').innerHTML = bI.map(b=>filaBarra(b.grupo, b[inKey], maxI, colorB(b.grupo), b[inKey].toFixed(1))).join('');
+  const suf = modoAsist==='real' ? 'todas las ausencias' : 'solo faltas sin justificar';
+  $('#lbl-asist').textContent = modoAsist==='real' ? '(asistencia real)' : '(descuenta faltas justificadas)';
+  $('#lbl-inas').textContent = `(${suf}, promedio por diputado)`;
+}
+$('#tg-asist').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  modoAsist = b.dataset.m;
+  document.querySelectorAll('#tg-asist button').forEach(x=>x.classList.toggle('on', x===b));
+  renderAsistBanc();
+});
+(function(){
+  const d = DATA.diputados;
+  const mas = [...d].sort((a,b)=>b.asist-a.asist).slice(0,5);
+  const menos = [...d].sort((a,b)=>a.asist-b.asist).slice(0,5);
+  const mk = (arr, colorFondo) => arr.map((r,i)=>`
+    <div class="rank-item">
+      <div class="rank-pos" style="background:${colorFondo}">${i+1}°</div>
+      <div class="info"><div class="n">${r.nombre}</div><div class="d">${r.grupo} · ${r.inas} inasistencias${r.inas_ef?` (${r.inas_ef} sin justificar)`:''}</div></div>
+      <div class="cifra">${r.asist.toFixed(1)}%</div>
+    </div>`).join('');
+  $('#rank-mas-asist').innerHTML = mk(mas, 'var(--verde)');
+  $('#rank-menos-asist').innerHTML = mk(menos, 'var(--rojo)');
+  const k = DATA.kpi;
+  $('#dato-asist').innerHTML = `📊 En total se registraron <b>${fmt(k.inasistencias_totales)} inasistencias</b> (${fmt(k.inasistencias_efectivas_totales)} sin justificación válida) entre los 155 diputados en ${k.total_sesiones} sesiones. El promedio general de asistencia es <b>${k.asistencia_promedio}%</b>.`;
+})();
+renderAsistBanc();
+
+/* ---------- GASTOS ---------- */
+(function(){
+  const k = DATA.kpi;
+  const per = k.gasto_personal_total, op = k.gasto_operacional_total, tot = per+op;
+  const pctP = (per/tot*100).toFixed(0), pctO = (op/tot*100).toFixed(0);
+  const r = 54, c = 2*Math.PI*r;
+  $('#donut-gasto').innerHTML = `
+    <svg width="150" height="150" viewBox="0 0 150 150">
+      <circle cx="75" cy="75" r="${r}" fill="none" stroke="#edf0f7" stroke-width="26"/>
+      <circle cx="75" cy="75" r="${r}" fill="none" stroke="#2c55c8" stroke-width="26"
+        stroke-dasharray="${c*pctP/100} ${c}" transform="rotate(-90 75 75)"/>
+      <circle cx="75" cy="75" r="${r}" fill="none" stroke="#e8a400" stroke-width="26"
+        stroke-dasharray="${c*pctO/100} ${c}" stroke-dashoffset="-${c*pctP/100}" transform="rotate(-90 75 75)"/>
+      <text x="75" y="71" text-anchor="middle" font-size="16" font-weight="800" fill="#1c2333">${fmt(tot/1e6)}</text>
+      <text x="75" y="88" text-anchor="middle" font-size="10.5" fill="#6b7280">millones / mes</text>
+    </svg>
+    <div class="leyenda">
+      <div class="it"><span class="sw" style="background:#2c55c8"></span><b>${pctP}%</b>&nbsp;Personal de apoyo (asesores): ${fmtMillones(per)}</div>
+      <div class="it"><span class="sw" style="background:#e8a400"></span><b>${pctO}%</b>&nbsp;Gastos operacionales: ${fmtMillones(op)}</div>
+    </div>`;
+  $('#txt-gasto-total').textContent = `En mayo de 2026, los 155 diputados usaron en conjunto ${fmt$(tot)} (${fmtMillones(tot)} de pesos).`;
+  const maxOp = Math.max(...DATA.desglose_op.map(x=>x.v)) || 1;
+  $('#chart-desglose').innerHTML = DATA.desglose_op.map(x=>filaBarra(x.cat.toLowerCase().replace(/\b\w/g, ch=>ch.toUpperCase()), x.v, maxOp, '#7a8bd6', fmt$(x.v))).join('');
+})();
+
+let modoGasto = 'g_tot';
+function renderGastoBanc(){
+  const b = [...DATA.bancadas].sort((x,y)=>y[modoGasto]-x[modoGasto]);
+  const max = Math.max(...b.map(x=>x[modoGasto])) || 1;
+  $('#chart-gasto-banc').innerHTML = b.map(x=>filaBarra(x.grupo, x[modoGasto], max, colorB(x.grupo), fmt$(x[modoGasto]))).join('');
+}
+$('#tg-gasto').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  modoGasto = b.dataset.m;
+  document.querySelectorAll('#tg-gasto button').forEach(x=>x.classList.toggle('on', x===b));
+  renderGastoBanc();
+});
+(function(){
+  const d = DATA.diputados;
+  const mas = [...d].sort((a,b)=>b.g_tot-a.g_tot).slice(0,5);
+  const menos = [...d].sort((a,b)=>a.g_tot-b.g_tot).slice(0,5);
+  const mk = arr => arr.map((r,i)=>`
+    <div class="rank-item">
+      <div class="rank-pos" style="background:${i===0?'var(--azul)':'#8a97c9'}">${i+1}°</div>
+      <div class="info"><div class="n">${r.nombre}</div><div class="d">${r.grupo} · ${r.n_ases} asesores</div></div>
+      <div class="cifra">${fmt$(r.g_tot)}</div>
+    </div>`).join('');
+  $('#rank-mas-gasto').innerHTML = mk(mas);
+  $('#rank-menos-gasto').innerHTML = mk(menos);
+  const k = DATA.kpi;
+  $('#dato-gasto').innerHTML = `💡 Cada diputado gastó en promedio <b>${fmt$(k.gasto_promedio)}</b> en mayo de 2026. El que más gastó usó <b>${fmt$(Math.max(...d.map(x=>x.g_tot)))}</b> y el que menos, <b>${fmt$(Math.min(...d.map(x=>x.g_tot)))}</b>.`;
+})();
+renderGastoBanc();
+
+/* ---------- VOTACIONES ---------- */
+(function(){
+  const v = DATA.votaciones;
+  $('#kpis-vot').innerHTML = [
+    {num:fmt(v.total), lbl:'Votaciones en total', nota:'enero–septiembre 2026'},
+    {num:fmt(v.aprobadas), lbl:'Aprobadas', nota:(v.aprobadas/v.total*100).toFixed(1)+'% del total'},
+    {num:fmt(v.rechazadas), lbl:'Rechazadas', nota:(v.rechazadas/v.total*100).toFixed(1)+'% del total'},
+    {num:fmt(v.tipos['Proyecto de Ley']||0), lbl:'Votaciones de leyes', nota:'el corazón del trabajo legislativo'},
+  ].map(t=>`<div class="card kpi-card"><div class="num">${t.num}</div><div class="lbl">${t.lbl}</div><div class="nota">${t.nota}</div></div>`).join('');
+
+  const tipos = [['Proyecto de Ley','#2c55c8'],['Proyecto de Resolución','#e8a400'],['Proyecto de Acuerdo','#2e9e5b'],['Otros','#8a8f98']];
+  const tot = Object.values(v.tipos).reduce((a,b)=>a+b,0);
+  const r=54, c=2*Math.PI*r; let off=0;
+  let arcs='', ley='';
+  for(const [t,col] of tipos){
+    const n = v.tipos[t]||0; if(!n) continue;
+    const frac = n/tot;
+    arcs += `<circle cx="75" cy="75" r="${r}" fill="none" stroke="${col}" stroke-width="26" stroke-dasharray="${c*frac} ${c}" stroke-dashoffset="-${c*off}" transform="rotate(-90 75 75)"/>`;
+    ley += `<div class="it"><span class="sw" style="background:${col}"></span>${t}: <b>${n}</b> (${(frac*100).toFixed(0)}%)</div>`;
+    off += frac;
+  }
+  $('#donut-tipos').innerHTML = `<svg width="150" height="150" viewBox="0 0 150 150"><circle cx="75" cy="75" r="${r}" fill="none" stroke="#edf0f7" stroke-width="26"/>${arcs}<text x="75" y="80" text-anchor="middle" font-size="17" font-weight="800" fill="#1c2333">${fmt(tot)}</text></svg><div class="leyenda">${ley}</div>`;
+
+  const maxM = Math.max(...v.meses.map(x=>x.v));
+  $('#chart-meses').innerHTML = v.meses.map(x=>`<div class="col"><div class="v">${x.v}</div><div class="b" style="height:${x.v/maxM*78}%"></div><div class="l">${x.label}</div></div>`).join('');
+
+  $('#lista-proyectos').innerHTML = v.proyectos.map(p=>`
+    <div class="rank-item">
+      <div class="rank-pos" style="background:var(--azul2)">§</div>
+      <div class="info"><div class="n">${p.nombre}</div><div class="d">Boletín ${p.boletin}</div></div>
+      <div class="cifra">${p.votaciones} votaciones</div>
+    </div>`).join('');
+
+  /* proyectos clave del mes y del año */
+  const pk = v.proyectos_clave;
+  if(pk){
+    $('#pk-mes-tit').textContent = pk.mes_label;
+    $('#pk-anio-tit').textContent = pk.anio;
+    $('#pk-mes-lbl').textContent = pk.mes_label.toLowerCase();
+    $('#pk-anio-lbl').textContent = pk.anio;
+    const mkProy = (p,i)=>{
+      const otros = p.n - p.aprobadas - p.rechazadas;
+      return `<div class="proy-item">
+        <span class="proy-rank-num">${i+1}</span>
+        <div class="proy-body">
+          <b>${p.nombre}</b>
+          <div class="proy-meta">
+            <span class="chip-bol">Boletín ${p.boletin}</span>
+            <span>🗳️ ${p.n} votaciones</span>
+            <span>última: ${p.ultimo.toLowerCase()} · ${p.ultima_fecha.split('-').reverse().join('/')}</span>
+          </div>
+          <div class="proy-bar"><i style="width:${p.aprobadas/p.n*100}%;background:var(--verde)"></i><i style="width:${p.rechazadas/p.n*100}%;background:var(--rojo)"></i>${otros?`<i style="width:${otros/p.n*100}%;background:var(--ambar)"></i>`:''}</div>
+          <div class="proy-stats"><span class="up">✅ ${p.aprobadas} aprobada${p.aprobadas===1?'':'s'}</span><span class="down">❌ ${p.rechazadas} rechazada${p.rechazadas===1?'':'s'}</span></div>
+        </div>
+      </div>`;
+    };
+    const rotHTML = items => items.length < 2
+      ? items.map(mkProy).join('')
+      : `<div class="rotador">
+          <div class="rot-stage">${items.map((p,i)=>`<div class="proy-slide${i===0?' on':''}">${mkProy(p,i)}</div>`).join('')}</div>
+          <div class="rot-ctrl">
+            <button class="rot-prev" aria-label="Proyecto anterior">‹</button>
+            <span class="rot-dots">${items.map((_,i)=>`<span class="rot-dot${i===0?' on':''}" data-i="${i}"></span>`).join('')}</span>
+            <button class="rot-next" aria-label="Proyecto siguiente">›</button>
+            <span class="rot-hint">⟳ rota solo cada 6 s</span>
+          </div>
+        </div>`;
+    $('#pk-mes').innerHTML = pk.mes.length ? rotHTML(pk.mes) : '<p class="nota-metodo">Este mes aún no hay votaciones registradas.</p>';
+    $('#pk-anio').innerHTML = rotHTML(pk.anio_lista);
+    iniciarRotadores();
+  }
+
+  /* ---------- EL GOBIERNO (poder ejecutivo) ---------- */
+  const gob = DATA.gobierno;
+  const secGob = document.getElementById('gobierno');
+  if(gob && (gob.presidente || (gob.gabinete||[]).length)){
+    $('#gob-pres').innerHTML = gob.presidente ? `
+      <div class="gob-escudo">🏛️</div>
+      <div>
+        <b>${gob.presidente.nombre}</b>
+        <div class="mandato">${gob.presidente.cargo} · en el cargo desde el ${gob.presidente.desde} (período 2026–2030)</div>
+        <div class="src">✔ Constatado en la <a href="${gob.presidente.fuente}" target="_blank" rel="noopener">Historia Política de la BCN</a></div>
+      </div>` : '<p class="nota-metodo">No fue posible verificar al Presidente en este momento.</p>';
+    $('#gob-n-min').textContent = `· ${gob.gabinete.length} ministerios registrados`;
+    $('#gob-gabinete').innerHTML = gob.gabinete.map(g=>`
+      <div class="gob-card">
+        ${g.subrogante ? '<span class="chip-s">(S) subrogante</span>' : ''}
+        <div class="ministerio">${g.ministerio.replace('Ministerio ','')}</div>
+        <div class="ministro">${g.ministro}</div>
+        <div class="reg">📝 Registrado el ${g.registro.split('-').reverse().join('/')}</div>
+      </div>`).join('');
+    $('#gob-nota').innerHTML = `<b>Fuentes oficiales:</b> Presidencia según la Biblioteca del Congreso Nacional (${gob.presidente?gob.presidente.fuente:'bcn.cl'}); gabinete según ${gob.fuente_gabinete}. ${gob.nota||''}`;
+  } else if(secGob){
+    secGob.innerHTML = '<h2 class="tit">🇨🇱 El Gobierno: quienes administran el país</h2><p class="lead">No fue posible descargar los datos del Gobierno en este momento. Se volverá a intentar automáticamente al actualizar la página.</p>';
+  }
+
+  /* ---------- LO MÁS IMPORTANTE POR PERÍODO (ambos poderes) ---------- */
+  const pp = DATA.proyectos_periodos;
+  if(pp && pp.ventanas){
+    $('#per-lista').innerHTML = pp.ventanas.map(v=>{
+      const sinVot = (v.id==='semana' && pp.ultima_fecha_vot)
+        ? `La Sala aún no vota esta semana: la última votación fue el <b>${pp.ultima_fecha_vot.split('-').reverse().join('/')}</b>. `
+        : '';
+      const leg = v.legislativo ? `
+        <div class="nom">${v.legislativo.nombre}</div>
+        <div class="det">Boletín ${v.legislativo.boletin} · 🗳️ <b>${v.legislativo.n} votaciones</b> en el período (de ${v.legislativo.candidatos} proyectos con actividad) · última: ${v.legislativo.ult_res.toLowerCase()} el ${v.legislativo.ult_fecha}</div>`
+        : `<div class="nom">Sin votaciones en este período</div><div class="det">${sinVot}Cuando la Cámara vuelva a sesionar, aquí aparecerá el proyecto destacado.</div>`;
+      const eje = v.ejecutivo ? `
+        <div class="nom">${v.ejecutivo.ley}: ${v.ejecutivo.titulo}</div>
+        <div class="det">🖋️ Promulgada el <b>${v.ejecutivo.fecha}</b> · ${v.ejecutivo.organismo} · <a href="${v.ejecutivo.link}" target="_blank" rel="noopener">ver historia de la ley</a><br>📚 ${v.ejecutivo.total} ley${v.ejecutivo.total===1?'':'es'} promulgada${v.ejecutivo.total===1?'':'s'} en el período</div>`
+        : `<div class="nom">Sin leyes promulgadas en este período</div>`;
+      return `<div class="per-row">
+        <div class="per-lbl"><b>${v.titulo}</b><small>${v.rango}</small><small>${v.nota}</small></div>
+        <div class="per-card leg"><h4>🏛️ Congreso — ${pp.criterio_legislativo}</h4>${leg}</div>
+        <div class="per-card eje"><h4>🎖️ Gobierno — ${pp.criterio_ejecutivo}</h4>${eje}</div>
+      </div>`;
+    }).join('');
+    $('#per-nota').innerHTML = `<b>Criterios:</b> Congreso → ${pp.criterio_legislativo}; Gobierno → ${pp.criterio_ejecutivo}. <b>Fuentes:</b> votaciones de la Sala de la Cámara (datos abiertos oficiales) y ${pp.fuente_ejecutivo}. Todo se recalcula con los datos del momento; nada queda guardado.`;
+  }
+
+  /* ---------- FECHAS CLAVE ---------- */
+  const fc = DATA.fechas_clave;
+  if(fc){
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const proxDe = it=>{
+      if(it.recurrente){
+        const [m,dd] = it.fecha.split('-').map(Number);
+        let d = new Date(hoy.getFullYear(), m-1, dd);
+        if(d < hoy) d = new Date(hoy.getFullYear()+1, m-1, dd);
+        return d;
+      }
+      const [a,m,dd] = it.fecha.split('-').map(Number);
+      return new Date(a, m-1, dd);
+    };
+    const diffDias = d => Math.round((d-hoy)/86400000);
+    const fmtF = d => d.toLocaleDateString('es-CL', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    const banner = $('#fechas-banner');
+    if(hoy.getMonth()+1===9 && hoy.getDate()>=15 && hoy.getDate()<=19){
+      banner.style.display='block';
+      banner.innerHTML = '🇨🇱 ¡Semana de Fiestas Patrias! El 18 y 19 de septiembre Chile celebra su independencia. Este tablero también se toma el respiro: recuerda que en estas fechas la actividad legislativa se detiene.';
+    }
+    const todos = [];
+    fc.forEach(g=>g.items.forEach(it=>todos.push({...it, grupo:g.id})));
+    const prox = todos.map(it=>({it, d:proxDe(it)})).filter(x=>x.d>=hoy).sort((a,b)=>a.d-b.d).slice(0,6);
+    $('#fechas-proximas').innerHTML = prox.map(({it,d})=>{
+      const dias = diffDias(d);
+      const cuando = dias===0 ? '¡HOY!' : dias===1 ? 'mañana' : `en ${dias} días`;
+      return `<div class="prox-card${dias<=7?' cerca':''}"><div class="prox-top"><div class="cuando">${fmtF(d)}</div><span class="cuenta-chip">${cuando}</span></div><b>${it.emoji} ${it.titulo}</b><small>${it.desc}</small></div>`;
+    }).join('');
+    const ele = fc.find(g=>g.id==='elecciones');
+    $('#fechas-elecciones').innerHTML = ele.items.map(it=>{
+      const [a,m,dd] = it.fecha.split('-');
+      return `<div class="card" style="border-top:3px solid var(--rojo)">
+        <div style="font-size:13px; font-weight:800; color:var(--rojo)">${dd}/${m}/${a}</div>
+        <b style="font-size:15.5px; display:block; margin-top:4px;">${it.emoji} ${it.titulo}</b>
+        <p style="font-size:13px; color:var(--texto2); margin-top:6px; line-height:1.55;">${it.desc}</p></div>`;
+    }).join('');
+    const anio = hoy.getFullYear();
+    const fer = fc.find(g=>g.id==='feriados');
+    $('#fechas-feriados').innerHTML = fer.items.map(it=>{
+      const [m,dd] = it.fecha.split('-');
+      return `<div class="fer-card"><div class="dia">${dd}/${m}/${anio}</div><b>${it.emoji} ${it.titulo}</b><small>${it.desc}</small></div>`;
+    }).join('');
+    const inst = fc.find(g=>g.id==='institucionales');
+    $('#fechas-institucionales').innerHTML = inst.items.map(it=>{
+      const d = proxDe(it);
+      const pasada = !it.recurrente && d < hoy;
+      const ftxt = it.fecha.split('-').reverse().join('/').slice(0,10);
+      return `<div class="fer-card${it.tipo==='legislativo'?' legislativo':''}">
+        <div class="dia">${it.recurrente ? ftxt.slice(0,5)+anio : ftxt}${pasada?' · ✔ ya ocurrió':''}</div>
+        <b>${it.emoji} ${it.titulo}</b><small>${it.desc}</small></div>`;
+    }).join('');
+  }
+
+  /* ---------- NOTICIAS DEL DÍA ---------- */
+  const nots = DATA.noticias;
+  if(nots){
+    const fmtN = f => { if(!f) return 'reciente'; const [a,m,dd] = f.split('-'); return `${dd}/${m}/${a}`; };
+    const mkLista = arr => (arr||[]).length
+      ? arr.map(n=>`<a class="not-item" href="${n.url}" target="_blank" rel="noopener"><div class="fecha">${fmtN(n.fecha)}</div><b>${n.titulo}</b></a>`).join('')
+      : '<div class="not-vacio">Sin titulares nuevos por ahora — revisa más tarde.</div>';
+    $('#not-camara').innerHTML = mkLista(nots.camara);
+    $('#not-senado').innerHTML = mkLista(nots.senado);
+    $('#not-gobierno').innerHTML = mkLista(nots.gobierno);
+  }
+
+  /* ---------- HISTÓRICO DE GASTOS ---------- */
+  const gh = DATA.gastos_hist;
+  if(gh && gh.length){
+    $('#card-gastos-hist').hidden = false;
+    const max = Math.max(...gh.map(x=>x.total));
+    const NM = {'01':'ene','02':'feb','03':'mar','04':'abr','05':'may','06':'jun','07':'jul','08':'ago','09':'sep','10':'oct','11':'nov','12':'dic'};
+    $('#gastos-hist').innerHTML = gh.map(x=>{
+      const [a,m] = x.mes.split('-');
+      return `<div class="hist-col"><div class="v">$${Math.round(x.total/1e6)} M</div>
+        <div class="b" style="height:${Math.max(8, x.total/max*120)}px"></div>
+        <div class="l">${NM[m]} ’${a.slice(2)}<br><span style="font-size:10px">(${x.n} dip.)</span></div></div>`;
+    }).join('');
+  }
+
+  /* ---------- CUENTA REGRESIVA ELECTORAL ---------- */
+  (function(){
+    const fcg = (DATA.fechas_clave||[]).find(g=>g.id==='elecciones');
+    if(!fcg) return;
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const fut = fcg.items.map(it=>{ const [a,m,dd]=it.fecha.split('-').map(Number); return {it, d:new Date(a,m-1,dd)}; })
+      .filter(x=>x.d>=hoy).sort((a,b)=>a.d-b.d);
+    if(!fut.length) return;
+    const {it,d} = fut[0];
+    const dias = Math.round((d-hoy)/86400000);
+    const el = $('#elecciones-countdown');
+    el.style.display = 'flex';
+    el.innerHTML = `<span style="font-size:20px">🗳️</span>
+      <span>Próxima elección: <b>${it.titulo}</b> · ${d.toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'})}</span>
+      <span style="margin-left:auto; background:rgba(255,255,255,.22); padding:3px 12px; border-radius:99px; white-space:nowrap;"><b>${dias.toLocaleString('es-CL')}</b> días</span>
+      <a href="elecciones_chile.html" style="background:#ffd75e; color:#1d3a8f; font-weight:800; font-size:13px; text-decoration:none; padding:7px 16px; border-radius:99px; white-space:nowrap; box-shadow:0 3px 10px rgba(0,0,0,.25);">📊 Ver resultados de las elecciones →</a>`;
+  })();
+
+  /* ---------- MODO OSCURO ---------- */
+  (function(){
+    const btn = $('#dark-toggle'); if(!btn) return;
+    let dark = false;
+    try{ dark = localStorage.getItem('eps_dark')==='1'; }catch(e){}
+    const aplicar = ()=>{ document.body.classList.toggle('dark', dark); btn.textContent = dark ? '☀️' : '🌙'; };
+    aplicar();
+    btn.addEventListener('click', ()=>{ dark=!dark; try{ localStorage.setItem('eps_dark', dark?'1':'0'); }catch(e){} aplicar(); });
+  })();
+
+  /* ---------- FRESCURA DEL AUDIO SEMANAL ---------- */
+  (function(){
+    const card = document.getElementById('card-audio'); if(!card) return;
+    const f = card.dataset.fecha; if(!f || f.indexOf('__')===0) return;
+    const gen = new Date(f+'T00:00:00'); const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const dias = Math.round((hoy-gen)/86400000);
+    if(dias > 7){
+      const w = document.createElement('p');
+      w.className = 'nota-metodo mt';
+      w.style.color = 'var(--rojo)'; w.style.fontWeight = '700';
+      w.innerHTML = '⏳ Este audio es de hace '+dias+' días. Pide en el chat «renueva el audio semanal» y se crea el de esta semana (el anterior se elimina automáticamente).';
+      card.appendChild(w);
+    }
+  })();
+
+  /* ---------- TU DISTRITO ---------- */
+  const dists = [...new Set(DATA.diputados.map(x=>x.distrito).filter(Boolean))].map(Number).sort((a,b)=>a-b);
+  $('#sel-distrito').innerHTML = '<option value="">— Elige tu distrito (1 a 28) —</option>' +
+    dists.map(n=>`<option value="${n}">Distrito N° ${n}</option>`).join('');
+  function pintarDistrito(){
+    const v = $('#sel-distrito').value, cont = $('#distrito-res');
+    const btnOlvidar = $('#olvidar-distrito');
+    if(btnOlvidar) btnOlvidar.hidden = !v;
+    if(!v){ cont.innerHTML=''; return; }
+    const digs = DATA.diputados.filter(x=>String(x.distrito)===v);
+    cont.innerHTML = `<p class="nota-metodo">Distrito N° ${v}: <b>${digs.length} diputad@s</b> te representan. <a href="https://www.camara.cl/diputados/diputados_por_distrito.aspx?prmDistrito=${v}" target="_blank" rel="noopener" style="color:var(--azul2)">Ver ficha oficial en camara.cl</a></p>
+    <div class="dis-grid mt">${digs.map(x=>`
+      <div class="gob-card">
+        <div class="ministerio">${x.militancia||'IND'} · ${x.grupo}</div>
+        <div class="ministro" style="font-size:15px">${x.nombre}</div>
+        <div class="reg">🪑 asistencia ${x.asist.toFixed(0)}% · 💰 ${fmt$(x.g_tot)} · ${x.n_ases} asesor@s</div>
+        <button class="btn-mini" onclick="explorador.abrir('${x.id}')">Ver su ficha completa</button>
+      </div>`).join('')}</div>`;
+  }
+  $('#sel-distrito').addEventListener('change', ()=>{
+    pintarDistrito();
+    try{ localStorage.setItem('eps_distrito', $('#sel-distrito').value||''); }catch(e){}
+  });
+  const btnOlvidar = $('#olvidar-distrito');
+  if(btnOlvidar) btnOlvidar.addEventListener('click', ()=>{
+    $('#sel-distrito').value=''; pintarDistrito();
+    try{ localStorage.removeItem('eps_distrito'); }catch(e){}
+  });
+  try{
+    const guardado = localStorage.getItem('eps_distrito');
+    if(guardado && dists.includes(Number(guardado))){ $('#sel-distrito').value=guardado; pintarDistrito(); }
+  }catch(e){}
+
+  /* ---------- COMPARADOR ---------- */
+  const ordenados = DATA.diputados.slice().sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  const opts = ordenados.map(x=>`<option value="${x.id}">${x.nombre}</option>`).join('');
+  $('#cmp-a').innerHTML = '<option value="">— Diputad@ A —</option>' + opts;
+  $('#cmp-b').innerHTML = '<option value="">— Diputad@ B —</option>' + opts + '<option value="PROM">📊 Promedio de toda la Cámara</option>';
+  const promedio = {};
+  ['asist','asist_ef','inas','g_tot','g_per','g_op','n_ases'].forEach(k=>{
+    promedio[k] = DATA.diputados.reduce((s,x)=>s+(x[k]||0),0)/DATA.diputados.length;
+  });
+  const PROM_OBJ = {id:'PROM', nombre:'📊 Promedio Cámara (155)', grupo:'—', militancia:'—', distrito:'—', ...promedio};
+  const de = v => DATA.diputados.find(x=>String(x.id)===String(v)) || (String(v)==='PROM' ? PROM_OBJ : null);
+  const fmtCmp = k => k.startsWith('g') ? v=>fmt$(Math.round(v)) : k==='n_ases'||k==='inas' ? v=>Math.round(v) : v=>v.toFixed(1)+'%';
+  const cmpRender = ()=>{
+    const a = de($('#cmp-a').value), b = de($('#cmp-b').value);
+    const cont = $('#cmp-res');
+    if(!a || !b){ cont.innerHTML=''; return; }
+    try{ localStorage.setItem('eps_cmp', JSON.stringify([$('#cmp-a').value, $('#cmp-b').value])); }catch(e){}
+    const fila = (lbl, k, mayorEsMejor)=>{
+      const va=a[k], vb=b[k], fmt=fmtCmp(k);
+      const ganaA = Math.round(va)!==Math.round(vb) && (mayorEsMejor ? va>vb : va<vb);
+      const ganaB = Math.round(va)!==Math.round(vb) && !ganaA;
+      return `<tr><td class="metrica">${lbl}</td><td class="${ganaA?'gana':''}">${fmt(va)}</td><td class="${ganaB?'gana':''}">${fmt(vb)}</td></tr>`;
+    };
+    const filaTxt = (lbl, k, conv=v=>v) => `<tr><td class="metrica">${lbl}</td><td>${conv(a[k]??'—')}</td><td>${conv(b[k]??'—')}</td></tr>`;
+    cont.innerHTML = `<div class="cmp-wrap"><table class="cmp">
+      <tr><th style="text-align:left">Indicador</th><th>${a.nombre}</th><th>${b.nombre}</th></tr>
+      ${filaTxt('Bancada','grupo')}
+      ${filaTxt('Partido','militancia', v=>v==='—'?'—':(v||'IND'))}
+      ${filaTxt('Distrito','distrito', v=>v==='—'||!v?'—':'N° '+v)}
+      ${fila('Asistencia','asist',true)}
+      ${fila('Asistencia efectiva','asist_ef',true)}
+      ${fila('Inasistencias','inas',false)}
+      ${fila('Gasto mensual total','g_tot',false)}
+      ${fila('Gasto en personal (asesores)','g_per',false)}
+      ${fila('Gasto operacional','g_op',false)}
+      ${fila('N° de asesores','n_ases',false)}
+    </table></div>
+    <p class="nota-metodo mt">💡 En asistencia, más es mejor. En gastos destacamos el menor, pero gastar menos no siempre es mejor ni más: cada diputad@ decide cómo usar su presupuesto asignado; revisa el detalle en la ficha.${b.id==='PROM'?' El promedio incluye a los 155 diputados en ejercicio.':''}</p>`;
+  };
+  $('#cmp-a').addEventListener('change', cmpRender);
+  $('#cmp-b').addEventListener('change', cmpRender);
+  $('#cmp-azar').addEventListener('click', ()=>{
+    const pool = DATA.diputados.slice();
+    const a = pool.splice(Math.floor(Math.random()*pool.length),1)[0];
+    const b = pool[Math.floor(Math.random()*pool.length)];
+    $('#cmp-a').value = a.id; $('#cmp-b').value = b.id;
+    cmpRender();
+    document.getElementById('cmp-res').scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+  try{
+    const par = JSON.parse(localStorage.getItem('eps_cmp')||'null');
+    if(par && par[0] && par[1] && de(par[0]) && de(par[1])){
+      $('#cmp-a').value=par[0]; $('#cmp-b').value=par[1]; cmpRender();
+    }
+  }catch(e){}
+
+  $('#cards-destacadas').innerHTML = (DATA.destacadas||(DATA.votaciones&&DATA.votaciones.destacadas)||[]).map(v=>{
+    const filas = Object.entries(v.por_bancada)
+      .filter(([,c])=>c.si+c.no+c.abst>0)
+      .sort((a,b)=>(b[1].si+b[1].no+b[1].abst)-(a[1].si+a[1].no+a[1].abst));
+    const max = Math.max(...filas.map(([,c])=>c.si+c.no+c.abst));
+    const chip = v.resultado==='Aprobado' ? '<span class="chip aprobado">✔ APROBADO</span>' : '<span class="chip rechazado">✖ RECHAZADO</span>';
+    return `<div class="card vot-card">
+      <h3 style="display:block"><span style="font-size:14.5px">${v.titulo}</span></h3>
+      <p class="nota-metodo">${v.ref}</p>
+      <div class="tot">
+        <div class="t" style="color:var(--verde)">A favor<br><b>${v.totales.si}</b></div>
+        <div class="t" style="color:var(--rojo)">En contra<br><b>${v.totales.no}</b></div>
+        <div class="t" style="color:var(--gris)">Abstención<br><b>${v.totales.abst}</b></div>
+        <div class="t">Resultado<br>${chip}</div>
+      </div>
+      ${filas.map(([g,c])=>{
+        const t=c.si+c.no+c.abst, w=Math.max(4,t/max*100);
+        return `<div class="fila-voto"><div class="nom">${g}</div>
+          <div class="stack" style="width:${w}%"><span style="width:${c.si/t*100}%;background:var(--verde)"></span><span style="width:${c.no/t*100}%;background:var(--rojo)"></span><span style="width:${c.abst/t*100}%;background:#b8bfcc"></span></div>
+          <div class="nums">👍 ${c.si||0} · 👎 ${c.no||0}${c.abst?` · abst. ${c.abst}`:''}</div></div>`;
+      }).join('')}
+      <p class="nota-metodo mt">🟢 a favor · 🔴 en contra · ⚪ abstención</p>
+    </div>`;
+  }).join('');
+})();
+
+/* ---------- SENADO ---------- */
+(function(){
+  const s = DATA.senado;
+  const total = s.resultado.reduce((a,b)=>a+b.votos,0);
+  $('#chart-senado').innerHTML = s.resultado.map(r=>{
+    const pct = r.votos/total*100;
+    return `<div class="fila-barra" style="grid-template-columns:170px 1fr 90px">
+      <div class="nom">${r.nombre}</div>
+      <div class="pista"><div class="barra" style="width:${Math.max(2,pct)}%;background:${r.color}"></div></div>
+      <div class="val">${r.votos} votos</div></div>`;
+  }).join('') + `<p class="nota-metodo" style="margin-top:8px">🏆 <b>${s.resultado[0].nombre}</b> fue electa presidenta del Senado con ${s.resultado[0].votos} de ${total} votos.</p>`;
+  $('#nota-senado').innerHTML = `Vicepresidencia: la ganó <b>${s.vicepresidencia}</b>. En el archivo Excel adjunto puedes ver cómo votó cada uno de los 50 senadores.`;
+})();
+
+/* ---------- EXPLORADOR ---------- */
+(function(){
+  const d = DATA.diputados;
+  const bancs = [...new Set(d.map(x=>x.grupo))].sort();
+  $('#filtro-banc').innerHTML = '<option value="">Todas las bancadas</option>' + bancs.map(b=>`<option>${b}</option>`).join('');
+  let sortK = 'nombre', sortAsc = true, abierto = null;
+
+  /* API global: la usa el buscador ciudadano del hero */
+  window.explorador = {
+    abrir(id){
+      $('#buscar').value=''; $('#filtro-banc').value='';
+      abierto = id; render();
+      requestAnimationFrame(()=>{
+        const tr = document.querySelector(`#tbody tr.fila-d[data-id="${id}"]`);
+        if(tr){ tr.scrollIntoView({behavior:'smooth', block:'center'});
+                tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash'); }
+      });
+    },
+    bancada(g){
+      $('#buscar').value=''; $('#filtro-banc').value=g; render();
+      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+    },
+    ordenarGasto(){
+      $('#buscar').value=''; $('#filtro-banc').value='';
+      sortK='g_tot'; sortAsc=false; render();
+      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+    },
+    ordenarAsistencia(asc){
+      $('#buscar').value=''; $('#filtro-banc').value='';
+      sortK='asist'; sortAsc=asc; render();
+      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+    }
+  };
+
+  function render(){
+    const q = $('#buscar').value.toLowerCase().trim();
+    const fb = $('#filtro-banc').value;
+    let rows = d.filter(r => (!q || r.nombre.toLowerCase().includes(q)) && (!fb || r.grupo===fb));
+    rows.sort((a,b)=>{
+      let x=a[sortK], y=b[sortK];
+      if(typeof x==='string'){ x=x.toLowerCase(); y=y.toLowerCase(); }
+      return (x<y?-1:x>y?1:0) * (sortAsc?1:-1);
+    });
+    $('#contador-tabla').textContent = `Mostrando ${rows.length} de ${d.length} diputad@s.`;
+    $('#tbody').innerHTML = rows.map(r=>{
+      const colA = r.asist>=95 ? 'var(--verde)' : r.asist>=85 ? 'var(--ambar)' : 'var(--rojo)';
+      let html = `<tr class="fila-d" data-id="${r.id}">
+        <td><span class="punto" style="background:${colorB(r.grupo)}"></span>${r.nombre}</td>
+        <td style="color:var(--texto2)">${r.grupo}</td>
+        <td><b>${r.asist.toFixed(1)}%</b><span class="mini-barra"><i style="width:${r.asist}%;background:${colA}"></i></span></td>
+        <td>${r.inas}${r.inas_ef?` <span class="nota-metodo">(${r.inas_ef} s/j)</span>`:''}</td>
+        <td>${fmt$(r.g_tot)}</td></tr>`;
+      if(abierto===r.id){
+        html += `<tr class="detalle"><td colspan="5"><div class="perfil">
+          <div class="p"><div class="v">${r.asist.toFixed(1)}%</div><div class="l">asistencia real (${DATA.kpi.total_sesiones} sesiones)</div></div>
+          <div class="p"><div class="v">${r.asist_ef.toFixed(1)}%</div><div class="l">asistencia efectiva (sin faltas justificadas)</div></div>
+          <div class="p"><div class="v">${fmt$(r.g_tot)}</div><div class="l">gasto total ${DATA.kpi.mes_gastos.toLowerCase()}</div></div>
+          <div class="p"><div class="v">${fmt$(r.g_per)}</div><div class="l">en asesores (${r.n_ases} personas)</div></div>
+          <div class="p"><div class="v">${fmt$(r.g_op)}</div><div class="l">en gastos operacionales</div></div>
+          <div class="p"><div class="v">${r.militancia||'IND'}</div><div class="l">militancia · bancada ${r.grupo}</div></div>
+        </div>
+        ${(DATA.votos_leyes&&DATA.votos_leyes.length)?`<div class="votos-ley"><h4>🗳️ ¿Cómo votó en las últimas leyes?</h4>${DATA.votos_leyes.slice(0,12).map(v=>{
+          const op=v.votos[r.id];
+          const lbl=op==='S'?'✔ A favor':op==='N'?'✖ En contra':op==='A'?'◻ Abstención':'— No votó';
+          const tit0=v.titulo||('Boletín '+v.ref);
+          const tit=tit0.length>88?tit0.slice(0,88)+'…':tit0;
+          return `<div class="voto-item"><span class="voto-chip ${op||'X'}">${lbl}</span><span style="flex:1">${tit}</span><small>${v.fecha.split('-').reverse().join('/')}</small></div>`;
+        }).join('')}<p class="nota-metodo mt">Voto nominal oficial en las leyes más recientes votadas en la Sala. "No votó" puede ser ausencia o pareo.</p></div>`:''}
+        <p class="nota-metodo" style="margin-top:10px">🔎 Verificar en fuentes oficiales:
+          <a href="https://www.camara.cl/diputados/detalle/mociones.aspx?prmID=${r.id}" target="_blank" rel="noopener">ficha en camara.cl</a> ·
+          <a href="https://www.camara.cl/diputados/detalle/gastosoperacionales.aspx?prmId=${r.id}" target="_blank" rel="noopener">gastos oficiales</a> ·
+          <a href="https://www.camara.cl/legislacion/sala_sesiones/asistencia_resumen.aspx" target="_blank" rel="noopener">asistencia oficial</a></p>
+        </td></tr>`;
+      }
+      return html;
+    }).join('');
+  }
+  $('#buscar').addEventListener('input', render);
+  $('#filtro-banc').addEventListener('change', render);
+  document.querySelectorAll('#tabla th').forEach(th=>th.addEventListener('click', ()=>{
+    const k = th.dataset.k;
+    if(sortK===k) sortAsc=!sortAsc; else { sortK=k; sortAsc = (k==='nombre'||k==='grupo'); }
+    render();
+  }));
+  $('#tbody').addEventListener('click', e=>{
+    const tr = e.target.closest('tr.fila-d'); if(!tr) return;
+    abierto = abierto===tr.dataset.id ? null : tr.dataset.id;
+    render();
+  });
+  render();
+})();
+
+/* ---------- BUSCADOR CIUDADANO (interactivo, en el hero) ---------- */
+(function(){
+  const input = $('#busq'), panel = $('#busq-res'), chipsBox = $('#busq-chips');
+  if(!input) return;
+  const norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const hl = (texto, q) => {
+    const i = norm(texto).indexOf(q);
+    if(i < 0 || !q) return texto;
+    return texto.slice(0,i) + '<mark>' + texto.slice(i, i+q.length) + '</mark>' + texto.slice(i+q.length);
+  };
+  const secciones = [
+    {t:'🪑 Asistencia a las sesiones', id:'asistencia', keys:'asistencia faltas inasistencias sesiones quien falta'},
+    {t:'💰 Gastos de cada diputado', id:'gastos', keys:'gastos plata lucas asesores presupuesto en que gastan'},
+    {t:'🗳️ Votaciones de 2026', id:'votaciones', keys:'votaciones leyes votaron proyectos como votaron'},
+    {t:'📌 Proyectos clave del mes y del año', id:'proyectos-clave', keys:'proyectos importantes mes año boletines que se discute leyes destacadas'},
+    {t:'🇨🇱 El Gobierno: Presidente y gabinete', id:'gobierno', keys:'gobierno presidente ministros ministras gabinete poder ejecutivo kast ministerios'},
+    {t:'📜 Lo más importante por semana, mes, semestre y año', id:'periodos', keys:'proyectos importantes semana mes semestre año leyes promulgadas hitos ambos poderes'},
+    {t:'📅 Fechas clave: feriados, elecciones e hitos', id:'fechas', keys:'fechas feriados fiestas patrias 18 septiembre elecciones calendario hitos cuenta publica'},
+    {t:'🏠 Tu distrito electoral', id:'distrito', keys:'distrito comuna representantes quienes me representan'},
+    {t:'⚖️ Compara dos diputad@s', id:'comparador', keys:'comparar comparar frente a cara vs diferencias promedio azar'},
+    {t:'📰 Noticias de hoy: Cámara, Senado y Gobierno', id:'noticias', keys:'noticias del dia hoy titulares prensa comunicados novedades camara senado presidencia'},
+    {t:'🗳️ Tablero electoral: resultados 2025 (presidente, diputados, senadores)', id:'elecciones-cta', keys:'elecciones resultados 2025 presidente diputados senadores regionales municipales quien gano votos decide chile servel tablero electoral'},
+    {t:'🗳️ Cómo votó tu diputad@ en las últimas leyes', id:'explorador', keys:'como voto mi diputado votó a favor en contra abstencion voto nominal leyes'},
+    {t:'🗓️ La Tabla Semanal: qué se discute esta semana', id:'fechas', keys:'tabla semanal que se discute esta semana sesiones sala comisiones citaciones lo que se viene'},
+    {t:'🧭 Cómo se hace una ley (6 pasos)', id:'como-ley', keys:'como se hace una ley tramitacion pasos boletin mocion mensaje promulgacion comision mixta senado'},
+    {t:'🏛️ El Senado', id:'senado', keys:'senado senadores presidencia senado'},
+    {t:'✅ Constatación con fuentes oficiales', id:'verificacion', keys:'verificacion oficial fuentes confiable'},
+    {t:'📖 Glosario ciudadano', id:'glosario', keys:'glosario que significa palabras explicacion'},
+  ];
+  let items = [], sel = -1;
+
+  function buscarDips(q){
+    return DATA.diputados.map(d=>{
+      const n = norm(d.nombre); let score = 0;
+      if(n === q) score = 300;
+      else if(n.startsWith(q)) score = 200;
+      else if(n.split(' ').some(w=>w.startsWith(q))) score = 120;
+      else if(n.includes(q)) score = 60;
+      return {d, score};
+    }).filter(x=>x.score>0)
+      .sort((a,b)=> b.score - a.score || a.d.nombre.localeCompare(b.d.nombre))
+      .slice(0,7);
+  }
+  function acciones(q){
+    const out = [];
+    for(const b of DATA.bancadas){ if(norm(b.grupo).includes(q)) out.push({tipo:'bancada', b}); }
+    for(const s of secciones){ if(norm(s.t + ' ' + s.keys).includes(q)) out.push({tipo:'seccion', s}); }
+    return out.slice(0,4);
+  }
+
+  function renderPanel(raw){
+    const q = norm(raw.trim());
+    sel = -1;
+    if(!q){ panel.classList.remove('show'); panel.innerHTML=''; items=[]; return; }
+    items = [];
+    let html = '';
+    const dips = buscarDips(q);
+    if(dips.length){
+      html += '<div class="busq-grupo">Diputad@s</div>';
+      for(const {d} of dips){
+        const idx = items.length; items.push({tipo:'dip', d});
+        const colA = d.asist>=95 ? 'var(--verde)' : d.asist>=85 ? 'var(--ambar)' : 'var(--rojo)';
+        html += `<div class="busq-item" data-i="${idx}" role="option">
+          <span class="punto" style="background:${colorB(d.grupo)}"></span>
+          <div class="busq-main"><b>${hl(d.nombre, q)}</b><small>${d.grupo} · ${d.militancia||'IND'}</small></div>
+          <div class="busq-nums"><span style="color:${colA};font-weight:700">${d.asist.toFixed(0)}% asistencia</span><span>${fmt$(d.g_tot)}</span></div>
+        </div>`;
+      }
+    }
+    const acc = acciones(q);
+    if(acc.length){
+      html += '<div class="busq-grupo">Bancadas y secciones</div>';
+      for(const a of acc){
+        const idx = items.length; items.push(a);
+        if(a.tipo==='bancada'){
+          html += `<div class="busq-item" data-i="${idx}" role="option">
+            <span class="punto" style="background:${colorB(a.b.grupo)}"></span>
+            <div class="busq-main"><b>${hl(a.b.grupo, q)}</b><small>bancada · ${a.b.n} diputad@s</small></div>
+            <div class="busq-nums"><span>ver →</span></div></div>`;
+        } else {
+          html += `<div class="busq-item" data-i="${idx}" role="option">
+            <span class="busq-ico">↗</span>
+            <div class="busq-main"><b>${a.s.t}</b><small>ir a la sección</small></div></div>`;
+        }
+      }
+    }
+    if(!items.length){
+      html = `<div class="busq-vacio">Sin resultados para «${raw.trim()}». Prueba con un apellido (ej: Jiles, Kast) o una bancada (ej: UDI).</div>`;
+    }
+    panel.innerHTML = html;
+    panel.classList.add('show');
+    panel.querySelectorAll('.busq-item').forEach(el=>el.addEventListener('click', ()=>elegir(items[+el.dataset.i])));
+  }
+
+  function elegir(it){
+    if(!it) return;
+    panel.classList.remove('show');
+    if(it.tipo==='dip'){
+      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+      setTimeout(()=>window.explorador.abrir(it.d.id), 320);
+    } else if(it.tipo==='bancada'){
+      window.explorador.bancada(it.b.grupo);
+    } else if(it.tipo==='seccion'){
+      document.getElementById(it.s.id).scrollIntoView({behavior:'smooth'});
+    }
+  }
+  function marcar(){
+    panel.querySelectorAll('.busq-item').forEach((el,i)=>el.classList.toggle('sel', i===sel));
+    const c = panel.querySelector('.busq-item.sel'); if(c) c.scrollIntoView({block:'nearest'});
+  }
+
+  input.addEventListener('input', ()=>renderPanel(input.value));
+  input.addEventListener('focus', ()=>{ if(input.value.trim()) renderPanel(input.value); });
+  input.addEventListener('keydown', e=>{
+    if(e.key==='Escape'){ panel.classList.remove('show'); return; }
+    if(!panel.classList.contains('show') || !items.length) return;
+    if(e.key==='ArrowDown'){ e.preventDefault(); sel = Math.min(sel+1, items.length-1); marcar(); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); sel = Math.max(sel-1, 0); marcar(); }
+    else if(e.key==='Enter'){ e.preventDefault(); elegir(items[sel>=0 ? sel : 0]); }
+  });
+  document.addEventListener('click', e=>{ if(!e.target.closest('#busq-wrap')) panel.classList.remove('show'); });
+
+  /* chips de sugerencias (generados con los datos) */
+  const dd = DATA.diputados;
+  const masG  = [...dd].sort((a,b)=>b.g_tot-a.g_tot)[0];
+  const masA  = [...dd].sort((a,b)=>b.asist-a.asist)[0];
+  const menosA= [...dd].sort((a,b)=>a.asist-b.asist)[0];
+  const chips = [
+    {t:'📅 Fechas clave del país', fn:()=>document.getElementById('fechas').scrollIntoView({behavior:'smooth'})},
+    {t:`💰 ¿Quién gasta más? (${masG.nombre.split(' ')[0]})`, fn:()=>window.explorador.ordenarGasto()},
+    {t:`🏅 ¿Quién asiste más?`, fn:()=>window.explorador.ordenarAsistencia(false)},
+    {t:`🚨 ¿Quién falta más?`, fn:()=>window.explorador.ordenarAsistencia(true)},
+    {t:`🔍 ${masA.nombre}`, fn:()=>{ window.explorador.abrir(masA.id); }},
+    {t:'🏛️ Bancada UDI', fn:()=>window.explorador.bancada('UDI')},
+    {t:'🌸 Bancada Frente Amplio', fn:()=>window.explorador.bancada('Frente Amplio')},
+    {t:'🔵 Bancada Republicanos', fn:()=>window.explorador.bancada('Republicanos')},
+  ];
+  chipsBox.innerHTML = chips.map((c,i)=>`<button type="button" data-c="${i}">${c.t}</button>`).join('');
+  chipsBox.addEventListener('click', e=>{
+    const b = e.target.closest('button[data-c]'); if(!b) return;
+    chips[+b.dataset.c].fn();
+  });
+})();
+
+/* ---------- aparición suave de secciones ---------- */
+(function(){
+  if(!('IntersectionObserver' in window)){ document.querySelectorAll('section').forEach(s=>s.classList.add('vis')); return; }
+  const io = new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); }
+  }), {threshold:.06});
+  document.querySelectorAll('section').forEach(s=>io.observe(s));
+})();
+</script>
+</body>
+</html>
+});
+  document.querySelectorAll('section').forEach(s=>io.observe(s));
+})();
+</script>
+</body>
+</html>

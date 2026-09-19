@@ -1,0 +1,31 @@
+[
+  {"id":"feriados","titulo":"Feriados y conmemoraciones de Chile","nota":"Los feriados son fechas fijadas por ley. Los marcados con * se trasladan al lunes según la ley cuando caen a mitad de semana.","items":[
+    {"fecha":"01-01","recurrente":true,"emoji":"🎆","titulo":"Año Nuevo","desc":"Primer día del año.","tipo":"feriado"},
+    {"fecha":"05-01","recurrente":true,"emoji":"✊","titulo":"Día del Trabajador y la Trabajadora","desc":"Conmemoración de los derechos laborales.","tipo":"feriado"},
+    {"fecha":"05-21","recurrente":true,"emoji":"⚓","titulo":"Día de las Glorias Navales","desc":"Combate Naval de Iquique (1879). Feriado irrenunciable.","tipo":"feriado"},
+    {"fecha":"06-20","recurrente":true,"emoji":"🌞","titulo":"Día de los Pueblos Indígenas","desc":"Solsticio de invierno. La fecha exacta la fija cada año un decreto.","tipo":"conmemoracion"},
+    {"fecha":"06-29","recurrente":true,"emoji":"⛪","titulo":"San Pedro y San Pablo","desc":"Feriado religioso. * Se puede trasladar a lunes.","tipo":"feriado"},
+    {"fecha":"07-16","recurrente":true,"emoji":"⛪","titulo":"Virgen del Carmen","desc":"Feriado religioso, patrona de Chile.","tipo":"feriado"},
+    {"fecha":"08-15","recurrente":true,"emoji":"⛪","titulo":"Asunción de la Virgen","desc":"Feriado religioso.","tipo":"feriado"},
+    {"fecha":"09-18","recurrente":true,"emoji":"🇨🇱","titulo":"Fiestas Patrias","desc":"Independencia de Chile. La fiesta más grande del país: fondas, cueca y empanadas.","tipo":"feriado"},
+    {"fecha":"09-19","recurrente":true,"emoji":"🎖️","titulo":"Día de las Glorias del Ejército","desc":"Desfile militar en honor al Ejército. Feriado.","tipo":"feriado"},
+    {"fecha":"10-12","recurrente":true,"emoji":"🌎","titulo":"Día del Encuentro de Dos Mundos","desc":"Conmemoración de la llegada de los europeos a América. * Se puede trasladar a lunes.","tipo":"feriado"},
+    {"fecha":"10-31","recurrente":true,"emoji":"⛪","titulo":"Día de las Iglesias Evangélicas y Protestantes","desc":"* Se puede trasladar según la ley.","tipo":"feriado"},
+    {"fecha":"11-01","recurrente":true,"emoji":"⛪","titulo":"Día de Todos los Santos","desc":"Feriado religioso.","tipo":"feriado"},
+    {"fecha":"12-08","recurrente":true,"emoji":"⛪","titulo":"Inmaculada Concepción","desc":"Feriado religioso.","tipo":"feriado"},
+    {"fecha":"12-25","recurrente":true,"emoji":"🎄","titulo":"Navidad","desc":"Feriado irrenunciable.","tipo":"feriado"}
+  ]},
+  {"id":"institucionales","titulo":"Fechas institucionales","nota":"Hitos del Congreso y del Gobierno.","items":[
+    {"fecha":"2026-03-11","recurrente":false,"emoji":"🎖️","titulo":"Cambio de mando presidencial","desc":"José Antonio Kast asumió la Presidencia para el período 2026–2030.","tipo":"civico"},
+    {"fecha":"2026-03-11","recurrente":false,"emoji":"🏛️","titulo":"Nuevo período legislativo","desc":"Se inició el período 2026–2030 con 155 diputad@s y la renovación de la mitad del Senado.","tipo":"legislativo"},
+    {"fecha":"06-01","recurrente":true,"emoji":"📢","titulo":"Cuenta Pública presidencial","desc":"El Presidente rinde cuenta del estado de la nación ante el Congreso Pleno (desde 2023, el 1 de junio).","tipo":"civico"},
+    {"fecha":"02-01","recurrente":true,"emoji":"😴","titulo":"Receso legislativo de febrero","desc":"En febrero la Sala de la Cámara normalmente no sesiona; las comisiones siguen trabajando.","tipo":"legislativo"},
+    {"fecha":"2030-03-11","recurrente":false,"emoji":"🗓️","titulo":"Fin del período presidencial","desc":"Termina el período 2026–2030 y asume quien resulte electo en noviembre de 2029.","tipo":"civico"}
+  ]},
+  {"id":"elecciones","titulo":"Las próximas elecciones","nota":"Según el calendario electoral oficial (Servel). No hay elecciones nacionales en 2026 ni 2027.","items":[
+    {"fecha":"2028-10-29","recurrente":false,"emoji":"🗳️","titulo":"Elecciones regionales y municipales","desc":"Se eligen gobernadores regionales, consejeros regionales, alcaldes y concejales. Voto obligatorio.","tipo":"eleccion"},
+    {"fecha":"2028-11-26","recurrente":false,"emoji":"🗳️","titulo":"Eventual segunda vuelta de gobernadores","desc":"Solo si ningún candidato a gobernador alcanza los votos necesarios.","tipo":"eleccion"},
+    {"fecha":"2029-11-18","recurrente":false,"emoji":"🗳️","titulo":"Elecciones presidenciales y parlamentarias","desc":"Se elige Presidente de la República, la Cámara completa y la otra mitad del Senado. Voto obligatorio.","tipo":"eleccion"},
+    {"fecha":"2029-12-16","recurrente":false,"emoji":"🗳️","titulo":"Eventual segunda vuelta presidencial","desc":"Solo si ningún candidato presidencial supera la mitad de los votos válidos.","tipo":"eleccion"}
+  ]}
+]

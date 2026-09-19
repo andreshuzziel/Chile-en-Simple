@@ -1,0 +1,246 @@
+PLAN GENERAL DE LA PÁGINA — "EL PODER EN SIMPLE"
+==================================================
+(versión en texto, para revisar y aprobar — incluye lo técnico y la lógica)
+
+PROPÓSITO
+---------
+Un tablero ciudadano, en lenguaje simple y SIN bases de datos, para que
+cualquier persona entienda el Congreso y el Gobierno de Chile, más un
+tablero electoral aparte estilo "Decide Chile". Todo se descarga al
+momento desde fuentes oficiales y vive solo en memoria (RAM).
+
+ESTRUCTURA: 2 PÁGINAS CONECTADAS
+--------------------------------
+1) dashboard_congreso.html  → "El Poder en Simple" (tablero principal)
+2) elecciones_chile.html    → "Tablero electoral" (estilo Decide Chile)
+   Se llega desde la página 1 por 3 vías: botón grande en la sección de
+   fechas clave, botón en el cuadro "Próxima elección" y menú superior.
+
+=============================================================
+PÁGINA 1 · EL PODER EN SIMPLE (dashboard principal)
+=============================================================
+
+A. ENCABEZADO (hero)
+   - Título "El Poder en Simple" (sin bandera).
+   - Dos tarjetas de entrada: Poder Legislativo y Poder Ejecutivo.
+   - Buscador ciudadano: busca diputad@s, bancadas y secciones.
+   - Cuadro "Próxima elección" con cuenta regresiva de días + botón
+     "📊 Ver resultados de las elecciones →" (va al tablero electoral).
+
+B. SECCIONES (en orden)
+   1. 👋 ¿Qué estoy mirando? — explica el sitio en lenguaje simple.
+   2. 📰 Noticias del día — titulares de Cámara, Senado y Presidencia,
+      descargados en vivo al abrir la página (sin base de datos).
+   3. 📅 Fechas clave — feriados, hitos, calendario electoral:
+      - "Lo que se viene" (próximas fechas destacadas solas).
+      - Próximas elecciones + TARJETA AZUL con botón al tablero electoral.
+      - Feriados del año e hitos institucionales.
+      - Tabla Semanal de la Cámara (enlace oficial).
+      - Audio semanal de resumen (se renueva cada semana).
+   4. 📌 Resumen — cifras grandes de la Cámara + mesas directivas.
+   5. 🪑 Asistencia — por bancada y rankings (real vs. efectiva).
+   6. 💰 Gastos — en qué se gasta, histórico mensual, por bancada.
+   7. 🗳️ Votaciones 2026 — KPIs, tipos, proyectos destacados y
+      carrusel rotativo de proyectos clave del mes y del año.
+   8. 📜 Lo más importante por período — semana/mes/semestre/año,
+      para Congreso (proyecto más votado) y Gobierno (última ley).
+   9. 🇨🇱 El Gobierno — Presidente (verificado en la BCN) y gabinete
+      de 25 ministerios según Transparencia/Ley del Lobby.
+  10. 🏛️ El Senado — elección de su presidencia y explicaciones.
+  11. ✅ Verificación — todo lo constatado con sitios oficiales.
+  12. 🔎 Busca a tu diputad@ — tabla ordenable con ficha desplegable,
+      enlaces oficiales y cómo votó en las últimas leyes.
+  13. 🏠 Tu distrito — elige tu distrito (1–28) y ve a tus diputados.
+  14. ⚖️ Comparador — compara 2 diputad@s o contra el promedio.
+  15. 🧭 Cómo se hace una ley — 6 pasos explicados.
+  16. 📖 Glosario ciudadano.
+
+C. REGLAS DE LA PÁGINA 1
+   - Público: ciudadano común → todo explicado sin tecnicismos.
+   - Sin base de datos: datos descargados al momento, solo en RAM.
+   - Todo con un solo clic; enlaces externos funcionan siempre
+     (si el visor los bloquea, se copian al portapapeles con aviso).
+   - Modo oscuro opcional; recuerda distrito/oscuro en el navegador.
+
+=============================================================
+PÁGINA 2 · TABLERO ELECTORAL (elecciones_chile.html)
+=============================================================
+
+ESTILO: inspirado en "Decide Chile" (resultados visuales, simples y
+directos), pero con datos oficiales del Servel, sin base de datos.
+
+FUENTE DE DATOS
+   - ZIP oficiales de resultados preliminares del Servel, elección del
+     16-nov-2025 (presidencial, diputados y senadores), descargados y
+     procesados; nada se inventa ni se guarda.
+
+PESTAÑAS
+   1. 🇨🇱 PRESIDENTE
+      - Barras de las 8 candidaturas con votos y % (Jara, Kast, Parisi,
+        Kaiser, Matthei, Mayne-Nicholls, Enríquez-Ominami, Artés).
+      - Chip "✔ Pasó a 2ª vuelta" en las 2 primeras mayorías.
+      - KPIs: habilitados, participación, votos válidos, nulos+blancos,
+        mesas escrutadas.
+      - SEGUNDA VUELTA OFICIAL (14-dic-2025): Kast 58,17% vs Jara
+        41,83%, con desglose Chile/extranjero (fuente: ZIP oficial
+        Datos_SegundaVotacion del Servel).
+      - ✔ MAPA de Chile coloreado por el ganador en cada uno de los 28
+        distritos (IMPLEMENTADO).
+
+   2. 🏛️ DIPUTADOS (155 escaños)
+      - Votos y escaños por pacto a nivel país.
+      - Selector de los 28 distritos: votos por pacto, candidat@s
+        elect@s y las candidaturas con más votos del distrito.
+      - ✔ MAPA de Chile coloreado por pacto ganador en cada distrito;
+        clic en un distrito muestra su detalle (IMPLEMENTADO).
+
+   3. 🏛️ SENADO (23 escaños en disputa en 2025)
+      - Votos y escaños por pacto (circunscripciones en disputa).
+      - Selector de las 7 circunscripciones: resultados y electos.
+      - ✔ MAPA coloreado por circunscripción (IMPLEMENTADO).
+
+   EL MAPA DE CHILE (cómo funciona)
+      - Geometría: trazado de las 343 comunas de Chile (geochile),
+        agrupadas a su distrito 2025 según las planillas oficiales del
+        Servel → elecciones_geografia.json.
+      - Cada comuna es un <path> SVG; el color lo define el resultado
+        del distrito al que pertenece, según la pestaña activa
+        (presidente / diputados / senadores).
+      - Interacción: pasar el mouse ilumina y muestra el distrito; clic
+        entrega el detalle completo de esa zona.
+
+   4. 🗺️ REGIONALES Y MUNICIPALES
+      - Tarjetas informativas honestas (el Servel ya no publica los
+        archivos 2024 en línea): última elección 26–27 oct 2024,
+        próxima el 29 oct 2028, enlace oficial a servel.cl.
+
+=============================================================
+LO TÉCNICO: CÓMO ESTÁ CONSTRUIDA LA PÁGINA (ARQUITECTURA)
+=============================================================
+
+PRINCIPIO CENTRAL: "SIN BASE DE DATOS"
+   - No existe ningún motor de base de datos (ni MySQL, ni SQLite, ni
+     nada que guarde información de forma permanente en el servidor).
+   - Los datos se DESCARGAN al momento desde los sitios oficiales, se
+     procesan y se mantienen solo en MEMORIA RAM mientras la página está
+     abierta. Al cerrar o reiniciar, todo se borra. Es como mirar una
+     pizarra: se escribe, se lee y se borra.
+   - Lo único que se guarda en el equipo del usuario son preferencias
+     pequeñas (su distrito, modo oscuro) en el navegador (localStorage).
+     Eso NO es una base de datos del servidor: vive solo en su propio
+     computador y puede borrarlo cuando quiera.
+
+LOS DOS MODOS DE LA PÁGINA 1
+   - MODO ESTÁTICO (dashboard_congreso.html): archivo único y autónomo.
+     Trae los datos embebidos dentro del mismo HTML (como una foto fija
+     del momento en que se generó). Sirve para abrirlo sin servidor.
+   - MODO EN VIVO (dashboard_vivo.html + servidor.py): un pequeño
+     servidor en Python (puerto 8070) que, cada vez que alguien abre la
+     página, descarga los datos FRESCOS de las fuentes oficiales y los
+     entrega. No guarda nada entre visitas.
+
+EL FLUJO DE LOS DATOS (paso a paso)
+   1. DESCARGA: scripts en Python leen las fuentes oficiales:
+      - Cámara (opendata.camara.cl): asistencia, gastos, votaciones.
+      - Senado (senado.cl): presidencia y votaciones.
+      - BCN / InfoLobby: verificación del Presidente y gabinete.
+      - Salas de prensa (Cámara, Senado, Presidencia): noticias.
+      - Servel (ZIP de resultados): datos electorales 2025.
+   2. LIMPIEZA Y CÁLCULO: se descartan filas de totales/resumen, se
+      suman votos, se calculan porcentajes, promedios y rankings.
+   3. SNAPSHOT: el resultado se guarda como archivos JSON planos
+     (fotografías de datos) que las páginas leen para dibujarse.
+   4. RENDER: la plantilla HTML (template) rellena sus huecos con esos
+      datos y genera el HTML final que ve el usuario.
+
+PLANTILLAS Y GENERADORES (por qué hay archivos "template" y "gen")
+   - template_dashboard.html / template_elecciones.html son MOLDES con
+     huecos marcados (por ejemplo __DATA__, __AUDIO_SRC__, __GEOM__).
+   - Los scripts gen_dashboard.py / gen_vivo.py / gen_elecciones_page.py
+     toman el molde + los datos JSON y producen el HTML final.
+   - Ventaja: si se cambia el diseño, se toca UNA sola plantilla y se
+     regeneran las páginas; los datos nunca se editan a mano.
+
+EL SERVIDOR EN VIVO (servidor.py)
+   - Hecho solo con la biblioteca estándar de Python (sin instalar
+     frameworks). Es liviano y transparente.
+   - Rutas:
+        /            → entrega dashboard_vivo.html
+        /elecciones  → entrega elecciones_chile.html
+        /api/todo    → JSON con TODOS los datos frescos (descarga en vivo)
+        /api/estado  → muestra qué hay en la caché RAM y su edad
+   - CACHÉ EN RAM: para no golpear los sitios oficiales a cada segundo,
+     los datos descargados se recuerdan unos ~15 minutos SOLO en RAM.
+     Si se reinicia el servidor, la caché queda vacía (se borra todo).
+
+EL TABLERO ELECTORAL (gen_elecciones.py)
+   - Descarga los ZIP oficiales del Servel (presidente, diputados,
+     senadores), que vienen como planillas Excel por mesa/distrito.
+   - Excluye las filas que son totales o resúmenes (para no contar dos
+     veces) y agrupa por candidato, pacto, distrito y circunscripción.
+   - Produce elecciones_resultados.json, que la página electoral embebe.
+   - Los ZIP descargados se guardan como caché en /tmp (NO en el
+     repositorio), y pueden borrarse sin perder nada importante.
+
+SEGURIDAD Y ROBUSTEZ (enlaces externos)
+   - Los enlaces a sitios oficiales se abren en pestaña nueva.
+   - Si el visor bloquea abrir pestañas (pasa en vistas previas), la
+     página detecta el fallo, COPIA la dirección al portapapeles y
+     muestra un aviso indicando que la pegue en su navegador. Así un
+     enlace nunca queda "roto".
+
+ACCESIBILIDAD Y EXPERIENCIA
+   - Un solo clic para todo; colores con buen contraste; textos
+     explicativos junto a cada gráfico.
+   - Los gráficos son barras simples con porcentajes visibles (fáciles
+     de leer) y el audio del resumen semanal está disponible para quien
+     prefiera escuchar en vez de leer.
+
+PRUEBAS AUTOMÁTICAS
+   - Se usan pruebas con jsdom (un navegador de prueba dentro de Node)
+     para verificar que cada botón, pestaña y gráfico se dibuje bien y
+     que los datos calcen (por ejemplo, que los 155 escaños sumen 155).
+   - Antes de entregar un cambio se corre la batería de pruebas completa.
+
+=============================================================
+MAPAS DE CHILE: ESTADO IMPLEMENTADO ✔
+=============================================================
+OBJETIVO (cumplido): por cada elección (presidente, diputados,
+senadores) la página muestra un mapa de Chile con sus distritos,
+coloreado según el resultado.
+
+CÓMO SE IMPLEMENTÓ
+   1. Geometría comunal real: 343 comunas (trazado geochile) agrupadas
+      a su distrito 2025 usando las planillas oficiales del Servel.
+   2. Todo quedó en elecciones_geografia.json (paths SVG por comuna,
+      centros de cada distrito y región, tabla comuna→distrito).
+   3. La página inyecta ese JSON como GEOM y dibuja el mapa SVG; el
+      color de cada comuna sigue el resultado del distrito según la
+      pestaña activa.
+   4. Interacción: mouse encima ilumina el distrito; clic muestra el
+      detalle (pactos, electos, candidaturas más votadas).
+   5. Además se incorporó la SEGUNDA VUELTA presidencial oficial
+      (Servel, dic-2025): Kast 58,17% vs Jara 41,83%, con desglose
+      Chile/extranjero.
+
+=============================================================
+ARCHIVOS DEL PROYECTO (carpeta plana, sin subcarpetas)
+=============================================================
+   template_dashboard.html   plantilla del tablero principal
+   template_elecciones.html  plantilla del tablero electoral (con mapa;
+                             marcadores __DATA__ y __GEOM__)
+   gen_dashboard.py          genera dashboard_congreso.html (estático)
+   gen_vivo.py               genera dashboard_vivo.html (modo en vivo)
+   gen_elecciones.py         descarga y procesa los ZIP del Servel
+                             (preserva claves extra como segunda_vuelta)
+   gen_elecciones_page.py    genera elecciones_chile.html (inyecta los
+                             JSON de resultados + geografía en la plantilla)
+   servidor.py               servidor en vivo sin base de datos (:8070)
+   elecciones_resultados.json snapshot Servel: 1ª y 2ª vuelta + Congreso
+   elecciones_resultados.ok.json respaldo verificado del snapshot
+   elecciones_geografia.json trazado comunal → distritos para el mapa
+   + snapshots JSON de cada sección (asistencia, gastos, votaciones…)
+
+RESUMEN EN 1 LÍNEA POR PÁGINA
+   Página 1: entender el Congreso y el Gobierno hoy.
+   Página 2: entender cómo se eligieron en 2025 (con mapa de Chile).

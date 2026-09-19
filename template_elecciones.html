@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultados Electorales Chile 2025 · El Poder en Simple</title>
+<style>
+  :root{
+    --azul:#1d3a8f; --azul2:#2c55c8; --rojo:#d92632; --verde:#1e9e5a; --ambar:#e8a400;
+    --gris:#6b7280; --fondo:#f3f5fb; --tarjeta:#ffffff; --borde:#e4e8f2;
+    --texto:#1c2333; --texto2:#4a5468;
+    --sombra:0 2px 10px rgba(20,30,70,.07);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.5;}
+  .cont{max-width:1080px; margin:0 auto; padding:0 16px;}
+  header.hero{background:linear-gradient(135deg,#14265e 0%,#1d3a8f 55%,#2c55c8 100%); color:#fff; padding:34px 0 28px;}
+  .hero .franja{height:6px; background:linear-gradient(90deg,var(--rojo) 33%,#fff 33% 66%,var(--azul2) 66%); border-radius:3px; margin-bottom:20px; opacity:.85;}
+  .eyebrow{font-size:12px; letter-spacing:2.5px; font-weight:800; opacity:.85; text-transform:uppercase;}
+  .hero h1{font-size:clamp(24px,4vw,36px); letter-spacing:-.5px; margin-top:6px;}
+  .hero h1 .simple{color:#ffd75e;}
+  .hero .sub{margin-top:10px; font-size:15px; max-width:760px; color:#dbe4ff;}
+  .badges{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
+  .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); padding:5px 12px; border-radius:99px; font-size:12px; font-weight:600;}
+  .volver{display:inline-block; margin-top:14px; color:#ffd75e; font-weight:700; text-decoration:none; font-size:14px;}
+  nav.tabs{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
+  nav.tabs .cont{display:flex; gap:6px; overflow-x:auto; padding:8px 16px;}
+  nav.tabs button{border:none; background:transparent; padding:8px 14px; border-radius:10px; font-size:13.5px; font-weight:700; color:var(--texto2); cursor:pointer; white-space:nowrap;}
+  nav.tabs button.on{background:var(--azul); color:#fff;}
+  section{padding:30px 0 8px;}
+  h2.tit{font-size:clamp(20px,3vw,26px); position:relative; padding-bottom:10px;}
+  h2.tit::after{content:""; position:absolute; left:0; bottom:0; width:56px; height:4px; border-radius:4px; background:linear-gradient(90deg,var(--rojo),var(--azul2));}
+  .lead{margin-top:12px; color:var(--texto2); font-size:15px; max-width:860px;}
+  .card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:16px; padding:20px 22px; box-shadow:var(--sombra);}
+  .mt{margin-top:16px;}
+  .nota-metodo{font-size:12px; color:var(--gris); margin-top:10px; line-height:1.6;}
+  .grid{display:grid; gap:14px;}
+  .grid.cuatro{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+  .kpi{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:14px 16px; box-shadow:var(--sombra); text-align:center;}
+  .kpi .num{font-size:22px; font-weight:800; color:var(--azul);}
+  .kpi .lbl{font-size:11.5px; color:var(--texto2); margin-top:3px;}
+  .bar-row{display:grid; grid-template-columns:minmax(150px,240px) 1fr 130px; gap:12px; align-items:center; padding:10px 0; border-bottom:1px solid var(--borde);}
+  .bar-row:last-child{border-bottom:none;}
+  .bar-nom{font-size:13.5px; font-weight:700;}
+  .bar-nom small{display:block; font-weight:600; color:var(--gris); font-size:11px;}
+  .pista{background:#edf0f7; border-radius:7px; height:26px; overflow:hidden; position:relative;}
+  .pista i{display:block; height:100%; border-radius:7px;}
+  .bar-val{text-align:right; font-size:13px; font-weight:800; white-space:nowrap;}
+  .bar-val small{display:block; font-weight:600; color:var(--gris); font-size:11px;}
+  .ganador .bar-nom{color:var(--verde);}
+  .chip-gana{display:inline-block; background:var(--verde); color:#fff; font-size:10px; font-weight:800; border-radius:99px; padding:2px 9px; margin-left:6px; vertical-align:middle;}
+  .chip-esc{display:inline-block; background:#eef2ff; color:var(--azul); font-size:10.5px; font-weight:800; border-radius:99px; padding:2px 9px; margin-left:6px;}
+  .sel-wrap{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  select{padding:9px 14px; border-radius:10px; border:1px solid var(--borde); font-size:14px; font-weight:700; color:var(--azul); cursor:pointer; background:#fff;}
+  .electos{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+  .electo{background:#e6f7ee; border:1px solid #bfe8d0; color:#12603a; border-radius:99px; padding:5px 13px; font-size:12.5px; font-weight:700;}
+  .oculto{display:none;}
+  /* ---------- mapa electoral ---------- */
+  .mapa-chips{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 4px;}
+  .mapa-chips button{border:1px solid var(--borde); background:#fff; color:var(--texto2); font-size:13px; font-weight:700; padding:7px 14px; border-radius:99px; cursor:pointer;}
+  .mapa-chips button.on{background:var(--azul); border-color:var(--azul); color:#fff;}
+  .mapa-flex{display:grid; grid-template-columns:minmax(300px,460px) 1fr; gap:18px; align-items:start;}
+  .mapa-caja{position:relative;}
+  .mapa-caja svg{width:100%; height:auto; display:block;}
+  .cell{stroke:#fff; stroke-width:2; cursor:pointer; transition:filter .12s, stroke-width .12s;}
+  .cell:hover{filter:brightness(1.12) saturate(1.15); stroke-width:2.5;}
+  .cell.sel{stroke:#101a3a; stroke-width:3;}
+  .cell.off{cursor:default;}
+  .cell.off:hover{filter:none;}
+  .mapa-caja{max-height:82vh; overflow:auto; border-radius:14px;}
+  .mapa-tools{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-top:8px;}
+  #mapa-metricas{display:flex; gap:6px; flex-wrap:wrap;}
+  .mapa-tools .mini-btn{border:1px solid var(--borde); background:#fff; color:var(--texto2); font-size:12px; font-weight:700; padding:6px 11px; border-radius:9px; cursor:pointer;}
+  .mapa-tools .mini-btn.on{background:var(--azul2); border-color:var(--azul2); color:#fff;}
+  .mapa-tools .buscar{display:flex; gap:6px; align-items:center;}
+  .mapa-tools .buscar input{border:1px solid var(--borde); border-radius:9px; padding:6px 10px; font-size:12.5px; min-width:190px; color:var(--texto);}
+  .pais-fondo{pointer-events:none;}
+  .lbl-reg-geo{fill:#101a3a; stroke:#fff; paint-order:stroke; stroke-width:2.5px; font-weight:800;}
+  .leyenda i.rampa{width:130px; height:11px; border-radius:3px;}
+  .cell.geo{stroke:#b9c4dc; stroke-width:.7;}
+  .cell.geo:hover{stroke-width:1.2; filter:brightness(1.1);}
+  .cell.geo.sel{stroke:#101a3a; stroke-width:1.8;}
+  .cell:focus{outline:2px solid var(--azul2); outline-offset:1px;}
+  .cell path.comuna-hl{stroke:#101a3a; stroke-width:1.9; filter:drop-shadow(0 0 3px rgba(16,26,58,.8));}
+  @media (prefers-contrast: more){ .cell.geo{stroke:#000; stroke-width:1.2;} }
+  .isla{stroke:#9db4e8; stroke-dasharray:4 3;}
+  .hatch{stroke:#c9d0e0; stroke-dasharray:4 3;}
+  .lbl-reg{font-size:10.5px; font-weight:700; fill:#5b657a;}
+  .lbl-num{font-size:12px; font-weight:800; fill:#fff; pointer-events:none; paint-order:stroke; stroke:rgba(0,0,0,.25); stroke-width:2px;}
+  .lbl-num.osc{fill:#25304d; stroke:rgba(255,255,255,.55);}
+  .mapa-tip{position:absolute; z-index:60; pointer-events:none; background:#101a3a; color:#fff; font-size:12px; line-height:1.5; padding:8px 11px; border-radius:10px; max-width:260px; box-shadow:0 6px 18px rgba(10,20,60,.35); opacity:0; transition:opacity .1s;}
+  .mapa-tip b{color:#ffd75e;}
+  .leyenda{display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:10px;}
+  .leyenda span{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--texto2);}
+  .leyenda i{width:13px; height:13px; border-radius:4px; display:inline-block;}
+  @media (max-width:760px){ .mapa-flex{grid-template-columns:1fr;} }
+  footer{margin-top:40px; padding:26px 0 40px; border-top:1px solid var(--borde); color:var(--gris); font-size:12.5px; line-height:1.7;}
+  @media (max-width:720px){ .bar-row{grid-template-columns:1fr; gap:4px;} .bar-val{text-align:left;} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="cont">
+    <div class="franja"></div>
+    <div class="eyebrow">RESULTADOS ELECTORALES · ESTILO "DECIDE CHILE"</div>
+    <h1>Elecciones de Chile <span class="simple">en simple</span> 🗳️</h1>
+    <p class="sub">Los resultados de las elecciones presidenciales y parlamentarias de <b>noviembre de 2025</b>, explicados para cualquier ciudadano: quién ganó, cuántos votos sacó cada candidatura y cómo quedaron el Congreso y el Senado. Datos oficiales del <b>Servicio Electoral (Servel)</b>.</p>
+    <div class="badges">
+      <span class="badge">📊 Fuente: resultados preliminares oficiales del Servel</span>
+      <span class="badge">🗓️ Elección del 16 de noviembre de 2025</span>
+      <span class="badge" id="badge-mesas">🏫 Mesas escrutadas: …</span>
+      <span class="badge">🔗 Sin base de datos: datos oficiales descargados del Servel</span>
+      <span class="badge" id="badge-frescura">🕒 Datos del snapshot oficial en disco</span>
+    </div>
+    <a class="volver" href="dashboard_congreso.html">← Volver al tablero El Poder en Simple</a>
+  </div>
+</header>
+
+<nav class="tabs">
+  <div class="cont">
+    <button data-tab="presidente" class="on">🇨🇱 Presidencial</button>
+    <button data-tab="mapa" class="">🗺️ Mapa por distritos</button>
+    <button data-tab="diputados">🏛️ Diputados</button>
+    <button data-tab="senadores">🏛️ Senado</button>
+    <button data-tab="regionales">🗺️ Regionales y municipales</button>
+  </div>
+</nav>
+
+<div class="cont">
+
+  <!-- ══════════ PRESIDENTE ══════════ -->
+  <section id="tab-presidente">
+    <h2 class="tit">🇨🇱 Elección presidencial 2025</h2>
+    <p class="lead">Todos los votos de Chile y del extranjero. Como ninguna candidatura superó la mitad de los votos, hubo <b>segunda vuelta</b> el 14 de diciembre de 2025, donde ganó <b>José Antonio Kast</b>, quien asumió el 11 de marzo de 2026.</p>
+    <div class="grid cuatro mt" id="pres-kpis"></div>
+    <div class="card mt"><div id="pres-barras"></div></div>
+    <p class="nota-metodo">Resultados preliminares con actas de mesa, publicados oficialmente por el Servel. La segunda vuelta (Kast vs. la segunda mayoría) la ganó José Antonio Kast, actual Presidente de la República.</p>
+    <div class="card mt" style="border-top:4px solid var(--ambar);">
+      <h3 style="font-size:17px;">🔁 Segunda vuelta presidencial · 14 de diciembre de 2025</h3>
+      <div class="grid cuatro mt" id="sv-kpis"></div>
+      <div class="mt" id="sv-barras"></div>
+      <div class="grid mt" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));" id="sv-desglose"></div>
+      <p class="nota-metodo" id="sv-nota"></p>
+    </div>
+  </section>
+
+  <!-- ══════════ MAPA POR DISTRITOS ══════════ -->
+  <section id="tab-mapa" class="oculto">
+    <h2 class="tit">🗺️ Mapa de Chile, distrito a distrito</h2>
+    <p class="lead">Mapa con la <b>geografía real de Chile</b>: las formas de las 343 comunas continentales, agrupadas según la división electoral vigente. Elige la elección que quieres mirar —diputados (28 distritos), senadores (16 circunscripciones), presidencial y 2ª vuelta (por región)— y el mapa se pinta con el ganador de cada territorio. Con las métricas puedes repintarlo por <b>participación</b> o por <b>nulos + blancos</b>, como el dashboard de Decide Chile. Busca tu comuna para saltar a su distrito.</p>
+    <div class="mapa-chips" id="mapa-chips">
+      <button data-elec="diputados" class="on">🏛️ Diputados (28 distritos)</button>
+      <button data-elec="senadores">🏛️ Senado (16 circunscripciones)</button>
+      <button data-elec="presidente">🇨🇱 Presidente (distrito único)</button>
+      <button data-elec="segundavuerta">🔁 2ª vuelta presidencial</button>
+      <button data-elec="municipales">🏘️ Regionales y municipales</button>
+    </div>
+    <div class="mapa-tools" id="mapa-tools">
+      <span id="mapa-metricas">
+        <button data-m="territorio" class="mini-btn on">Territorio (quién ganó)</button>
+        <button data-m="participacion" class="mini-btn">📈 Participación</button>
+        <button data-m="nulosblancos" class="mini-btn">⚪ Nulos + blancos</button>
+      </span>
+      <span class="buscar">
+        <button class="mini-btn" id="mapa-corte" title="Recorta la cuña de reclamación antártica para agrandar el mapa continental" style="display:none">🧊 Antártica: entera</button>
+        <input id="mapa-buscar" list="dl-comunas" placeholder="🔎 Busca tu comuna…" autocomplete="off">
+        <datalist id="dl-comunas"></datalist>
+        <button class="mini-btn" id="mapa-buscar-btn">Ir</button>
+      </span>
+    </div>
+    <div class="card mt">
+      <div class="mapa-flex">
+        <div class="mapa-caja">
+          <svg id="svg-mapa" viewBox="0 0 470 985" role="img" aria-label="Mapa de Chile por distritos electorales"></svg>
+          <div class="mapa-tip" id="mapa-tip"></div>
+        </div>
+        <div>
+          <h3 style="font-size:16px;" id="mapa-tit-leyenda">Quién ganó en cada distrito</h3>
+          <p class="nota-metodo" id="mapa-nota" style="margin-top:4px;"></p>
+          <div class="leyenda" id="mapa-leyenda"></div>
+          <div class="mt" id="mapa-detalle"><p class="nota-metodo">👆 Haz clic en un distrito del mapa para ver pactos, votos y personas electas aquí mismo.</p></div>
+        </div>
+      </div>
+      <p class="nota-metodo">Geografía real horneada sin base de datos: trazado comunal de github.com/alvaroparedesl/geochile + la nómina comuna→distrito derivada de los XLSX oficiales del Servel (gen_geografia.py → elecciones_geografia.json). Isla de Pascua y Juan Fernández (Distrito 7) y Río Verde (D28) no tienen polígono continental: las islas quedan como chip 🏝️. Los resultados vienen del snapshot oficial de Servel que ya usa esta página.</p>
+    </div>
+  </section>
+
+  <!-- ══════════ DIPUTADOS ══════════ -->
+  <section id="tab-diputados" class="oculto">
+    <h2 class="tit">🏛️ Elección de diputadas y diputados 2025</h2>
+    <p class="lead">Se renovó la Cámara completa: <b>155 escaños</b> en 28 distritos. Primero mira cómo le fue a cada pacto a nivel país, y luego elige tu distrito para ver quiénes salieron electos.</p>
+    <div class="card mt"><h3 style="font-size:16px;">Votos por pacto (todo Chile)</h3><div id="dip-nacional" class="mt"></div></div>
+    <div class="card mt">
+      <div class="sel-wrap">
+        <label style="font-weight:700;">📍 Mira un distrito:</label>
+        <select id="sel-distrito"></select>
+        <span class="nota-metodo" id="dip-meta" style="margin:0;"></span>
+      </div>
+      <div id="dip-distrito" class="mt"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ SENADORES ══════════ -->
+  <section id="tab-senadores" class="oculto">
+    <h2 class="tit">🏛️ Elección de senadoras y senadores 2025</h2>
+    <p class="lead">El Senado se renueva por mitades: en 2025 se eligió a los representantes de las <b>circunscripciones impares</b>. El Senado completo tiene 50 integrantes.</p>
+    <div class="card mt"><h3 style="font-size:16px;">Votos por pacto (circunscripciones en disputa)</h3><div id="sen-nacional" class="mt"></div></div>
+    <div class="card mt">
+      <div class="sel-wrap">
+        <label style="font-weight:700;">📍 Mira una circunscripción:</label>
+        <select id="sel-circ"></select>
+      </div>
+      <div id="sen-circ" class="mt"></div>
+    </div>
+  </section>
+
+  <!-- ══════════ REGIONALES Y MUNICIPALES ══════════ -->
+  <section id="tab-regionales" class="oculto">
+    <h2 class="tit">🗺️ Elecciones regionales y municipales</h2>
+    <p class="lead">Gobernadores regionales, consejeros regionales (CORE), alcaldes y concejales se eligen en una elección distinta a la presidencial.</p>
+    <div class="grid mt" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+      <div class="card">
+        <h3 style="font-size:16px;">🗓️ La última fue el 26–27 de octubre de 2024</h3>
+        <p style="font-size:13.5px; color:var(--texto2); margin-top:8px;">En esa elección se eligieron gobernadores, CORE, alcaldes y concejales, por primera vez con <b>voto obligatorio</b>. Por ejemplo, en la Región Metropolitana fue reelecto el gobernador Claudio Orrego, y Mario Desbordes ganó la alcaldía de Santiago.</p>
+      </div>
+      <div class="card" style="border-top:3px solid var(--rojo);">
+        <h3 style="font-size:16px;">⏭️ Las próximas: 29 de octubre de 2028</h3>
+        <p style="font-size:13.5px; color:var(--texto2); margin-top:8px;">Ese día se renovarán gobernadores, CORE, alcaldes y concejales en todo Chile, también con voto obligatorio. Cuando el Servel publique los datos oficiales de esa elección, este tablero los mostrará aquí.</p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;">🔎 ¿Dónde están los resultados 2024?</h3>
+        <p style="font-size:13.5px; color:var(--texto2); margin-top:8px;">Los archivos detallados por mesa de la elección 2024 ya no están publicados en línea por el Servel. Puedes consultar el sitio oficial para futuras publicaciones:</p>
+        <p style="margin-top:10px;"><a href="https://www.servel.cl/biblioteca-de-documentos/resultados-electorales-historicos/" target="_blank" rel="noopener" style="color:var(--azul2); font-weight:700;">Resultados históricos → servel.cl</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>El Poder en Simple · Resultados Electorales</b> — resumen educativo construido sobre los resultados preliminares oficiales publicados por el Servicio Electoral de Chile (Servel).
+    Nada se guarda en bases de datos: esta página se generó descargando los archivos oficiales del Servel. Verifica siempre en <a href="https://www.servel.cl" target="_blank" rel="noopener" style="color:var(--azul2)">servel.cl</a>.
+    · <a href="dashboard_congreso.html" style="color:var(--azul2)">Volver al tablero principal</a>
+  </footer>
+</div>
+
+<script>
+const DATA = /*__DATA__*/;
+const GEOM = /*__GEOM__*/;
+
+/* protección: ambientes sin scrollIntoView */
+if(!Element.prototype.scrollIntoView){ Element.prototype.scrollIntoView = function(){}; }
+const $ = s => document.querySelector(s);
+const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n));
+const COLORES = ['#2c55c8','#d92632','#1e9e5a','#e8a400','#7c3aed','#0e9aa7','#8a8f98','#c2185b','#5d4037','#455a64'];
+const colorDe = i => COLORES[i % COLORES.length];
+
+/* ---------- pestañas ---------- */
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.toggle('on', x===b));
+    ['presidente','mapa','diputados','senadores','regionales'].forEach(t=>{
+      $('#tab-'+t).classList.toggle('oculto', t!==b.dataset.tab);
+    });
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ---------- presidencial ---------- */
+(function(){
+  const p = DATA.presidencial;
+  const participacion = (p.total_validos + p.nulos + p.blancos) / p.electores * 100;
+  $('#badge-mesas').textContent = '🏫 ' + fmt(p.mesas) + ' mesas escrutadas';
+  $('#pres-kpis').innerHTML = [
+    {num: fmt(p.electores), lbl:'personas habilitadas para votar'},
+    {num: fmt(p.total_validos+p.nulos+p.blancos), lbl:'votos emitidos ('+participacion.toFixed(1)+'% participó)'},
+    {num: fmt(p.total_validos), lbl:'votos válidos'},
+    {num: fmt(p.nulos+p.blancos), lbl:'nulos + blancos'},
+  ].map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="lbl">${k.lbl}</div></div>`).join('');
+  const max = Math.max(...p.candidatos.map(c=>c.votos));
+  $('#pres-barras').innerHTML = p.candidatos.map((c,i)=>{
+    const pasa = i<2;
+    return `<div class="bar-row${pasa?' ganador':''}">
+      <div class="bar-nom">${c.nombre}${pasa?'<span class="chip-gana">✔ PASÓ A 2ª VUELTA</span>':''}<small>${String(c.partido).replace('PARTIDO ','')}${c.pacto && c.pacto!=='CANDIDATURA INDEPENDIENTE' && c.pacto!=='nan' ? ' · '+c.pacto : ''}</small></div>
+      <div class="pista"><i style="width:${Math.max(1.5, c.votos/max*100)}%; background:${colorDe(i)}"></i></div>
+      <div class="bar-val">${c.pct.toFixed(2)}%<small>${fmt(c.votos)} votos</small></div>
+    </div>`;
+  }).join('');
+})();
+
+/* ---------- helpers parlamentarias ---------- */
+function barrasPactos(resumen, cont){
+  const max = Math.max(...resumen.map(p=>p.votos));
+  cont.innerHTML = resumen.map((p,i)=>`<div class="bar-row">
+    <div class="bar-nom">${p.pacto}${p.escanos?'<span class="chip-esc">'+p.escanos+' escaños</span>':''}</div>
+    <div class="pista"><i style="width:${Math.max(1.5, p.votos/max*100)}%; background:${colorDe(i)}"></i></div>
+    <div class="bar-val">${p.pct.toFixed(2)}%<small>${fmt(p.votos)} votos</small></div>
+  </div>`).join('');
+}
+function detalleDistrito(d, cont, tipo){
+  const max = Math.max(...d.pactos.map(p=>p.votos));
+  let html = `<p class="nota-metodo" style="margin-top:0">🗳️ ${fmt(d.total_validos)} votos válidos · ${fmt(d.mesas)} mesas · participación ${(d.total_validos/d.electores*100).toFixed(1)}% de ${fmt(d.electores)} habilitados</p>
+  <div class="mt">${d.pactos.map((p,i)=>`<div class="bar-row">
+    <div class="bar-nom">${p.pacto}</div>
+    <div class="pista"><i style="width:${Math.max(1.5, p.votos/max*100)}%; background:${colorDe(i)}"></i></div>
+    <div class="bar-val">${p.pct.toFixed(2)}%<small>${fmt(p.votos)}</small></div>
+  </div>`).join('')}</div>`;
+  if(d.electos && d.electos.length){
+    html += `<p style="font-size:13px; font-weight:800; margin-top:14px;">${tipo==='dip'?'🎉 Diputad@s elect@s por este distrito':'🎉 Senador@s elect@s por esta circunscripción'}:</p>
+    <div class="electos">${d.electos.map(n=>`<span class="electo">✔ ${n}</span>`).join('')}</div>`;
+  }
+  if(d.candidatos && d.candidatos.length){
+    html += `<p style="font-size:13px; font-weight:800; margin-top:14px;">Candidaturas con más votos:</p><div class="mt">` +
+      d.candidatos.slice(0,8).map((c,i)=>`<div class="bar-row">
+        <div class="bar-nom">${c.electo?'✔ ':''}${c.nombre}<small>${c.partido.replace('PARTIDO ','')}${c.electo?' · ELECT@':''}</small></div>
+        <div class="pista"><i style="width:${Math.max(1.5, c.votos/d.candidatos[0].votos*100)}%; background:${c.electo?'var(--verde)':colorDe(i)}"></i></div>
+        <div class="bar-val">${c.pct.toFixed(2)}%<small>${fmt(c.votos)}</small></div>
+      </div>`).join('') + '</div>';
+  }
+  cont.innerHTML = html;
+}
+
+/* ---------- diputados ---------- */
+(function(){
+  const d = DATA.diputados;
+  barrasPactos(d.resumen_nacional, $('#dip-nacional'));
+  const sel = $('#sel-distrito');
+  const keys = Object.keys(d.distritos).map(Number).sort((a,b)=>a-b);
+  sel.innerHTML = '<option value="">— Elige un distrito —</option>' + keys.map(k=>`<option value="${k}">Distrito N° ${k}</option>`).join('');
+  sel.addEventListener('change', ()=>{
+    const cont = $('#dip-distrito');
+    if(!sel.value){ cont.innerHTML='<p class="nota-metodo">Elige un distrito para ver sus resultados y quién te representa.</p>'; return; }
+    const dis = d.distritos[sel.value];
+    $('#dip-meta').textContent = dis.electos.length + ' escaños en disputa';
+    detalleDistrito(dis, cont, 'dip');
+  });
+  $('#dip-distrito').innerHTML = '<p class="nota-metodo">Elige un distrito para ver sus resultados y quién te representa. 💡 El distrito 20 corresponde al Gran Concepción.</p>';
+})();
+
+/* ---------- senadores ---------- */
+(function(){
+  const s = DATA.senadores;
+  barrasPactos(s.resumen_nacional, $('#sen-nacional'));
+  const sel = $('#sel-circ');
+  const keys = Object.keys(s.distritos).map(Number).sort((a,b)=>a-b);
+  sel.innerHTML = '<option value="">— Elige una circunscripción —</option>' + keys.map(k=>`<option value="${k}">Circunscripción senatorial N° ${k}</option>`).join('');
+  sel.addEventListener('change', ()=>{
+    const cont = $('#sen-circ');
+    if(!sel.value){ cont.innerHTML='<p class="nota-metodo">Elige una circunscripción para ver sus resultados.</p>'; return; }
+    detalleDistrito(s.distritos[sel.value], cont, 'sen');
+  });
+  $('#sen-circ').innerHTML = '<p class="nota-metodo">Elige una circunscripción para ver sus resultados.</p>';
+})();
+
+/* ══════════════ MAPA DE CHILE POR DISTRITOS ══════════════ */
+/* Geografía político-electoral ESTÁTICA (conocimiento cívico, igual que las etiquetas de la página):
+   el orden de las 16 regiones de norte a sur y la división en los 28 distritos
+   oficiales de la elección 2025 (lista Servel/BCN). Los VOTOS solo vienen de DATA. */
+const MAPA_ROWS = [ /* [región, circunscripción senatorial, distritos que la componen, x, ancho] */
+  ['Arica y Parinacota', 1, [1],            250, 140],
+  ['Tarapacá',           2, [2],            246, 132],
+  ['Antofagasta',        3, [3],            236, 124],
+  ['Atacama',            4, [4],            222, 120],
+  ['Coquimbo',           5, [5],            206, 126],
+  ['Valparaíso',         6, [6,7],          190, 142],
+  ['Metropolitana',      7, [8,9,10,11,12,13,14], 178, 168],
+  ["O'Higgins",          8, [15,16],        172, 124],
+  ['Maule',              9, [17,18],       162, 132],
+  ['Ñuble',             16, [19],          156, 100],
+  ['Biobío',            10, [20,21],       150, 146],
+  ['La Araucanía',      11, [22,23],       140, 150],
+  ['Los Ríos',          12, [24],          132, 108],
+  ['Los Lagos',         13, [25,26],       118, 146],
+  ['Aysén',             14, [27],          102, 126],
+  ['Magallanes',        15, [28],          128, 178],
+];
+const DI_INFO = {
+  1:['Arica y Parinacota','Arica · Camarones · Putre · Gral. Lagos'],
+  2:['Tarapacá','Iquique · Alto Hospicio · Pica · Tamarugal'],
+  3:['Antofagasta','Antofagasta · Calama · Tocopilla · Taltal'],
+  4:['Atacama','Copiapó · Vallenar · Chañaral · Alto del Carmen'],
+  5:['Coquimbo','La Serena · Coquimbo · Ovalle · Illapel'],
+  6:['Valparaíso','Quillota · San Felipe · Los Andes · La Ligua'],
+  7:['Valparaíso','Valparaíso · Viña del Mar · San Antonio · Concón · islas'],
+  8:['Metropolitana','Maipú · Pudahuel · Colina · Estación Central'],
+  9:['Metropolitana','Quinta Normal · Independencia · Recoleta · Renca'],
+  10:['Metropolitana','Santiago · Ñuñoa · Providencia · Macul'],
+  11:['Metropolitana','Las Condes · Vitacura · Lo Barnechea · Peñalolén'],
+  12:['Metropolitana','Puente Alto · La Florida · La Pintana'],
+  13:['Metropolitana','San Miguel · El Bosque · Lo Espejo · P. Aguirre Cerda'],
+  14:['Metropolitana','San Bernardo · Buin · Melipilla · Talagante'],
+  15:["O'Higgins",'Rancagua · Machalí · Rengo · Graneros'],
+  16:["O'Higgins",'San Fernando · Santa Cruz · Pichilemu · Chimbarongo'],
+  17:['Maule','Talca · Curicó · Constitución · Molina'],
+  18:['Maule','Linares · Parral · Cauquenes · Chanco'],
+  19:['Ñuble','Chillán · San Carlos · Quirihue · Yungay'],
+  20:['Biobío','Concepción · Talcahuano · Coronel · Chiguayante'],
+  21:['Biobío','Los Ángeles · Lebu · Lota · Cañete · Arauco'],
+  22:['La Araucanía','Angol · Victoria · Traiguén · Ercilla'],
+  23:['La Araucanía','Temuco · Padre Las Casas · Villarrica · Pucón'],
+  24:['Los Ríos','Valdivia · La Unión · Panguipulli · Mariquina'],
+  25:['Los Lagos','Osorno · Puerto Varas · Frutillar · Llanquihue'],
+  26:['Los Lagos','Puerto Montt · Castro · Ancud · Chiloé · Palena'],
+  27:['Aysén','Coyhaique · Aysén · Cochrane · Chile Chico'],
+  28:['Magallanes','Punta Arenas · Porvenir · Natales · Antártica'],
+};
+const PACTO_COLOR = {
+  'UNIDAD POR CHILE':'#d92632', 'CAMBIO POR CHILE':'#2c55c8', 'CHILE GRANDE Y UNIDO':'#7c3aed',
+  'PARTIDO DE LA GENTE':'#e8a400', 'VERDES, REGIONALISTAS Y HUMANISTAS':'#1e9e5a',
+  'IZQUIERDA ECOLOGISTA POPULAR ANIMALISTA Y HUMANISTA':'#0e9aa7', 'POPULAR':'#c2185b',
+  'MOVIMIENTO AMARILLOS POR CHILE':'#a87700', 'PARTIDO ALIANZA VERDE POPULAR':'#66bb6a',
+  'PARTIDO ECOLOGISTA VERDE':'#2e7d32', 'PARTIDO DE TRABAJADORES REVOLUCIONARIOS':'#8b1a1a',
+  'CANDIDATURA INDEPENDIENTE':'#795548', /* marrón: independientes ≠ 'sin datos' (gris) */
+};
+const SEN_EN_JUEGO = Object.keys(DATA.senadores.distritos).map(Number);
+function colorPacto(p, idx){ return PACTO_COLOR[String(p).toUpperCase().trim()] || colorDe(idx||0); }
+function pactoGanador(d){ if(!d || !d.pactos || !d.pactos.length) return null;
+  return d.pactos.reduce((a,b)=> b.votos>a.votos ? b : a); }
+function textoOscuro(hex){ const c=hex.replace('#',''); const r=parseInt(c.substr(0,2),16), g=parseInt(c.substr(2,2),16), b=parseInt(c.substr(4,2),16);
+  return (0.299*r+0.587*g+0.114*b) > 168; }
+
+let MAPA_MODE = 'diputados';
+let MAPA_METRICA = 'territorio';
+const svg = $('#svg-mapa'), tip = $('#mapa-tip'), contMapa = $('#mapa-detalle');
+let SEL_D = null;
+
+const PRESI_COLOR = {'Jeannette Jara Roman':'#d92632','Jose Antonio Kast Rist':'#7c3aed','Franco Parisi Fernandez':'#e8a400','Johannes Kaiser Barents-Von Hohenhagen':'#0e9aa7','Evelyn Matthei Fornet':'#2c55c8'};
+function colorPresi(){ return PRESI_COLOR[DATA.presidencial.candidatos[0].nombre] || '#8a8f98'; }
+function colorCeldaDip(k){ const g = pactoGanador(DATA.diputados.distritos[k]); return g ? colorPacto(g.pacto) : '#e4e8f2'; }
+function colorCeldaSen(sen){ const dd = DATA.senadores.distritos[sen]; if(!dd) return '#e4e8f2';
+  const g = pactoGanador(dd); return g ? colorPacto(g.pacto) : '#e4e8f2'; }
+const SV = DATA.segunda_vuelta || null;
+const SV_REGION = SV && SV.chile ? SV.chile.por_region : {};
+function svCorto(n){ return !n ? '—' : (String(n).startsWith('Jose') ? 'Kast' : String(n).startsWith('Jeannette') ? 'Jara' : String(n).split(' ')[0]); }
+function colorCeldaSv(clave){ const r = SV_REGION[clave]; return r ? (PRESI_COLOR[r.ganador] || '#8a8f98') : '#e4e8f2'; }
+const PRESI_DIST = (DATA.presidencial && DATA.presidencial.por_distrito) || null;
+let MAPA_CORTE = false;
+const PRES_APE = {'Jose Antonio Kast Rist':'Kast','Jeannette Jara Roman':'Jara','Franco Parisi Fernandez':'Parisi','Evelyn Matthei Fornet':'Matthei','Johannes Kaiser Barents-Von Hohenhagen':'Kaiser','Harold Mayne-Nicholls Secul':'Mayne-Nicholls','Marco Antonio Enriquez-Ominami Gumucio':'Enríquez-Ominami','Eduardo Antonio Artes Brichetti':'Artes'};
+function presCorto(n){ return PRES_APE[n] || String(n||'—').split(' ').slice(-1)[0]; }
+
+const RAMPA = {participacion:['#eaf1ff','#14265e'], nulosblancos:['#fff6dd','#a8600a']};
+function rampa(t, a, b){ const pa=[parseInt(a.slice(1,3),16),parseInt(a.slice(3,5),16),parseInt(a.slice(5,7),16)], pb=[parseInt(b.slice(1,3),16),parseInt(b.slice(3,5),16),parseInt(b.slice(5,7),16)];
+  return '#'+pa.map((v,i)=>Math.round(v+(pb[i]-v)*Math.max(0,Math.min(1,t))).toString(16).padStart(2,'0')).join(''); }
+function colorTerrGeo(k){
+  if(MAPA_MODE==='diputados') return colorCeldaDip(+k);
+  if(MAPA_MODE==='senadores'){ const row=MAPA_ROWS.find(r=>r[0]===k); const dd=row&&DATA.senadores.distritos[row[1]]; if(!dd) return '#e4e8f2'; const g=pactoGanador(dd); return g?colorPacto(g.pacto):'#e4e8f2'; }
+  if(MAPA_MODE==='segundavuerta') return colorCeldaSv(k);
+  if(MAPA_MODE==='presidente') return PRESI_DIST ? ((PRESI_DIST[k] && PRESI_COLOR[PRESI_DIST[k].ganador]) || '#e4e8f2') : colorPresi();
+  return '#e4e8f2'; }
+function entidadGeo(k){
+  let d = null;
+  if(MAPA_MODE==='diputados') d = DATA.diputados.distritos[k];
+  else if(MAPA_MODE==='senadores'){ const row = MAPA_ROWS.find(r=>r[0]===k); d = (row && DATA.senadores.distritos[row[1]]) || null; }
+  else if(MAPA_MODE==='segundavuerta') d = SV_REGION[k] || null;
+  else if(MAPA_MODE==='presidente') d = PRESI_DIST ? (PRESI_DIST[k] || null) : null;
+  if(!d) return null;
+  const emit = (d.total_validos||0) + (d.nulos||0) + (d.blancos||0);
+  const v = MAPA_METRICA==='participacion' ? (d.electores ? d.total_validos/d.electores*100 : null)
+          : MAPA_METRICA==='nulosblancos' ? (emit ? (d.nulos+d.blancos)/emit*100 : null) : null;
+  return {d, v}; }
+function cuerpoGeo(){
+  const porDi = MAPA_MODE==='diputados' || (MAPA_MODE==='presidente' && PRESI_DIST);
+  const keyDe = porDi ? (c=>c.di) : (c=>c.re);
+  const cel = MAPA_CORTE ? GEOM.celdas.filter(c=>!c.an) : GEOM.celdas;
+  const VH = MAPA_CORTE && GEOM.alto_corto ? Math.min(GEOM.alto, GEOM.alto_corto) : GEOM.alto;
+  const grupos = {};
+  cel.forEach(c=>{ const k = keyDe(c); if(k===null||k===undefined) return; (grupos[k]=grupos[k]||[]).push(c); });
+  const info = {}; let min = Infinity, max = -Infinity;
+  Object.keys(grupos).forEach(k=>{ const e = entidadGeo(k); const v = e ? e.v : null;
+    if(v!=null && isFinite(v)){ info[k]={v}; min=Math.min(min,v); max=Math.max(max,v); } else info[k]={v:null}; });
+  const usaRampa = MAPA_METRICA!=='territorio' && isFinite(min) && max>min;
+  const t = MAPA_MODE==='diputados' ? 'dip' : MAPA_MODE==='senadores' ? 'sen' : MAPA_MODE==='segundavuerta' ? 'sv' : MAPA_MODE==='presidente' ? 'presi' : 'mun';
+  let s = `<g class="pais-fondo" fill="#d8e0f0" stroke="#d8e0f0" stroke-width="1.3">` + cel.map(c=>`<path d="${c.p}"/>`).join('') + `</g>`;
+  Object.keys(grupos).forEach(k=>{
+    let off = false;
+    if(MAPA_MODE==='senadores'){ const row=MAPA_ROWS.find(r=>r[0]===k); if(!row || !DATA.senadores.distritos[row[1]]) off=true; }
+    if(MAPA_MODE==='municipales') off = true;
+    if(MAPA_MODE==='segundavuerta' && !SV_REGION[k]) off = true;
+    const fill = usaRampa && info[k].v!=null ? rampa((info[k].v-min)/(max-min), RAMPA[MAPA_METRICA][0], RAMPA[MAPA_METRICA][1]) : colorTerrGeo(k);
+    info[k].fill = fill;
+    const kAttr = MAPA_MODE==='senadores' ? (((MAPA_ROWS.find(r=>r[0]===k)||[])[1]) ?? '') : k;
+    s += `<g class="cell geo${off?' off':''}" data-t="${t}" data-k="${kAttr}" fill="${fill}" stroke="${fill}" stroke-width="0.35" stroke-linejoin="round">` + grupos[k].map(c=>`<path d="${c.p}"${c.n?` data-n="${c.n}"`:''}/>`).join('') + `</g>`; });
+  if(porDi){
+    Object.keys(GEOM.centros_di).forEach(k=>{ const c = GEOM.centros_di[k]; if(!c || !grupos[k]) return;
+      const dark = info[k] && !textoOscuro(info[k].fill||colorTerrGeo(k));
+      s += `<text class="lbl-num${dark?'':' osc'}" x="${c[0]}" y="${c[1]}" text-anchor="middle" style="font-size:10.5px">${k}</text>`;
+      if(MAPA_MODE==='presidente' && PRESI_DIST && PRESI_DIST[k] && VH>300)
+        s += `<text class="lbl-num${dark?'':' osc'}" x="${c[0]}" y="${c[1]+13}" text-anchor="middle" style="font-size:9px">${presCorto(PRESI_DIST[k].ganador)}</text>`; });
+  } else {
+    Object.keys(GEOM.centros_re).forEach(k=>{ const c = GEOM.centros_re[k]; if(!c || !grupos[k]) return;
+      s += `<text class="lbl-reg lbl-reg-geo" x="${c[0]}" y="${c[1]}" text-anchor="middle">${k}</text>`;
+      if(MAPA_MODE==='senadores'){ const row = MAPA_ROWS.find(r=>r[0]===k); const dd = row && DATA.senadores.distritos[row[1]];
+        if(dd){ const g = pactoGanador(dd); s += `<text class="lbl-num osc" x="${c[0]}" y="${c[1]+13}" text-anchor="middle" style="font-size:9.5px">C°${row[1]} · ${g?g.pacto.split(' ')[0]:''}</text>`; } }
+      if(MAPA_MODE==='segundavuerta' && SV_REGION[k])
+        s += `<text class="lbl-num osc" x="${c[0]}" y="${c[1]+13}" text-anchor="middle" style="font-size:9.5px">${svCorto(SV_REGION[k].ganador)} ${SV_REGION[k].candidatos[0].pct.toFixed(0)}%</text>`; });
+  }
+  if(MAPA_MODE==='diputados'){
+    s += `<g><rect class="cell isla" data-k="7" data-t="dip2" x="26" y="120" width="128" height="34" rx="9" fill="#eef2ff"/><text x="90" y="136" text-anchor="middle" style="font-size:10.5px;font-weight:800;fill:#2c55c8">🏝️ I. de Pascua · J. Fern.</text><text x="90" y="149" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:#5b657a">ambas son Distrito 7</text></g>`;
+    s += `<text x="24" y="${VH-24}" style="font-size:10.5px;font-weight:700;fill:#5b657a">⚓ La Antártica chilena también vota en el D28 (Río Verde sin trazado propio)</text>`;
+  }
+  if(MAPA_MODE==='segundavuerta' && SV && SV.extranjero){ const ew = SV.extranjero.candidatos[0], exColor = PRESI_COLOR[ew.nombre] || '#8a8f98';
+    s += `<g><rect class="cell" data-t="svext" x="26" y="120" width="128" height="40" rx="9" fill="${exColor}"/><text x="90" y="136" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#fff">🌎 Extranjero</text><text x="90" y="150" text-anchor="middle" style="font-size:9px;font-weight:800;fill:rgba(255,255,255,.92)">${svCorto(ew.nombre)} ganó afuera</text></g>`; }
+  info.__rango = usaRampa ? {min, max} : null;
+  return {s, info}; }
+function elegirDistrito(k){ SEL_D = +k;
+  const sel = $('#sel-distrito'); sel.value = String(SEL_D);
+  sel.dispatchEvent(new Event('change')); /* sincroniza la pestaña Diputados */
+  contMapa.innerHTML = `<p style="font-size:15px;font-weight:800;color:var(--azul);">📍 Distrito N° ${SEL_D} · ${DI_INFO[SEL_D][0]}</p><div id="mapa-det-int"></div>`;
+  detalleDistrito(DATA.diputados.distritos[SEL_D], $('#mapa-det-int'), 'dip');
+  svg.querySelectorAll('.cell').forEach(x=>x.classList.remove('sel'));
+  svg.querySelectorAll(`.cell[data-t="dip"][data-k="${SEL_D}"]`).forEach(x=>x.classList.add('sel')); }
+function visibilizarMetricas(){
+  const bar = $('#mapa-metricas'); if(!bar) return;
+  const ok = !!(GEOM && GEOM.celdas && GEOM.celdas.length) && (['diputados','senadores','segundavuerta'].includes(MAPA_MODE) || (MAPA_MODE==='presidente' && !!PRESI_DIST));
+  if(!ok) MAPA_METRICA = 'territorio';
+  bar.style.display = ok ? 'flex' : 'none';
+  bar.querySelectorAll('button').forEach(x=>x.classList.toggle('on', x.dataset.m===MAPA_METRICA)); }
+function tipDip(k){ const d = DATA.diputados.distritos[k]; if(!d) return 'Distrito '+k;
+  const g = pactoGanador(d);
+  return `<b>Distrito N° ${k}</b> · ${DI_INFO[k][0]}<br>${DI_INFO[k][1]}<br>` +
+    (g ? `Más votado: <b>${g.pacto}</b> (${g.pct.toFixed(1)}%)<br>` : '') +
+    `${fmt(d.total_validos)} votos válidos · ${d.electos.length} escaños · clic para el detalle`; }
+function tipSen(sen, reg){ const d = DATA.senadores.distritos[sen];
+  if(!d) return `<b>${reg}</b><br>Circunscripción N° ${sen}: no renueva en 2025 (lo hace en 2029)`;
+  const g = pactoGanador(d);
+  return `<b>${reg}</b> · Circunscripción N° ${sen}<br>Más votado: <b>${g.pacto}</b> (${g.pct.toFixed(1)}%)<br>` +
+    `Senadores electos: ${d.electos.length} · clic para el detalle`; }
+function tipPresi(k){ const p = DATA.presidencial;
+  const d = PRESI_DIST && k!=null ? p.por_distrito[k] : null;
+  if(d){ const c1 = d.candidatos[0];
+    return `🇨🇱 <b>Distrito N° ${k}</b> · 1ª vuelta 16-N<br>1ª mayoría: <b>${presCorto(c1.nombre)}</b> (${c1.pct.toFixed(1)}%)<br>${fmt(d.total_validos)} votos válidos · participación ${(d.total_validos/d.electores*100).toFixed(1)}% · clic para el detalle`; }
+  const c1 = p.candidatos[0];
+  return `🇨🇱 <b>Elección presidencial · distrito único</b><br>${fmt(p.total_validos)} votos válidos en todo Chile.<br>1ª mayoría (1ª vuelta): <b>${c1.nombre}</b> (${c1.pct.toFixed(2)}%).<br>2ª vuelta 14-D: ganó Kast. Clic para el detalle nacional.`; }
+function tipSv(k){ const r = SV_REGION[k]; if(!r) return `<b>${k}</b> · sin datos regionales en el snapshot de 2ª vuelta`;
+  const c1 = r.candidatos[0];
+  return `🔁 <b>${k}</b> · 2ª vuelta presidencial 14-D<br>Ganó <b>${svCorto(c1.nombre)}</b> con ${c1.pct.toFixed(1)}%<br>${fmt(r.total_validos)} votos válidos · clic para el detalle`; }
+function tipSvExt(){ if(!SV || !SV.extranjero) return '2ª vuelta · extranjero'; const e = SV.extranjero, c1 = e.candidatos[0];
+  return `🌎 <b>Extranjero</b> · 2ª vuelta 14-D<br>Ganó <b>${svCorto(c1.nombre)}</b> con ${c1.pct.toFixed(1)}%<br>${fmt(e.total_validos)} votos válidos · clic para ver los países`; }
+function tipMun(reg){ return `🏘️ <b>${reg}</b><br>Alcaldes y gobernadores se eligieron en 2024 y ese detalle no está en el snapshot de esta página (próxima cita: octubre de 2028).`; }
+
+function pintarMapa(){
+  const geo = GEOM && Array.isArray(GEOM.celdas) && GEOM.celdas.length;
+  let s, GINFO = {};
+  if(geo){ const g = cuerpoGeo(); s = g.s; GINFO = g.info;
+    const vh = MAPA_CORTE && GEOM.alto_corto ? Math.min(GEOM.alto, GEOM.alto_corto) : GEOM.alto;
+    svg.setAttribute('viewBox', `0 0 ${GEOM.ancho} ${vh}`); }
+  else { s = cuerpoBandas(); svg.setAttribute('viewBox','0 0 470 985'); }
+  svg.innerHTML = s;
+  if(SEL_D!==null && MAPA_MODE==='diputados'){
+    svg.querySelectorAll('.cell[data-t="dip"]').forEach(c=>{ c.classList.toggle('sel', +c.dataset.k===SEL_D); }); }
+  aplicarInteracciones();
+  aplicarLeyenda(GINFO);
+}
+function cuerpoBandas(){
+  const H = 46, Y0 = 34, STEP = 58;
+  let s = `<defs>`;
+  MAPA_ROWS.forEach((r,i)=>{ s += `<clipPath id="mp-cl-${i}"><rect x="${r[3]}" y="${Y0+i*STEP}" width="${r[4]}" height="${H}" rx="10"/></clipPath>`; });
+  s += `</defs>`;
+  MAPA_ROWS.forEach((r,i)=>{
+    const [reg, sen, cells, x, w] = r, y = Y0+i*STEP;
+    s += `<text class="lbl-reg" x="${x-8}" y="${y+H/2+3.5}" text-anchor="end">${reg}</text>`;
+    s += `<g clip-path="url(#mp-cl-${i})">`;
+    if(MAPA_MODE==='diputados'){
+      const cw = w/cells.length;
+      cells.forEach((k,j)=>{ s += `<rect class="cell" data-k="${k}" data-t="dip" x="${x+j*cw}" y="${y}" width="${cw}" height="${H}" fill="${colorCeldaDip(k)}"/>`; });
+    } else if(MAPA_MODE==='senadores'){
+      s += `<rect class="cell${SEN_EN_JUEGO.includes(sen)?'':' off'}" data-k="${sen}" data-t="sen" x="${x}" y="${y}" width="${w}" height="${H}" fill="${colorCeldaSen(sen)}"/>`;
+    } else if(MAPA_MODE==='presidente'){
+      s += `<rect class="cell" data-t="presi" x="${x}" y="${y}" width="${w}" height="${H}" fill="${colorPresi()}"/>`;
+    } else if(MAPA_MODE==='segundavuerta'){
+      s += `<rect class="cell${SV_REGION[reg]?'':' off'}" data-t="sv" data-k="${reg}" x="${x}" y="${y}" width="${w}" height="${H}" fill="${colorCeldaSv(reg)}"/>`;
+    } else {
+      s += `<rect class="cell off hatch" data-t="mun" data-reg="${reg}" x="${x}" y="${y}" width="${w}" height="${H}" fill="#e4e8f2"/>`;
+    }
+    s += `</g><rect x="${x}" y="${y}" width="${w}" height="${H}" rx="10" fill="none" stroke="#fff" stroke-width="1.5" pointer-events="none"/>`;
+    if(MAPA_MODE==='diputados'){
+      const cw = w/cells.length;
+      cells.forEach((k,j)=>{ const cx = x+j*cw+cw/2, cy = y+H/2+4;
+        s += `<text class="lbl-num${textoOscuro(colorCeldaDip(k))?' osc':''}" x="${cx}" y="${cy}" text-anchor="middle" style="font-size:${cw<30?9.5:12}px">${k}</text>`; });
+    } else if(MAPA_MODE==='senadores'){
+      s += `<text class="lbl-num${textoOscuro(colorCeldaSen(sen))?' osc':''}" x="${x+w/2}" y="${y+H/2+4}" text-anchor="middle">${SEN_EN_JUEGO.includes(sen)?'C°'+sen:'—'}</text>`;
+    } else if(MAPA_MODE==='segundavuerta'){ const rr = SV_REGION[reg];
+      if(rr) s += `<text class="lbl-num${textoOscuro(colorCeldaSv(reg))?' osc':''}" x="${x+w/2}" y="${y+H/2+4}" text-anchor="middle">${svCorto(rr.ganador)} ${rr.candidatos[0].pct.toFixed(0)}%</text>`;
+    }
+  });
+  /* isla + antártida + brújula */
+  if(MAPA_MODE==='segundavuerta' && SV && SV.extranjero){ const ew = SV.extranjero.candidatos[0], exColor = PRESI_COLOR[ew.nombre] || '#8a8f98';
+    s += `<g><rect class="cell" data-t="svext" x="16" y="348" width="120" height="40" rx="9" fill="${exColor}"/><text x="76" y="364" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#fff">🌎 Extranjero</text><text x="76" y="379" text-anchor="middle" style="font-size:9px;font-weight:800;fill:rgba(255,255,255,.92)">${svCorto(ew.nombre)} ganó afuera</text></g>`;
+  }
+  s += `<g><rect class="cell isla" data-k="7" data-t="dip2" x="16" y="300" width="120" height="34" rx="9" fill="#eef2ff"/><text x="76" y="316" text-anchor="middle" style="font-size:10.5px;font-weight:800;fill:#2c55c8">🏝️ I. de Pascua</text><text x="76" y="329" text-anchor="middle" style="font-size:9.5px;font-weight:700;fill:#5b657a">y Juan Fern. → D7</text></g>`;
+  s += `<text x="306" y="${Y0+15*STEP+H+26}" style="font-size:10px;font-weight:700;fill:#5b657a">⚓ Antártica y Cabo de Hornos → D28</text>`;
+  s += `<text x="24" y="26" style="font-size:15px">▲N</text><text x="24" y="46" class="lbl-reg">norte grande,</text><text x="24" y="60" class="lbl-reg">angosto en el centro,</text><text x="24" y="74" class="lbl-reg">ancho en el sur</text>`;
+  return s;
+}
+function aplicarInteracciones(){
+  /* interacciones */
+  const caja = $('.mapa-caja');
+  svg.querySelectorAll('.cell').forEach(c=>{
+    c.addEventListener('mousemove', e=>{
+      const b = caja.getBoundingClientRect();
+      let html = '';
+      const cn = e.target && e.target.dataset ? e.target.dataset.n : null;
+      if(cn) html = `<b style="color:#ffd75e">📍 ${cn}</b><br>`;
+      if(c.dataset.t==='dip'||c.dataset.t==='dip2') html = tipDip(+c.dataset.k);
+      else if(c.dataset.t==='sen') html = tipSen(+c.dataset.k, MAPA_ROWS.find(r=>r[1]===+c.dataset.k)?.[0] || '');
+      else if(c.dataset.t==='presi') html = tipPresi(PRESI_DIST ? +c.dataset.k : null);
+      else if(c.dataset.t==='sv') html = tipSv(c.dataset.k);
+      else if(c.dataset.t==='svext') html = tipSvExt();
+      else html = tipMun(c.dataset.reg);
+      tip.innerHTML = html; tip.style.opacity = 1;
+      let tx = e.clientX-b.left+caja.scrollLeft+14, ty = e.clientY-b.top+caja.scrollTop+12;
+      tx = Math.min(tx, b.width-270); tx = Math.max(tx, 4); ty = Math.min(ty, b.height-96);
+      tip.style.left = tx+'px'; tip.style.top = ty+'px';
+    });
+    c.addEventListener('mouseleave', ()=>{ tip.style.opacity = 0; });
+    if(!c.hasAttribute('tabindex')){ c.setAttribute('tabindex','0'); c.setAttribute('role','button');
+      c.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); c.dispatchEvent(new window.MouseEvent('click', {bubbles:true})); } }); }
+    c.addEventListener('click', ()=>{
+      const t = c.dataset.t;
+      if(t==='dip'||t==='dip2'){ elegirDistrito(+c.dataset.k);
+      } else if(t==='sen'){
+        const k = c.dataset.k;
+        if(DATA.senadores.distritos[k]){
+          contMapa.innerHTML = `<p style="font-size:15px;font-weight:800;color:var(--azul);">📍 Circunscripción senatorial N° ${k}</p><div id="mapa-det-int"></div>`;
+          detalleDistrito(DATA.senadores.distritos[k], $('#mapa-det-int'), 'sen');
+        } else contMapa.innerHTML = '<p class="nota-metodo">Esta región no eligió senadores en 2025: su circunscripción renueva en la elección parlamentaria de 2029.</p>';
+      } else if(t==='presi' && PRESI_DIST && PRESI_DIST[c.dataset.k]){
+        const d = PRESI_DIST[c.dataset.k], max = d.candidatos[0].votos;
+        contMapa.innerHTML = `<p style="font-size:15px;font-weight:800;color:var(--azul);">📍 Distrito N° ${c.dataset.k} · 1ª vuelta presidencial 16-N</p>` +
+          d.candidatos.map(cd=>`<div class="bar-row${cd.votos===max?' ganador':''}"><div class="bar-nom">${cd.nombre}${cd.votos===max?'<span class="chip-gana">✔ 1ª MAYORÍA</span>':''}</div><div class="pista"><i style="width:${Math.max(1.5,cd.votos/max*100)}%;background:${PRESI_COLOR[cd.nombre]||colorDe(0)}"></i></div><div class="bar-val">${cd.pct.toFixed(2)}%<small>${fmt(cd.votos)}</small></div></div>`).join('') +
+          `<p class="nota-metodo">${fmt(d.total_validos)} votos válidos · ${fmt(d.mesas)} mesas · participación ${(d.total_validos/d.electores*100).toFixed(1)}% de ${fmt(d.electores)} habilitados · ${fmt(d.nulos+d.blancos)} nulos+blancos. ${DI_INFO[c.dataset.k]?DI_INFO[c.dataset.k][1]:''}</p>`;
+      } else if(t==='presi'){
+        const p = DATA.presidencial, max = p.candidatos[0].votos;
+        contMapa.innerHTML = `<p style="font-size:15px;font-weight:800;color:var(--azul);">🇨🇱 Resultado nacional (distrito único)</p>` +
+          p.candidatos.map((cd,ix)=>`<div class="bar-row"><div class="bar-nom">${cd.nombre}<small>${cd.partido.replace('PARTIDO ','')}</small></div><div class="pista"><i style="width:${Math.max(1.5,cd.votos/max*100)}%;background:${colorDe(ix)}"></i></div><div class="bar-val">${cd.pct.toFixed(2)}%<small>${fmt(cd.votos)}</small></div></div>`).join('') +
+          `<p class="nota-metodo">El snapshot de esta página guarda la presidencial solo a nivel nacional: no hay votos por distrito para pintar el mapa con ellos. Por eso todo Chile aparece del mismo color (la 1ª mayoría nacional).</p>`;
+      } else if(t==='sv'||t==='svext'){
+        const r = t==='svext' ? (SV && SV.extranjero) : SV_REGION[c.dataset.k];
+        if(!r){ contMapa.innerHTML = '<p class="nota-metodo">Esa región no está en el snapshot de 2ª vuelta.</p>'; }
+        else {
+          const maxv = Math.max(...r.candidatos.map(cd=>cd.votos));
+          contMapa.innerHTML = `<p style="font-size:15px;font-weight:800;color:var(--azul);">${t==='svext'?'🌎 Extranjero · 2ª vuelta 14-D':'📍 Región '+c.dataset.k+' · 2ª vuelta 14-D'}</p>` +
+            r.candidatos.map(cd=>`<div class="bar-row${cd.votos===maxv?' ganador':''}"><div class="bar-nom">${cd.nombre}${cd.votos===maxv?'<span class="chip-gana">✔ GANÓ AQUÍ</span>':''}</div><div class="pista"><i style="width:${Math.max(1.5,cd.votos/maxv*100)}%;background:${PRESI_COLOR[cd.nombre]||'#8a8f98'}"></i></div><div class="bar-val">${cd.pct.toFixed(2)}%<small>${fmt(cd.votos)} votos</small></div></div>`).join('') +
+            (r.top_paises ? (()=>{ const mx = Math.max(...Object.values(r.top_paises).map(v=>v.votos));
+              return `<p style="font-size:13px;font-weight:800;margin-top:12px;">Países con más votos:</p>` + Object.entries(r.top_paises).slice(0,8).map(([pais,v])=>
+                `<div class="bar-row"><div class="bar-nom">${pais}<small>${v.candidatos.map(c2=>svCorto(c2.nombre)+' '+c2.pct.toFixed(0)+'%').join(' · ')}</small></div><div class="pista"><i style="width:${Math.max(1.5,v.votos/mx*100)}%;background:var(--azul2)"></i></div><div class="bar-val">${fmt(v.votos)}<small>votos</small></div></div>`).join(''); })() : '') +
+            `<p class="nota-metodo">${fmt(r.total_validos)} votos válidos${r.electores?' · sobre '+fmt(r.electores)+' habilitados ('+(r.total_validos/r.electores*100).toFixed(1)+'%)':''}.</p>`;
+        }
+      } else {
+        contMapa.innerHTML = '<p class="nota-metodo">🏘️ <b>Regionales y municipales:</b> esta elección no está en el snapshot oficial de Servel 2025 con el que trabaja la página. La última fue octubre 2024 (alcaldes, concejales, gobernadores y CORE) y la próxima es el 29 de octubre de 2028. Mira el detalle en la pestaña «Regionales y municipales».</p>';
+      }
+    });
+  });
+}
+function aplicarLeyenda(GINFO){
+  /* leyenda + notas */
+  const ley = $('#mapa-leyenda'), nota = $('#mapa-nota'), titL = $('#mapa-tit-leyenda');
+  ley.innerHTML = ''; titL.textContent = '';
+  if(MAPA_MODE==='diputados'){
+    titL.textContent = 'Pacto más votado en cada distrito · diputados 2025';
+    nota.textContent = DATA.diputados.resumen_nacional.length + ' pactos a nivel nacional. El color de cada distrito es el pacto allí más votado (no el que ganó escaños: puede no coincidir, por el sistema proporcional).';
+    DATA.diputados.resumen_nacional.slice(0,8).forEach(p=>{ ley.insertAdjacentHTML('beforeend',
+      `<span><i style="background:${colorPacto(p.pacto)}"></i>${p.pacto} · ${p.pct.toFixed(1)}% · ${p.escanos} escaños</span>`); });
+  } else if(MAPA_MODE==='senadores'){
+    titL.textContent = 'Pacto más votado por circunscripción · Senado 2025';
+    nota.textContent = 'En 2025 solo 7 de las 16 circunscripciones senatoriales (regiones) renovaron escaños: Arica, Tarapacá, Atacama, Valparaíso, Maule, La Araucanía y Aysén. Las grises («—») eligen en 2029.';
+    DATA.senadores.resumen_nacional.slice(0,8).forEach(p=>{ ley.insertAdjacentHTML('beforeend',
+      `<span><i style="background:${colorPacto(p.pacto)}"></i>${p.pacto} · ${p.pct.toFixed(1)}%</span>`); });
+    ley.insertAdjacentHTML('beforeend', `<span><i style="background:#e4e8f2;border:1px solid #c9d0e0"></i>no renueva en 2025</span>`);
+  } else if(MAPA_MODE==='presidente'){
+    titL.textContent = PRESI_DIST ? 'Primera mayoría por distrito · 1ª vuelta 16-N' : 'Elección presidencial · todo Chile es un solo distrito';
+    nota.textContent = (PRESI_DIST ? 'Aunque la papeleta es nacional, el acta de cada mesa indica el distrito: así el mapa muestra la 1ª mayoría distrito a distrito (en una elección real no se reparten escaños presidenciales — es solo lectura territorial). ' : 'En la presidencial no existen los distritos: todo Chile (y el extranjero) vota por la misma papeleta. ') + 'El mapa lo pinta el color de la 1ª mayoría; en la segunda vuelta del 14-D ganó José Antonio Kast (ver su propio modo 🔁).';
+    DATA.presidencial.candidatos.slice(0,5).forEach(cd=>{ ley.insertAdjacentHTML('beforeend',
+      `<span><i style="background:${PRESI_COLOR[cd.nombre]||'#8a8f98'}"></i>${cd.nombre} · ${cd.pct.toFixed(1)}%</span>`); });
+  } else if(MAPA_MODE==='segundavuerta'){
+    titL.textContent = 'Ganador de la 2ª vuelta por región · 14-D-2025';
+    const nk = Object.values(SV_REGION).filter(r=>r.ganador==='Jose Antonio Kast Rist').length;
+    nota.textContent = (SV ? `Balotaje Kast vs. Jara: gana la primera mayoría, no se exige 50%. Kast ganó ${nk} de ${Object.keys(SV_REGION).length} regiones; en el extranjero ganó Jara. ${fmt(SV.total_validos)} votos válidos en ${fmt(SV.mesas)} mesas.` : 'El snapshot de esta página aún no incluye la segunda vuelta.') + ' Cada región muestra el color del candidato ganador.';
+    (SV ? SV.candidatos : []).forEach(cd=>{ ley.insertAdjacentHTML('beforeend',
+      `<span><i style="background:${PRESI_COLOR[cd.nombre]||'#8a8f98'}"></i>${cd.nombre} · ${cd.pct.toFixed(2)}%</span>`); });
+    if(SV && SV.extranjero) ley.insertAdjacentHTML('beforeend', `<span><i style="background:${PRESI_COLOR[SV.extranjero.candidatos[0].nombre]||'#d92632'}"></i>🌎 extranjero: ${svCorto(SV.extranjero.candidatos[0].nombre)} ganó afuera</span>`);
+  } else {
+    titL.textContent = 'Regionales y municipales 2024/2028 · sin datos por comuna';
+    nota.textContent = 'El snapshot Servel 2025 de esta página no incluye municipales. Aquí ves el mapa con la división territorial (distritos) solo como referencia. La lógica de la página: cuando exista un snapshot 2028, el mismo mapa podrá pintarse por comuna.';
+    ley.innerHTML = `<span><i style="background:#e4e8f2;border:1px solid #c9d0e0"></i>sin resultados en este snapshot</span>`;
+  }
+  if(MAPA_METRICA!=='territorio' && GINFO && GINFO.__rango){
+    titL.textContent = (MAPA_METRICA==='participacion' ? '📈 Participación' : '⚪ Nulos + blancos') + ' · ' + (MAPA_MODE==='diputados' ? 'por distrito' : MAPA_MODE==='senadores' ? 'por circunscripción' : 'por región');
+    ley.innerHTML = `<span><i class="rampa" style="background:linear-gradient(90deg, ${RAMPA[MAPA_METRICA][0]}, ${RAMPA[MAPA_METRICA][1]})"></i>${GINFO.__rango.min.toFixed(1)}% → ${GINFO.__rango.max.toFixed(1)}%</span>` +
+      `<span style="color:var(--gris)">${MAPA_METRICA==='participacion' ? 'votos válidos / habilitados para votar' : 'porcentaje sobre los votos emitidos'} · el clic sigue abriendo el detalle</span>`;
+  }
+}
+
+document.querySelectorAll('#mapa-chips button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('#mapa-chips button').forEach(x=>x.classList.toggle('on', x===b));
+    MAPA_MODE = b.dataset.elec; SEL_D = null;
+    contMapa.innerHTML = '<p class="nota-metodo">👆 Haz clic en un distrito del mapa para ver pactos, votos y personas electas aquí mismo.</p>';
+    visibilizarMetricas();
+    pintarMapa();
+  });
+});
+document.querySelectorAll('#mapa-metricas button').forEach(b=>{
+  b.addEventListener('click', ()=>{ MAPA_METRICA = b.dataset.m; visibilizarMetricas(); pintarMapa(); });
+});
+(function(){
+  if(!GEOM || !GEOM.celdas) return;
+  const dl = $('#dl-comunas'), inp = $('#mapa-buscar');
+  const nombres = GEOM.celdas.map(c=>c.n).filter(Boolean).sort((a,b)=>a.localeCompare(b,'es'));
+  dl.innerHTML = nombres.map(n=>`<option value="${n}"></option>`).join('');
+  const normJS = x => String(x).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/['’\-]/g,' ').replace(/\s+/g,' ').trim();
+  function buscar(){ const q = normJS(inp.value); if(!q) return;
+    let di = GEOM.comuna_distrito[q];
+    if(di==null){ const hit = Object.keys(GEOM.comuna_distrito).find(k=>k.indexOf(q)>=0); if(hit) di = GEOM.comuna_distrito[hit]; }
+    if(di==null){ contMapa.innerHTML = `<p class="nota-metodo">No encontré «${inp.value}» en las comunas del mapa (el trazado es continental: Isla de Pascua y Juan Fernández están como chip 🏝️ en el Distrito 7).</p>`; return; }
+    MAPA_MODE = 'diputados'; MAPA_METRICA = 'territorio'; SEL_D = null;
+    document.querySelectorAll('#mapa-chips button').forEach(x=>x.classList.toggle('on', x.dataset.elec==='diputados'));
+    visibilizarMetricas();
+    pintarMapa(); elegirDistrito(di);
+    const disp = NORM2N[q];
+    if(disp){ const pth = document.querySelector(`#svg-mapa .cell path[data-n="${disp}"]`); if(pth) pth.classList.add('comuna-hl'); }
+    try{ if(window.history && history.replaceState) history.replaceState(null, '', '#comuna=' + encodeURIComponent(inp.value.trim())); }catch(err){}
+    const caja = $('.mapa-caja'); if(caja.scrollTo) caja.scrollTo({top: 0, behavior:'smooth'}); }
+  const NORM2N = {}; GEOM.celdas.forEach(c=>{ if(c.n) NORM2N[normJS(c.n)] = c.n; });
+  const corte = $('#mapa-corte');
+  if(corte) corte.style.display = GEOM.celdas.some(c=>c.an) ? '' : 'none';
+  inp.addEventListener('change', buscar);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter') buscar(); });
+  $('#mapa-buscar-btn').addEventListener('click', buscar);
+  const m = /#comuna=([^&]+)/.exec(window.location.hash || '');
+  if(m){ inp.value = decodeURIComponent(m[1]); setTimeout(buscar, 60); }
+})();
+(function(){ const b = $('#mapa-corte'); if(!b) return;
+  b.addEventListener('click', ()=>{ MAPA_CORTE = !MAPA_CORTE;
+    b.textContent = MAPA_CORTE ? '🧊 Antártica: recortada' : '🧊 Antártica: entera';
+    b.classList.toggle('on', MAPA_CORTE); pintarMapa(); }); })();
+(function(){ const f = DATA.fuente || {}; const s2 = DATA.segunda_vuelta && DATA.segunda_vuelta.fuente;
+  const b = $('#badge-frescura'); if(!b) return;
+  const partes = ['datos 16-N: ' + (f.descargado || '?')];
+  if(DATA.presidencial && DATA.presidencial.fuente_por_distrito) partes.push('distritos presid: ' + DATA.presidencial.fuente_por_distrito.descargado);
+  if(s2) partes.push('2ª vuelta: ' + (s2.descargado || '?'));
+  b.textContent = '🕒 ' + partes.join(' · '); })();
+visibilizarMetricas();
+pintarMapa();
+
+/* ---------- segunda vuelta: sección de la pestaña Presidencial (usa DATA.segunda_vuelta) ---------- */
+(function(){
+  const sv = DATA.segunda_vuelta;
+  if(!sv) return;
+  const emitidos = sv.total_validos + sv.nulos + sv.blancos;
+  const part = emitidos / sv.electores * 100;
+  $('#sv-kpis').innerHTML = [
+    {num: fmt(sv.electores), lbl:'habilitadas (mismo padrón que el 16-N)'},
+    {num: fmt(emitidos), lbl:'votos emitidos ('+part.toFixed(1)+'% participó)'},
+    {num: fmt(sv.total_validos), lbl:'votos válidos · '+fmt(sv.mesas)+' mesas'},
+    {num: fmt(sv.nulos+sv.blancos), lbl:'nulos + blancos'},
+  ].map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="lbl">${k.lbl}</div></div>`).join('');
+  const SUBT = {'Jose Antonio Kast Rist':'Partido Republicano de Chile','Jeannette Jara Roman':'Partido Comunista · apoyada por el oficialismo'};
+  const max = Math.max(...sv.candidatos.map(c=>c.votos));
+  $('#sv-barras').innerHTML = sv.candidatos.map((c,i)=>{
+    const gana = i===0;
+    return `<div class="bar-row${gana?' ganador':''}">
+      <div class="bar-nom">${c.nombre}${gana?'<span class="chip-gana">✔ PRESIDENTE ELECTO</span>':''}<small>${SUBT[c.nombre]||''}</small></div>
+      <div class="pista"><i style="width:${Math.max(1.5, c.votos/max*100)}%; background:${PRESI_COLOR[c.nombre]||colorDe(i)}"></i></div>
+      <div class="bar-val">${c.pct.toFixed(2)}%<small>${fmt(c.votos)} votos</small></div>
+    </div>`;
+  }).join('');
+  const mini = (bloq, titulo, extra) => {
+    const m = Math.max(...bloq.candidatos.map(c=>c.votos));
+    return `<div class="card"><h3 style="font-size:15px;">${titulo}</h3>` + bloq.candidatos.map(c=>
+      `<div class="bar-row"><div class="bar-nom">${svCorto(c.nombre)}<small>${c.pct.toFixed(2)}% de sus votos válidos</small></div><div class="pista"><i style="width:${Math.max(1.5,c.votos/m*100)}%;background:${PRESI_COLOR[c.nombre]||'#8a8f98'}"></i></div><div class="bar-val">${fmt(c.votos)}<small>votos</small></div></div>`).join('') +
+      (extra||'') + '</div>';
+  };
+  const regiones = Object.entries((sv.chile||{}).por_region||{});
+  const nKast = regiones.filter(([,r])=>r.ganador==='Jose Antonio Kast Rist').length;
+  $('#sv-desglose').innerHTML =
+    mini(sv.chile, '🇨🇱 Dentro de Chile', `<p class="nota-metodo">Kast ganó ${nKast} de ${regiones.length} regiones (ver mapa 🔁 2ª vuelta).</p>`) +
+    mini(sv.extranjero, '🌎 Extranjero (' + (sv.extranjero.top_paises ? Object.keys(sv.extranjero.top_paises).length + '+ países, top: ' + Object.keys(sv.extranjero.top_paises).slice(0,3).join(', ') : 'varios países') + ')');
+  $('#sv-nota').innerHTML = 'Fuente: resultados preliminares de la Segunda Votación Presidencial (14-D-2025), actas de mesa publicadas por el Servel · snapshot ' +
+    (sv.fuente && sv.fuente.descargado ? sv.fuente.descargado : '') + ' · generado por <b>gen_segunda_vuelta.py</b> con el ZIP oficial <a href="' + (sv.fuente ? sv.fuente.archivo : '#') + '" target="_blank" rel="noopener" style="color:var(--azul2)">Datos_SegundaVotacion.zip</a>. ' +
+    'Regla: en 2ª vuelta gana la primera mayoría (mayoría simple); no se exige 50%. ' +
+    'En 1ª vuelta Kast había sacado 23,95% y pasado segundo; en el balotaje multiplicó su apoyo y Jara no logró traspasar el techo de la oficialista.';
+})();
+
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3cc8164dcb7a78f',t:'MTc4OTY5NDE4OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
