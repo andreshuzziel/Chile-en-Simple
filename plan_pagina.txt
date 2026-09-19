@@ -263,6 +263,17 @@ UTILIDADES CIUDADANAS (IMPLEMENTADAS)
       Al no ser un archivo grabado, se renueva solo: siempre lee los datos
       del momento (incluida la versión en vivo). Sin base de datos.
 
+PÁGINA 4: 🔜 PRÓXIMA ELECCIÓN (LISTA PARA RELLENAR CON EL SERVEL)
+   Botón en el tablero (sección Fechas clave) + enlace en la nav → proxima_eleccion.html
+   (ruta /proxima en el servidor en vivo). Muestra cuenta regresiva, cargos en
+   juego con explicación ciudadana, guía para votar y estado "esperando datos".
+   RELLENADO: editar SOLO proxima_eleccion.json (nombre, fecha, cargos y la URL
+   del ZIP del Servel de cada cargo) → python3 gen_proxima_eleccion.py &&
+   python3 gen_proxima_page.py (o bash hito.sh). Se puede repetir cada vez que
+   el Servel actualice el escrutinio. Estados: preparando → en_curso → finalizada.
+   Probado con un ZIP real del Servel 2025 (senadores): 7 circunscripciones,
+   3.097.648 votos, escaños UxC 11 / CxC 6 ✔. Sin base de datos.
+
 PÁGINA 3: 🗓️ CALENDARIO DE VOTACIONES DE LEYES (IMPLEMENTADO)
    calendario_votaciones.html — calendario mensual con las 942
    votaciones de 2026. Cada día con votación de ley (605) muestra un

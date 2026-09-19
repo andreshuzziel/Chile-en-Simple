@@ -1,0 +1,44 @@
+{
+  "_como_usar": [
+    "ESTE ES EL ÚNICO ARCHIVO QUE HAY QUE RELLENAR PARA LA PRÓXIMA ELECCIÓN.",
+    "1) Antes de la elección: revisa nombre, fecha y cargos. Deja 'zip' vacío en cada cargo.",
+    "2) La noche de la elección: el Servel publica en servel.cl los ZIP con los resultados preliminares",
+    "   (planillas XLSX por mesa). Copia la URL de cada ZIP en el campo 'zip' del cargo correspondiente.",
+    "3) Ejecuta: python3 gen_proxima_eleccion.py && python3 gen_proxima_page.py  (o bash hito.sh).",
+    "   La página proxima_eleccion.html y la ruta /proxima del servidor en vivo se llenan solas.",
+    "   Puedes repetirlo cada vez que el Servel actualice los ZIP (más mesas escrutadas).",
+    "4) Cuando el resultado sea definitivo, cambia 'estado' a 'finalizada'.",
+    "Columnas esperadas en los XLSX (formato Servel 2024/2025): nombre_candidato, votos_preliminares,",
+    "pacto, partido, electo_nominado, cod_mesa, electores y la columna de ámbito (region/distrito/comuna/circunscripcion_senatorial).",
+    "Si el Servel cambia el nombre de una columna, ajústalo en 'columnas' sin tocar el código."
+  ],
+  "nombre": "Elecciones regionales y municipales 2028",
+  "fecha": "2028-10-29",
+  "segunda_vuelta_fecha": "2028-11-26",
+  "estado": "preparando",
+  "descripcion": "Se eligen gobernadores regionales, consejeros regionales, alcaldes y concejales de todo Chile. Voto obligatorio para quienes están inscritos en Chile.",
+  "pagina_servel": "https://www.servel.cl/",
+  "columnas": {
+    "candidato": "nombre_candidato",
+    "votos": "votos_preliminares",
+    "pacto": "pacto",
+    "partido": "partido",
+    "electo": "electo_nominado",
+    "mesa": "cod_mesa",
+    "electores": "electores"
+  },
+  "cargos": [
+    {"id": "gobernadores", "nombre": "Gobernadores regionales", "emoji": "🏞️", "ambito": "region", "ambito_nombre": "región",
+     "explica": "El gobernador dirige el gobierno regional: decide en qué se invierte la plata de la región (caminos, salud, cultura). Se elige uno por región; si nadie supera el 40 %, hay segunda vuelta.",
+     "zip": ""},
+    {"id": "alcaldes", "nombre": "Alcaldes y alcaldesas", "emoji": "🏛️", "ambito": "comuna", "ambito_nombre": "comuna",
+     "explica": "El alcalde dirige la municipalidad: basura, alumbrado, permisos, colegios y consultorios municipales. Gana quien saca más votos en la comuna, sin segunda vuelta.",
+     "zip": ""},
+    {"id": "concejales", "nombre": "Concejales", "emoji": "🧑‍🤝‍🧑", "ambito": "comuna", "ambito_nombre": "comuna",
+     "explica": "El concejo municipal fiscaliza al alcalde y aprueba el presupuesto de la comuna. Se eligen entre 6 y 10 por comuna, según su tamaño.",
+     "zip": ""},
+    {"id": "cores", "nombre": "Consejeros regionales (CORE)", "emoji": "🗺️", "ambito": "region", "ambito_nombre": "región",
+     "explica": "Los CORE aprueban los proyectos de inversión de la región propuestos por el gobernador. Es el 'concejo' a nivel regional.",
+     "zip": ""}
+  ]
+}

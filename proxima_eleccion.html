@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Próxima elección · El Poder en Simple</title>
+<style>
+  :root{
+    --azul:#1d3a8f; --azul2:#2c55c8; --rojo:#d92632; --verde:#1e9e5a; --ambar:#e8a400;
+    --gris:#6b7280; --fondo:#f3f5fb; --tarjeta:#ffffff; --borde:#e4e8f2;
+    --texto:#1c2333; --texto2:#4a5468; --sombra:0 2px 10px rgba(20,30,70,.07);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--fondo); color:var(--texto); line-height:1.5;}
+  .cont{max-width:1080px; margin:0 auto; padding:0 16px;}
+  header.hero{background:linear-gradient(135deg,#14265e 0%,#1d3a8f 55%,#2c55c8 100%); color:#fff; padding:34px 0 28px;}
+  .hero .franja{height:6px; background:linear-gradient(90deg,var(--rojo) 33%,#fff 33% 66%,var(--azul2) 66%); border-radius:3px; margin-bottom:20px; opacity:.85;}
+  .eyebrow{font-size:12px; letter-spacing:2.5px; font-weight:800; opacity:.85; text-transform:uppercase;}
+  .hero h1{font-size:clamp(24px,4vw,36px); letter-spacing:-.5px; margin-top:6px;}
+  .hero h1 .simple{color:#ffd75e;}
+  .hero .sub{margin-top:10px; font-size:15px; max-width:760px; color:#dbe4ff;}
+  .badges{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
+  .badge{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); padding:5px 12px; border-radius:99px; font-size:12px; font-weight:600;}
+  .volver{display:inline-block; margin-top:14px; color:#ffd75e; font-weight:700; text-decoration:none; font-size:14px;}
+  nav.tabs{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--borde); box-shadow:var(--sombra);}
+  nav.tabs .cont{display:flex; gap:6px; flex-wrap:wrap; padding:8px 16px;}
+  nav.tabs button{border:none; background:transparent; padding:8px 14px; border-radius:10px; font-size:13.5px; font-weight:700; color:var(--texto2); cursor:pointer;}
+  nav.tabs button.on{background:var(--azul); color:#fff;}
+  section{padding:30px 0 8px;}
+  h2.tit{font-size:clamp(20px,3vw,26px); position:relative; padding-bottom:10px;}
+  h2.tit::after{content:""; position:absolute; left:0; bottom:0; width:56px; height:4px; border-radius:4px; background:linear-gradient(90deg,var(--rojo),var(--azul2));}
+  .lead{margin-top:12px; color:var(--texto2); font-size:15px; max-width:860px;}
+  .card{background:var(--tarjeta); border:1px solid var(--borde); border-radius:16px; padding:20px 22px; box-shadow:var(--sombra);}
+  .mt{margin-top:16px;}
+  .nota-metodo{font-size:12px; color:var(--gris); margin-top:10px; line-height:1.6;}
+  .grid{display:grid; gap:14px;}
+  .grid.cuatro{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+  .grid.dos{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+  .kpi{background:var(--tarjeta); border:1px solid var(--borde); border-radius:14px; padding:14px 16px; box-shadow:var(--sombra); text-align:center;}
+  .kpi .num{font-size:22px; font-weight:800; color:var(--azul);}
+  .kpi .lbl{font-size:11.5px; color:var(--texto2); margin-top:3px;}
+  /* cuenta regresiva */
+  .cuenta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
+  .cuenta div{background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3); border-radius:14px; padding:12px 18px; min-width:86px; text-align:center;}
+  .cuenta b{display:block; font-size:30px; line-height:1;}
+  .cuenta small{font-size:11px; letter-spacing:1px; text-transform:uppercase; opacity:.85;}
+  /* estado */
+  .estado{display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 14px; font-weight:800; font-size:13px;}
+  .estado.preparando{background:#fff1bf; color:#5a4300; border:1px solid #f3d36b;}
+  .estado.en_curso{background:#ffe1e3; color:#8a1520; border:1px solid #f3a3aa; animation:latido 1.4s infinite;}
+  .estado.finalizada{background:#dcf5e6; color:#0f5f36; border:1px solid #9fdcb9;}
+  @keyframes latido{0%,100%{box-shadow:0 0 0 0 rgba(217,38,50,.4);}50%{box-shadow:0 0 0 8px rgba(217,38,50,0);}}
+  /* cargos */
+  .cargo{border-top:4px solid var(--azul2);}
+  .cargo h3{font-size:18px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .cargo .chip{margin-left:auto; font-size:12px; font-weight:800; border-radius:999px; padding:4px 10px;}
+  .chip.esperando{background:#eef2fd; color:var(--azul);}
+  .chip.con_datos{background:#dcf5e6; color:#0f5f36;}
+  .chip.error{background:#ffe1e3; color:#8a1520;}
+  .espera{margin-top:12px; border:2px dashed var(--borde); border-radius:12px; padding:16px; text-align:center; color:var(--texto2); font-size:14px;}
+  .espera .cajas{display:flex; gap:8px; justify-content:center; margin-top:10px; flex-wrap:wrap;}
+  .espera .cajas span{height:10px; width:60px; border-radius:6px; background:linear-gradient(90deg,#e4e8f2,#f3f5fb,#e4e8f2); background-size:200% 100%; animation:brillo 1.6s infinite;}
+  @keyframes brillo{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+  .bar-row{display:grid; grid-template-columns:minmax(120px,1fr) 3fr 110px; gap:10px; align-items:center; padding:7px 0; border-bottom:1px solid var(--borde); font-size:14px;}
+  .bar-row:last-child{border-bottom:none;}
+  .bar-nom{font-weight:700;} .bar-nom small{display:block; font-weight:500; color:var(--texto2); font-size:12px;}
+  .bar-track{height:14px; background:var(--fondo); border-radius:7px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:7px; background:linear-gradient(90deg,var(--azul2),var(--azul));}
+  .bar-val{text-align:right; font-weight:800; color:var(--azul);}
+  .electo{color:var(--verde); font-weight:800;}
+  select, input{padding:8px 12px; border-radius:10px; border:1px solid var(--borde); font-size:14px; font-weight:600; color:var(--azul); max-width:100%;}
+  .pasos{counter-reset:p; display:grid; gap:10px; margin-top:12px;}
+  .paso{background:var(--tarjeta); border:1px solid var(--borde); border-radius:12px; padding:12px 14px 12px 50px; position:relative; font-size:14px;}
+  .paso::before{counter-increment:p; content:counter(p); position:absolute; left:14px; top:12px; width:26px; height:26px; border-radius:50%; background:var(--azul); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:13px;}
+  code{background:#eef2fd; padding:2px 6px; border-radius:6px; font-size:12.5px;}
+  footer{margin:40px 0 30px; font-size:12.5px; color:var(--gris); border-top:1px solid var(--borde); padding-top:14px; line-height:1.7;}
+  @media (max-width:720px){ .bar-row{grid-template-columns:1fr; gap:4px;} .bar-val{text-align:left;} .cuenta b{font-size:24px;} }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important;} }
+</style>
+</head>
+<body>
+<header class="hero"><div class="cont">
+  <div class="franja"></div>
+  <div class="eyebrow">Próxima elección · en simple</div>
+  <h1 id="titulo">🗳️ <span class="simple">Próxima elección</span></h1>
+  <p class="sub" id="descripcion"></p>
+  <div id="cuenta" class="cuenta"></div>
+  <div class="badges" id="badges"></div>
+  <a class="volver" href="dashboard_congreso.html">← Volver al tablero principal</a>
+  &nbsp;·&nbsp; <a class="volver" href="elecciones_chile.html">📊 Ver los resultados de 2025</a>
+</div></header>
+
+<nav class="tabs"><div class="cont" id="tabs"></div></nav>
+
+<div class="cont">
+  <section id="resumen">
+    <h2 class="tit">📌 ¿En qué está la elección?</h2>
+    <p class="lead" id="lead-estado"></p>
+    <div class="grid cuatro mt" id="kpis"></div>
+    <p class="nota-metodo">Los datos se descargan directamente de los archivos oficiales del <b>Servel</b> cuando este los publica. Mientras no existan, esta página muestra el estado "esperando datos" — nunca inventa cifras. No usa bases de datos.</p>
+  </section>
+
+  <section id="cargos">
+    <h2 class="tit">🗳️ Resultados por cargo</h2>
+    <p class="lead">Cada cargo tiene su propia tarjeta. Cuando el Servel publique los resultados preliminares, aquí verás quién ganó, con cuántos votos y qué porcentaje, y podrás elegir tu región o comuna.</p>
+    <div id="lista-cargos" class="grid mt"></div>
+  </section>
+
+  <section id="como-votar">
+    <h2 class="tit">🧭 Guía rápida para el día de la votación</h2>
+    <div class="pasos">
+      <div class="paso"><b>Revisa tus datos en consulta.servel.cl</b>: local de votación y mesa. Se publican unas semanas antes de la elección.</div>
+      <div class="paso"><b>Lleva tu cédula de identidad o pasaporte</b> vigentes (o vencidos hace menos de un año).</div>
+      <div class="paso"><b>El voto es obligatorio</b> para quienes están en Chile: no votar sin justificación tiene multa.</div>
+      <div class="paso"><b>Marca solo una raya vertical</b> sobre la línea horizontal del candidato de tu preferencia; cualquier otra marca puede anular el voto.</div>
+      <div class="paso"><b>Los resultados preliminares</b> empiezan a publicarse la misma noche en servel.cl; esta página se actualiza con esos archivos.</div>
+    </div>
+  </section>
+
+  <section id="admin">
+    <h2 class="tit">🛠️ Para quien administra este tablero</h2>
+    <p class="lead">La página ya está preparada: solo hay que <b>pegar las URL de los ZIP del Servel</b> en <code>proxima_eleccion.json</code> y ejecutar el generador. Nada de código.</p>
+    <div class="pasos">
+      <div class="paso">La noche de la elección, el Servel publica los resultados preliminares como archivos ZIP (planillas por mesa) en <code>servel.cl</code>.</div>
+      <div class="paso">Copia la URL de cada ZIP en el campo <code>"zip"</code> del cargo correspondiente en <code>proxima_eleccion.json</code>.</div>
+      <div class="paso">Ejecuta <code>python3 gen_proxima_eleccion.py && python3 gen_proxima_page.py</code> (o <code>bash hito.sh</code>). Repite cada vez que el Servel actualice los archivos.</div>
+      <div class="paso">Cuando el resultado sea definitivo, cambia <code>"estado"</code> a <code>"finalizada"</code>.</div>
+    </div>
+  </section>
+
+  <footer>
+    <b>El Poder en Simple · Próxima elección</b> — tablero ciudadano no oficial, preparado para mostrar los resultados preliminares oficiales del Servicio Electoral de Chile (Servel) apenas se publiquen. Nada se guarda en bases de datos. Verifica siempre en <a href="https://www.servel.cl" target="_blank" rel="noopener" style="color:var(--azul2)">servel.cl</a>.
+    · <a href="dashboard_congreso.html" style="color:var(--azul2)">Volver al tablero principal</a>
+  </footer>
+</div>
+
+<script>
+const DATA = {"nombre": "Elecciones regionales y municipales 2028", "fecha": "2028-10-29", "estado": "preparando", "descripcion": "Se eligen gobernadores regionales, consejeros regionales, alcaldes y concejales de todo Chile. Voto obligatorio para quienes están inscritos en Chile.", "pagina_servel": "https://www.servel.cl/", "segunda_vuelta_fecha": "2028-11-26", "generado": "2026-09-19 16:39", "cargos": [{"id": "gobernadores", "nombre": "Gobernadores regionales", "emoji": "🏞️", "ambito": "region", "ambito_nombre": "región", "explica": "El gobernador dirige el gobierno regional: decide en qué se invierte la plata de la región (caminos, salud, cultura). Se elige uno por región; si nadie supera el 40 %, hay segunda vuelta.", "zip": "", "estado": "esperando"}, {"id": "alcaldes", "nombre": "Alcaldes y alcaldesas", "emoji": "🏛️", "ambito": "comuna", "ambito_nombre": "comuna", "explica": "El alcalde dirige la municipalidad: basura, alumbrado, permisos, colegios y consultorios municipales. Gana quien saca más votos en la comuna, sin segunda vuelta.", "zip": "", "estado": "esperando"}, {"id": "concejales", "nombre": "Concejales", "emoji": "🧑‍🤝‍🧑", "ambito": "comuna", "ambito_nombre": "comuna", "explica": "El concejo municipal fiscaliza al alcalde y aprueba el presupuesto de la comuna. Se eligen entre 6 y 10 por comuna, según su tamaño.", "zip": "", "estado": "esperando"}, {"id": "cores", "nombre": "Consejeros regionales (CORE)", "emoji": "🗺️", "ambito": "region", "ambito_nombre": "región", "explica": "Los CORE aprueban los proyectos de inversión de la región propuestos por el gobernador. Es el 'concejo' a nivel regional.", "zip": "", "estado": "esperando"}]};
+const $ = s => document.querySelector(s);
+const fmt = n => new Intl.NumberFormat('es-CL').format(Math.round(n||0));
+const hoy = new Date(); hoy.setHours(0,0,0,0);
+const fecha = new Date(DATA.fecha + 'T00:00:00');
+const dias = Math.round((fecha - hoy)/86400000);
+const fmtF = d => d.toLocaleDateString('es-CL', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+let estado = DATA.estado || 'preparando';
+const hayDatos = (DATA.cargos||[]).some(c=>c.estado==='con_datos');
+if(estado!=='finalizada' && (hayDatos || dias<=0)) estado = 'en_curso';
+if(estado==='preparando' && dias>0) estado='preparando';
+
+document.title = DATA.nombre + ' · El Poder en Simple';
+$('#titulo').innerHTML = '🗳️ <span class="simple">' + DATA.nombre + '</span>';
+$('#descripcion').textContent = DATA.descripcion || '';
+if(dias > 0){
+  $('#cuenta').innerHTML = `<div><b>${dias}</b><small>${dias===1?'día':'días'}</small></div><div><b>${Math.floor(dias/7)}</b><small>semanas</small></div><div style="min-width:200px"><b style="font-size:16px; margin-top:6px">${fmtF(fecha)}</b><small>día de la votación</small></div>`;
+}else if(dias===0){
+  $('#cuenta').innerHTML = '<div style="min-width:240px"><b>¡HOY se vota!</b><small>resultados desde la noche</small></div>';
+}else{
+  $('#cuenta').innerHTML = `<div style="min-width:240px"><b style="font-size:18px">${fmtF(fecha)}</b><small>elección realizada</small></div>`;
+}
+const ESTADOS = {preparando:'⏳ Preparando: esperando el día de la elección', en_curso:'🔴 Resultados en actualización', finalizada:'✅ Resultados definitivos'};
+$('#badges').innerHTML = `<span class="badge">📅 ${DATA.fecha}</span>` + (DATA.segunda_vuelta_fecha?`<span class="badge">🔁 Eventual 2ª vuelta: ${DATA.segunda_vuelta_fecha}</span>`:'') + `<span class="badge">🏛️ Fuente: Servel</span><span class="badge">🚫 Sin base de datos</span>`;
+$('#lead-estado').innerHTML = `<span class="estado ${estado}">${ESTADOS[estado]}</span><br><br>` + (
+  estado==='preparando' ? `Faltan <b>${dias} días</b>. Los cargos que se eligen ya están listos abajo, con una explicación simple de para qué sirve cada uno. Apenas el Servel publique los resultados preliminares, las tarjetas se llenan solas.` :
+  estado==='en_curso' ? `El Servel está publicando resultados preliminares. Última actualización de este tablero: <b>${DATA.generado||'—'}</b>. Los porcentajes pueden cambiar a medida que se escrutan más mesas.` :
+  `Resultados definitivos según el Servel. Última actualización: <b>${DATA.generado||'—'}</b>.`);
+
+const conDatos = (DATA.cargos||[]).filter(c=>c.estado==='con_datos');
+const kp = [
+  {num:(DATA.cargos||[]).length, lbl:'cargos en juego'},
+  {num:conDatos.length + '/' + (DATA.cargos||[]).length, lbl:'cargos con datos del Servel'},
+  {num:conDatos.length ? fmt(Math.max(...conDatos.map(c=>c.datos.total_validos))) : '—', lbl:'votos válidos (cargo con más escrutinio)'},
+  {num:conDatos.length ? fmt(Math.max(...conDatos.map(c=>c.datos.mesas||0))) : '—', lbl:'mesas escrutadas'},
+];
+$('#kpis').innerHTML = kp.map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="lbl">${k.lbl}</div></div>`).join('');
+$('#tabs').innerHTML = (DATA.cargos||[]).map((c,i)=>`<button data-i="${i}" ${i===0?'class="on"':''}>${c.emoji} ${c.nombre}</button>`).join('') + '<button data-i="guia">🧭 Guía para votar</button>';
+$('#tabs').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on', x===b)); const el = b.dataset.i==='guia' ? $('#como-votar') : document.getElementById('cargo-'+DATA.cargos[b.dataset.i].id); el && el.scrollIntoView({behavior:'smooth', block:'start'}); });
+
+const pintarZona = (c, zona) => {
+  const d = c.datos.zonas[zona]; if(!d) return '';
+  const max = Math.max(...d.candidatos.map(x=>x.votos), 1);
+  return `<div class="nota-metodo" style="margin-top:8px">${d.mesas?fmt(d.mesas)+' mesas · ':''}${fmt(d.total_validos)} votos válidos · nulos ${fmt(d.nulos)} · blancos ${fmt(d.blancos)}</div>` +
+    d.candidatos.map(x=>`<div class="bar-row"><span class="bar-nom">${x.electo?'<span class="electo">✔ </span>':''}${x.nombre}<small>${x.pacto!=='nan'&&x.pacto!=='None'?x.pacto:''}${x.partido&&x.partido!=='nan'&&x.partido!=='None'?' · '+x.partido:''}</small></span><span class="bar-track"><span class="bar-fill" style="width:${x.votos/max*100}%"></span></span><span class="bar-val">${fmt(x.votos)} · ${x.pct}%</span></div>`).join('');
+};
+$('#lista-cargos').innerHTML = (DATA.cargos||[]).map(c=>{
+  let cuerpo;
+  if(c.estado==='con_datos'){
+    const zonas = Object.keys(c.datos.zonas);
+    const nac = c.datos.resumen_nacional.slice(0,8); const maxN = Math.max(...nac.map(x=>x.votos),1);
+    cuerpo = `<h4 style="margin-top:14px; font-size:14px;">🇨🇱 Total país por pacto</h4>` +
+      nac.map(x=>`<div class="bar-row"><span class="bar-nom">${x.pacto}</span><span class="bar-track"><span class="bar-fill" style="width:${x.votos/maxN*100}%"></span></span><span class="bar-val">${x.pct}%${x.escanos?' · '+x.escanos+' electos':''}</span></div>`).join('') +
+      `<div class="mt"><label style="font-weight:700; font-size:14px;">Tu ${c.ambito_nombre}: </label><select data-c="${c.id}" class="sel-zona">${zonas.map(z=>`<option>${z}</option>`).join('')}</select></div><div id="zona-${c.id}">${pintarZona(c, zonas[0])}</div>`;
+  }else if(c.estado==='error'){
+    cuerpo = `<div class="espera">⚠️ El archivo del Servel no se pudo leer: <code>${c.error}</code><br>Revisa la URL o las columnas en <code>proxima_eleccion.json</code>.</div>`;
+  }else{
+    cuerpo = `<div class="espera">⏳ <b>Esperando los datos del Servel.</b><br>Cuando se publiquen los resultados preliminares, aquí aparecerán los candidatos, sus votos y porcentajes por ${c.ambito_nombre}.<div class="cajas"><span></span><span></span><span></span><span></span></div></div>`;
+  }
+  return `<div class="card cargo" id="cargo-${c.id}"><h3>${c.emoji} ${c.nombre}<span class="chip ${c.estado}">${c.estado==='con_datos'?'✅ con datos':c.estado==='error'?'⚠️ error':'⏳ esperando'}</span></h3><p style="font-size:14px; color:var(--texto2); margin-top:6px;">${c.explica||''}</p>${cuerpo}</div>`;
+}).join('');
+document.querySelectorAll('.sel-zona').forEach(s=>s.addEventListener('change', ()=>{ const c = DATA.cargos.find(x=>x.id===s.dataset.c); $('#zona-'+c.id).innerHTML = pintarZona(c, s.value); }));
+</script>
+</body>
+</html>

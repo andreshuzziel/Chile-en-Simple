@@ -469,6 +469,7 @@
   #ninos-banner{display:none; background:linear-gradient(90deg,#fff6d6,#fff1bf); border:1px solid #f3d36b; color:#5a4300; border-radius:12px; padding:10px 14px; margin:14px 0 0; font-size:14px; font-weight:600;}
   body.modo-ninos #ninos-banner{display:block;}
   body.modo-ninos p.lead{background:#fff8dc; border-left:5px solid var(--ambar); padding:10px 14px; border-radius:10px; font-size:16.5px;}
+  body.dark #proxima-cta{background:#2a2410 !important; border-color:#7a6320;}
   body.dark #ninos-banner{background:#3a2f0c; border-color:#7a6320; color:#ffe9a8;}
   body.dark.modo-ninos p.lead{background:#2a2410; color:#f3e9c9;}
   .leer-btn{margin-left:auto; flex:0 0 auto; border:1px solid var(--borde); background:#fff; color:var(--texto2); border-radius:999px; font-size:12.5px; font-weight:700; padding:5px 11px; cursor:pointer; transition:all .2s; white-space:nowrap;}
@@ -589,6 +590,7 @@
     <a href="#glosario">📖 Glosario</a>
     <a href="javascript:location.reload()" style="background:#eef4ff;color:var(--azul)">🔄 Re-descargar ahora</a>
     <a href="#ranking">🏆 Ranking</a>
+    <a href="proxima_eleccion.html">🔜 Próxima elección</a>
     <button id="ninos-toggle" title="Modo «explícame como si tuviera 12 años»" aria-label="Explicación para niños y niñas" aria-pressed="false">🧒</button>
     <button id="dark-toggle" title="Cambiar entre modo claro y oscuro" aria-label="Modo oscuro">🌙</button>
   </div>
@@ -661,6 +663,12 @@
          style="display:inline-block; margin-top:16px; background:#ffd75e; color:#1d3a8f; font-weight:800; font-size:16px; text-decoration:none; padding:14px 28px; border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.28); transition:transform .18s;"
          onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">🗳️ Ver el tablero electoral →</a>
       <p style="font-size:11.5px; color:#c9d5f5; margin-top:12px;">Se abre en la misma ventana · resultados preliminares oficiales del Servel (16-nov-2025)</p>
+    </div>
+
+    <div class="card mt" id="proxima-cta" style="border:2px dashed var(--ambar); text-align:center; padding:22px; background:linear-gradient(120deg,#fffaf0,#fff6d6);">
+      <h3 style="justify-content:center; font-size:18px;">🔜 La próxima elección, lista para el día D</h3>
+      <p style="font-size:14.5px; color:var(--texto2); max-width:640px; margin:8px auto 0;" id="proxima-txt">Ya dejamos preparado el tablero de la <b>próxima elección</b>: cuenta regresiva, qué cargos se eligen y para qué sirve cada uno. La noche de la elección se irá llenando con los resultados preliminares oficiales del Servel.</p>
+      <a id="btn-proxima" href="proxima_eleccion.html" style="display:inline-block; margin-top:14px; background:var(--azul); color:#fff; font-weight:800; font-size:15px; text-decoration:none; padding:12px 24px; border-radius:14px; box-shadow:0 4px 14px rgba(20,30,70,.2);">🔜 Ver la próxima elección →</a>
     </div>
 
     <h3 style="margin-top:26px; font-size:19px;">🇨🇱 Feriados y conmemoraciones del año</h3>
@@ -1914,6 +1922,7 @@ renderGastoBanc();
     return texto.slice(0,i) + '<mark>' + texto.slice(i, i+q.length) + '</mark>' + texto.slice(i+q.length);
   };
   const secciones = [
+    {t:'🔜 Próxima elección: cuenta regresiva y resultados del Servel cuando se publiquen', id:'proxima-cta', keys:'proxima elección 2028 regionales municipales alcaldes gobernadores cuenta regresiva servel'},
     {t:'🏆 Ranking en simple: más presentes, más faltas, más gastan', id:'ranking', keys:'ranking top 10 mejores peores mas presentes faltan gastan austeros region'},
     {t:'🪑 Asistencia a las sesiones', id:'asistencia', keys:'asistencia faltas inasistencias sesiones quien falta'},
     {t:'💰 Gastos de cada diputado', id:'gastos', keys:'gastos plata lucas asesores presupuesto en que gastan'},

@@ -124,6 +124,8 @@ $('#a11y-contraste').click(); $('#a11y-lectura').click();
 t('letra grande + contraste + lectura fácil aplican', doc.body.classList.contains('letra-xg') && doc.body.classList.contains('contraste') && doc.body.classList.contains('lectura-facil'));
 $('#a11y-reset').click();
 t('restablecer limpia accesibilidad', !doc.body.classList.contains('letra-xg') && !doc.body.classList.contains('contraste'));
+t('nav incluye Próxima elección', $$('nav.menu a').some(a => a.getAttribute('href') === 'proxima_eleccion.html'));
+t('botón Próxima elección en fechas', !!$('#btn-proxima') && $('#btn-proxima').getAttribute('href') === 'proxima_eleccion.html');
 t('nav incluye Ranking', $$('nav.menu a').some(a => a.getAttribute('href') === '#ranking'));
 t('media queries para móvil chico', html.includes('@media (max-width:480px)'));
 t('sin errores acumulados', errs.length === 0, JSON.stringify(errs.slice(0,5)));

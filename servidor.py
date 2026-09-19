@@ -819,6 +819,17 @@ class Handler(BaseHTTPRequestHandler):
                 self.wfile.write(html)
             except FileNotFoundError:
                 self.send_response(404); self.end_headers()
+        elif p.path in ('/proxima', '/proxima_eleccion.html'):
+            try:
+                html = open('/home/user/proxima_eleccion.html', 'rb').read()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.send_header('Cache-Control', 'no-store')
+                self.send_header('Content-Length', str(len(html)))
+                self.end_headers()
+                self.wfile.write(html)
+            except FileNotFoundError:
+                self.send_response(404); self.end_headers()
         elif p.path in ('/elecciones', '/elecciones_chile.html'):
             try:
                 html = open('/home/user/elecciones_chile.html', 'rb').read()

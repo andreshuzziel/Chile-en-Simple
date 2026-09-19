@@ -8,6 +8,8 @@ cd "$(dirname "$0")"
 
 echo '→ regenerando elecciones_chile.html…'
 python3 gen_elecciones_page.py
+echo '→ regenerando proxima_eleccion.html…'
+python3 gen_proxima_page.py
 
 # entorno jsdom: reutiliza si ya existe en /tmp/jst o /tmp/jstest
 if [ -d /tmp/jstest/node_modules/jsdom ]; then JST=/tmp/jstest
@@ -25,6 +27,10 @@ NODE_PATH=$JST/node_modules node test_mapa_jsdom.js > /dev/null
 echo '→ tests del dashboard principal…'
 NODE_PATH=$JST/node_modules node test_dashboard_jsdom.js | tail -1
 NODE_PATH=$JST/node_modules node test_dashboard_jsdom.js > /dev/null
+
+echo '→ tests de la próxima elección…'
+NODE_PATH=$JST/node_modules node test_proxima_jsdom.js | tail -1
+NODE_PATH=$JST/node_modules node test_proxima_jsdom.js > /dev/null
 
 echo '→ tests del calendario de votaciones…'
 NODE_PATH=$JST/node_modules node test_calendario_jsdom.js | tail -1
