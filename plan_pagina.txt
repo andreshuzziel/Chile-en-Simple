@@ -354,3 +354,6 @@ RESUMEN EN 1 LÍNEA POR PÁGINA
    Página 1: entender el Congreso y el Gobierno hoy.
    Página 2: entender cómo se eligieron en 2025 (con mapa de Chile).
    Página 3: entender qué se votó cada día y cómo votó cada diputado.
+
+   Escritorio: .cont crece hasta min(1560px, 94vw) (1700px en 1800px+); nav con letra
+   12px en una o dos filas centradas (wrap), sin scroll horizontal; en móvil 10px.
