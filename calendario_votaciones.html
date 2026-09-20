@@ -480,6 +480,13 @@ $('#btn-volver').addEventListener('click', ()=>{
 });
 
 renderMesNav(); renderCal();
+
+// Todo enlace externo abre en una pestaña nueva (también los que genera el JavaScript), con un solo clic
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[href]'); if(!a) return;
+  const h = a.getAttribute('href') || '';
+  if(/^https?:\/\//i.test(h) && a.host !== location.host){ a.target = '_blank'; a.rel = 'noopener'; }
+}, true);
 </script>
 </body>
 </html>

@@ -1139,6 +1139,13 @@ function exploradorParlamentario(pref, data, opts){
   exploradorParlamentario('sen', DATA.senadores, {zonaTit:'Circunscripción', zonaLabel:'circunscripción', zonaPlural:'circunscripciones', nombreZona:k=>`Circunscripción ${k} · ${circ[k]?circ[k].reg:'—'}`, infoZona:k=>circ[k]?('Región de '+circ[k].reg+' · distritos '+circ[k].dists.map(d=>'D'+d).join(', ')+ (Number(k)%2===1?' · circunscripción impar (se renovó en 2025)':'')):''});
 })();
 
+
+// Todo enlace externo abre en una pestaña nueva (también los que genera el JavaScript), con un solo clic
+document.addEventListener('click', function(e){
+  const a = e.target.closest('a[href]'); if(!a) return;
+  const h = a.getAttribute('href') || '';
+  if(/^https?:\/\//i.test(h) && a.host !== location.host){ a.target = '_blank'; a.rel = 'noopener'; }
+}, true);
 </script>
 </body>
 </html>
