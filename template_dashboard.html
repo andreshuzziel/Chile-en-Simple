@@ -2105,10 +2105,10 @@ renderGastoBanc();
   const menosA= [...dd].sort((a,b)=>a.asist-b.asist)[0];
   const chips = [
     {t:'📅 Fechas clave del país', fn:()=>document.getElementById('fechas').scrollIntoView({behavior:'smooth'})},
-    {t:`💰 ¿Quién gasta más? (${masG.nombre.split(' ')[0]})`, fn:()=>window.explorador.ordenarGasto()},
+    {t:`💰 ¿Quién gasta más?`, fn:()=>window.explorador.ordenarGasto()},
     {t:`🏅 ¿Quién asiste más?`, fn:()=>window.explorador.ordenarAsistencia(false)},
     {t:`🚨 ¿Quién falta más?`, fn:()=>window.explorador.ordenarAsistencia(true)},
-    {t:`🔍 ${masA.nombre}`, fn:()=>{ window.explorador.abrir(masA.id); }},
+    {t:`🏅 ${dd.filter(x=>x.asist===masA.asist).length} con ${masA.asist}% de asistencia`, fn:()=>window.explorador.ordenarAsistencia(false)},
     {t:'🏛️ Bancada UDI', fn:()=>window.explorador.bancada('UDI')},
     {t:'🌸 Bancada Frente Amplio', fn:()=>window.explorador.bancada('Frente Amplio')},
     {t:'🔵 Bancada Republicanos', fn:()=>window.explorador.bancada('Republicanos')},
