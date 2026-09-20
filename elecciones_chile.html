@@ -302,7 +302,7 @@
           <div class="mt" id="mapa-detalle"><p class="nota-metodo">👆 Haz clic en un distrito del mapa para ver pactos, votos y personas electas aquí mismo.</p></div>
         </div>
       </div>
-      <p class="nota-metodo">Geografía real horneada sin base de datos: trazado comunal de github.com/alvaroparedesl/geochile + la nómina comuna→distrito derivada de los XLSX oficiales del Servel (gen_geografia.py → elecciones_geografia.json). Isla de Pascua y Juan Fernández (Distrito 7) y Río Verde (D28) no tienen polígono continental: las islas quedan como chip 🏝️. Los resultados vienen del snapshot oficial de Servel que ya usa esta página.</p>
+      <p class="nota-metodo">Mapa comunal elaborado a partir de cartografía pública de Chile y de la nómina oficial comuna→distrito del Servel. Isla de Pascua, Juan Fernández (Distrito 7) y Río Verde (Distrito 28) no tienen trazado en el mapa, pero sus votos sí están contados en los totales.</p>
     </div>
   </section>
 
@@ -958,7 +958,7 @@ pintarMapa();
     mini(sv.chile, '🇨🇱 Dentro de Chile', `<p class="nota-metodo">Kast ganó ${nKast} de ${regiones.length} regiones (ver mapa 🔁 2ª vuelta).</p>`) +
     mini(sv.extranjero, '🌎 Extranjero (' + (sv.extranjero.top_paises ? Object.keys(sv.extranjero.top_paises).length + '+ países, top: ' + Object.keys(sv.extranjero.top_paises).slice(0,3).join(', ') : 'varios países') + ')');
   $('#sv-nota').innerHTML = 'Fuente: resultados preliminares de la Segunda Votación Presidencial (14-D-2025), actas de mesa publicadas por el Servel · snapshot ' +
-    (sv.fuente && sv.fuente.descargado ? sv.fuente.descargado : '') + ' · generado por <b>gen_segunda_vuelta.py</b> con el ZIP oficial <a href="' + (sv.fuente ? sv.fuente.archivo : '#') + '" target="_blank" rel="noopener" style="color:var(--azul2)">Datos_SegundaVotacion.zip</a>. ' +
+    (sv.fuente && sv.fuente.descargado ? sv.fuente.descargado : '') + ' · elaborado con el archivo oficial <a href="' + (sv.fuente ? sv.fuente.archivo : '#') + '" target="_blank" rel="noopener" style="color:var(--azul2)">Datos_SegundaVotacion.zip</a>. ' +
     'Regla: en 2ª vuelta gana la primera mayoría (mayoría simple); no se exige 50%. ' +
     'En 1ª vuelta Kast había sacado 23,95% y pasado segundo; en el balotaje multiplicó su apoyo y Jara no logró traspasar el techo de la oficialista.';
 })();

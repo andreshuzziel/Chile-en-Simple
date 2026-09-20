@@ -144,16 +144,6 @@
     </div>
   </section>
 
-  <section id="admin">
-    <h2 class="tit">🛠️ Para quien administra este tablero</h2>
-    <p class="lead">La página ya está preparada: solo hay que <b>pegar las URL de los ZIP del Servel</b> en <code>proxima_eleccion.json</code> y ejecutar el generador. Nada de código.</p>
-    <div class="pasos">
-      <div class="paso">La noche de la elección, el Servel publica los resultados preliminares como archivos ZIP (planillas por mesa) en <code>servel.cl</code>.</div>
-      <div class="paso">Copia la URL de cada ZIP en el campo <code>"zip"</code> del cargo correspondiente en <code>proxima_eleccion.json</code>.</div>
-      <div class="paso">Ejecuta <code>python3 gen_proxima_eleccion.py && python3 gen_proxima_page.py</code> (o <code>bash hito.sh</code>). Repite cada vez que el Servel actualice los archivos.</div>
-      <div class="paso">Cuando el resultado sea definitivo, cambia <code>"estado"</code> a <code>"finalizada"</code>.</div>
-    </div>
-  </section>
 
   <footer>
     <b>El Poder en Simple · Próxima elección</b> — tablero ciudadano no oficial, preparado para mostrar los resultados preliminares oficiales del Servicio Electoral de Chile (Servel) apenas se publiquen. Nada se guarda en bases de datos. Verifica siempre en <a href="https://www.servel.cl" target="_blank" rel="noopener" style="color:var(--azul2)">servel.cl</a>.
@@ -244,7 +234,7 @@ $('#lista-cargos').innerHTML = (DATA.cargos||[]).map(c=>{
       <div class="sub" id="s-${c.id}-busca"><input class="busca-tp cand-busca mt" data-c="${c.id}" placeholder="Nombre, partido o pacto (mín. 3 letras)" style="min-width:min(100%,360px)"><div class="tabla-wrap"><table class="tp" id="b-${c.id}"></table></div></div>`;
     c._todos = TODOS; c._cab = cab; c._fila = fila;
   }else if(c.estado==='error'){
-    cuerpo = `<div class="espera">⚠️ El archivo del Servel no se pudo leer: <code>${c.error}</code><br>Revisa la URL o las columnas en <code>proxima_eleccion.json</code>.</div>`;
+    cuerpo = `<div class="espera">⚠️ El archivo del Servel no se pudo leer: <code>${c.error}</code><br>El equipo que mantiene la página ya fue avisado; vuelve a intentarlo más tarde.</div>`;
   }else{
     cuerpo = `<div class="espera">⏳ <b>Esperando los datos del Servel.</b><br>Cuando se publiquen los resultados preliminares, aquí aparecerán los candidatos, sus votos y porcentajes por ${c.ambito_nombre}.<div class="cajas"><span></span><span></span><span></span><span></span></div></div>`;
   }

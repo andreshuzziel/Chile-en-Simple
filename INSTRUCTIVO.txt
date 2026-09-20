@@ -1,0 +1,86 @@
+=====================================================================
+ EL PODER EN SIMPLE — INSTRUCTIVO PARA QUIEN ADMINISTRA LA PÁGINA
+=====================================================================
+(Este archivo NO se publica ni se muestra en la página. Es solo para
+ la persona que la mantiene.)
+
+Requisitos: Python 3 con openpyxl, pandas y requests instalados.
+Todos los comandos se ejecutan dentro de la carpeta del proyecto.
+
+---------------------------------------------------------------------
+1. PRÓXIMA ELECCIÓN (proxima_eleccion.html) — rellenar con el Servel
+---------------------------------------------------------------------
+La página ya está preparada: solo hay que pegar las URL de los ZIP
+del Servel en proxima_eleccion.json y ejecutar el generador. Nada de
+código.
+
+  a) La noche de la elección, el Servel publica los resultados
+     preliminares como archivos ZIP (planillas por mesa) en
+     https://www.servel.cl (sección de resultados preliminares).
+     En 2025 quedaron en /wp-content/uploads/<año>/<mes>/....zip
+
+  b) Copia la URL de cada ZIP en el campo "zip" del cargo
+     correspondiente dentro de proxima_eleccion.json
+     (gobernadores, consejeros regionales, alcaldes, concejales).
+
+  c) Ejecuta:
+        python3 gen_proxima_eleccion.py && python3 gen_proxima_page.py
+     (o simplemente: bash hito.sh, que además corre las pruebas y
+     guarda un punto de control en git).
+     Repite cada vez que el Servel actualice los archivos.
+
+  d) Cuando el resultado sea definitivo, cambia "estado" a
+     "finalizada" en proxima_eleccion.json y vuelve a ejecutar c).
+
+  e) Si la página muestra "El archivo del Servel no se pudo leer",
+     revisa la URL o los nombres de columnas indicados en
+     proxima_eleccion.json (campo "columnas").
+
+---------------------------------------------------------------------
+2. PÁGINA PRINCIPAL (index.html) — actualizar datos del Congreso
+---------------------------------------------------------------------
+  Modo en vivo (recomendado): python3 servidor.py  → puerto 8070.
+  Descarga los datos oficiales al abrir la página, sin base de datos.
+
+  Modo estático (hosting sin Python): regenerar y volver a subir:
+        python3 gen_dashboard.py      → index.html
+        python3 gen_vivo.py           → dashboard_vivo.html
+        python3 gen_excel.py          → datos_congreso.xlsx
+
+---------------------------------------------------------------------
+3. CALENDARIO DE VOTACIONES (calendario_votaciones.html)
+---------------------------------------------------------------------
+        python3 gen_calendario.py && python3 gen_calendario_page.py
+  (hito.sh NO regenera esta página; hazlo a mano tras actualizar.)
+
+---------------------------------------------------------------------
+4. ELECCIONES 2025 (elecciones_chile.html) — datos definitivos
+---------------------------------------------------------------------
+  Normalmente no requiere cambios. Si hiciera falta reconstruir:
+        python3 gen_elecciones.py
+        python3 gen_segunda_vuelta.py
+        python3 gen_presidencia_distritos.py
+        python3 gen_geografia.py
+        python3 gen_elecciones_page.py
+
+---------------------------------------------------------------------
+5. AUDIO RESUMEN SEMANAL
+---------------------------------------------------------------------
+  El archivo audio_resumen.mp3 se reemplaza cada semana por el nuevo
+  (el anterior se elimina). El botón "Escuchar" de cada sección usa
+  la voz del navegador y no necesita mantenimiento.
+
+---------------------------------------------------------------------
+6. PUNTO DE CONTROL SEGURO
+---------------------------------------------------------------------
+        bash hito.sh
+  Regenera páginas, ejecuta las 4 suites de pruebas y solo si todo
+  está en verde guarda un commit en git.
+
+---------------------------------------------------------------------
+7. QUÉ SUBIR AL HOSTING
+---------------------------------------------------------------------
+  index.html · elecciones_chile.html · calendario_votaciones.html ·
+  proxima_eleccion.html · dashboard_congreso.html (redirección) ·
+  datos_congreso.xlsx · audio_resumen.mp3
+  servidor.py solo si el hosting ejecuta Python (modo en vivo).
