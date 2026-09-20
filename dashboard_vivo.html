@@ -2174,10 +2174,10 @@ renderGastoBanc();
   function medir(){ if(nav) document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px'); }
   medir(); window.addEventListener('resize', medir); window.addEventListener('load', medir);
   if(window.ResizeObserver && nav) new ResizeObserver(medir).observe(nav);
-  // Al pulsar una categoría: el TÍTULO de la sección queda pegado justo bajo la barra (10px de aire),
+  // Al pulsar una categoría: el TÍTULO de la sección queda pegado justo bajo la barra (18px de aire),
   // sin importar el relleno de la sección, el ancho de pantalla o cuántas filas tenga la barra.
-  const AIRE = 10;
-  // irSeccion(el|id, {hash, block}) — MISMO margen para TODO salto interno: barra + 10px y luego el título
+  const AIRE = 18;
+  // irSeccion(el|id, {hash, block}) — MISMO margen para TODO salto interno: barra + 18px y luego el título
   // (block:'center'/'nearest' se respetan para elementos pequeños: una fila de tabla, un término del glosario)
   window.irSeccion = function(el, opts){
     opts = opts || {};
