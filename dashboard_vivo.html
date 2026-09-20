@@ -1194,11 +1194,16 @@ function avisarEnlace(url){
 }
 document.addEventListener('click', e=>{
   const a = e.target.closest && e.target.closest('a[href^="http"]');
-  if(!a) return;
-  let win = null;
-  try{ win = window.open(a.href, '_blank', 'noopener'); }catch(err){ win = null; }
-  if(!win){ e.preventDefault(); avisarEnlace(a.href); }
-  else { e.preventDefault(); }
+  if(!a || a.host === location.host) return;
+  // Un clic → pestaña nueva, con el mecanismo nativo del navegador (target=_blank, rel=noopener).
+  a.target = '_blank'; a.rel = 'noopener';
+  // Solo en visores que bloquean la navegación (vista previa en iframe con sandbox) se ofrece copiar el enlace.
+  const enSandbox = (()=>{ try{ return window.top !== window.self && !window.top.location.href; }catch(err){ return true; } })();
+  if(enSandbox){
+    let win = null;
+    try{ win = window.open(a.href, '_blank', 'noopener'); }catch(err){ win = null; }
+    if(win === null){ e.preventDefault(); avisarEnlace(a.href); }
+  }
 });
 
 function render(){
