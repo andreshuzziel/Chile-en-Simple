@@ -148,11 +148,43 @@
     html{ scroll-behavior:auto; }
     .dia.con:hover{ transform:none; }
   }
+
+  /* ---------- MODO OSCURO (misma paleta y preferencia eps_dark que el tablero principal) ---------- */
+  #dark-toggle{border:1px solid #b9c8ec; background:#eef2fd; border-radius:10px; padding:4px 9px; font-size:15px; line-height:1; cursor:pointer; min-width:30px; min-height:30px; box-shadow:0 1px 4px rgba(20,30,70,.12); flex:0 0 auto;}
+  #dark-toggle:hover{background:#dfe7fb;}
+  #dark-toggle.flotante{position:fixed; right:14px; top:12px; z-index:60;}
+  body.dark #dark-toggle{background:#25314f; border-color:#4a5c92; color:#fff; box-shadow:none;}
+  body.dark{--fondo:#0d1220; --tarjeta:#171e30; --borde:#293450; --texto:#e9edf7; --texto2:#a9b3ca; --sombra:0 2px 12px rgba(0,0,0,.5);}
+  body.dark header.hero{background:linear-gradient(135deg,#0a1128 0%,#14265e 55%,#1d3a8f 100%);}
+  body.dark nav.tabs{background:#121828; border-bottom-color:#293450;}
+  body.dark nav.tabs button{color:#c8d2e8;}
+  body.dark nav.tabs button.on{background:var(--azul2); color:#fff;}
+  body.dark .card, body.dark .kpi, body.dark .paso, body.dark .tarjeta{background:#171e30; border-color:#293450;}
+  body.dark select, body.dark input, body.dark button:not(.on):not(#dark-toggle){background:#1c2540; color:#e9edf7; border-color:#3a4870;}
+  body.dark table.tp th, body.dark th{background:#1c2540; color:#c8d2e8;}
+  body.dark table.tp tr:hover td, body.dark tr:hover td{background:#1f2946;}
+  body.dark td{border-color:#293450;}
+  body.dark .mini-kpis span, body.dark .chip.fecha, body.dark .stack, body.dark .pista{background:#1c2540; color:#c8d2e8; border-color:#3a4870;}
+  body.dark .chip-esc, body.dark .chip.tipo, body.dark .dia .chip-leyes, body.dark .chip.esperando, body.dark code, body.dark .mes-nav .flecha{background:#1f2a4d; color:#b9c8ff; border-color:#3a4870;}
+  body.dark .caja-ley{background:#1a2440; border-color:#34457a;}
+  body.dark .dia{background:#171e30; border-color:#293450; color:#e9edf7;}
+  body.dark .dia.sel{background:#2a2a3a;}
+  body.dark .electo, body.dark .dip.S, body.dark .chip.aprobado, body.dark .chip.con_datos, body.dark .estado.finalizada{background:#123524; color:#8fe3b1; border-color:#1e6a42;}
+  body.dark .dip.N, body.dark .chip.rechazado, body.dark .chip.error, body.dark .estado.en_curso{background:#3d161a; color:#ffb1b6; border-color:#7a2c33;}
+  body.dark .dip.A, body.dark .chip.sin-detalle, body.dark .estado.preparando{background:#3a2f0e; color:#ffd980; border-color:#7a6320;}
+  body.dark .dip.X{background:#222a3c; color:#a9b3ca; border-color:#3a4870;}
+  body.dark .espera{background:#171e30; border-color:#293450;}
+  body.dark footer{color:#a9b3ca; border-color:#293450;}
+  body.dark a{color:#9db4ff;}
+  body.dark .btn-volver, body.dark .filtros button, body.dark .mapa-chips button, body.dark .mapa-tools .mini-btn, body.dark .subtabs button, body.dark .mes-nav button{background:#1c2540; color:#e9edf7; border-color:#3a4870;}
+  body.dark .subtabs button.on, body.dark .filtros button.on, body.dark .mapa-chips button.on{background:var(--azul2); color:#fff;}
+  body.dark .mapa-caja, body.dark svg text{fill:#e9edf7;}
 </style>
 </head>
 <body>
 <header class="hero">
-  <div class="cont">
+  <div class="cont" style="position:relative;">
+    <button id="dark-toggle" title="Cambiar entre modo claro y oscuro" aria-label="Modo oscuro" style="position:absolute; right:16px; top:0;">🌙</button>
     <div class="franja"></div>
     <div class="eyebrow">CALENDARIO CIUDADANO DE VOTACIONES</div>
     <h1>¿Qué se votó <span class="simple">y cuándo?</span> 🗓️</h1>
@@ -487,6 +519,21 @@ document.addEventListener('click', function(e){
   const h = a.getAttribute('href') || '';
   if(/^https?:\/\//i.test(h) && a.host !== location.host){ a.target = '_blank'; a.rel = 'noopener'; }
 }, true);
+
+// Modo oscuro / claro — comparte la preferencia (eps_dark) con todas las páginas de El Poder en Simple
+(function(){
+  let btn = document.getElementById('dark-toggle');
+  if(!btn){
+    btn = document.createElement('button'); btn.id = 'dark-toggle';
+    const nav = document.querySelector('nav.tabs .cont');
+    if(nav) nav.appendChild(btn); else { btn.classList.add('flotante'); document.body.appendChild(btn); }
+  }
+  btn.setAttribute('title','Cambiar entre modo claro y oscuro'); btn.setAttribute('aria-label','Modo oscuro');
+  let dark = false; try{ dark = localStorage.getItem('eps_dark')==='1'; }catch(e){}
+  const aplicar = ()=>{ document.body.classList.toggle('dark', dark); btn.textContent = dark ? '☀️' : '🌙'; };
+  aplicar();
+  btn.addEventListener('click', ()=>{ dark=!dark; try{ localStorage.setItem('eps_dark', dark?'1':'0'); }catch(e){} aplicar(); });
+})();
 </script>
 </body>
 </html>
