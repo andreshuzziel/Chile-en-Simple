@@ -1588,7 +1588,7 @@ renderGastoBanc();
       const a = $('#a11y-ninos'); if(a) a.classList.toggle('on', on);
     };
     aplicar();
-    window.toggleNinos = ()=>{ on=!on; try{ localStorage.setItem('eps_ninos', on?'1':'0'); }catch(e){} aplicar(); if(on){ const s=$('#intro'); s && s.scrollIntoView({behavior:'smooth'}); } };
+    window.toggleNinos = ()=>{ on=!on; try{ localStorage.setItem('eps_ninos', on?'1':'0'); }catch(e){} aplicar(); if(on){ const s=$('#intro'); s && irSeccion(s); } };
     btn.addEventListener('click', window.toggleNinos);
   })();
 
@@ -1801,7 +1801,7 @@ renderGastoBanc();
     const b = pool[Math.floor(Math.random()*pool.length)];
     $('#cmp-a').value = a.id; $('#cmp-b').value = b.id;
     cmpRender();
-    document.getElementById('cmp-res').scrollIntoView({behavior:'smooth', block:'nearest'});
+    irSeccion(document.getElementById('cmp-res'), {block:'nearest'});
   });
   try{
     const par = JSON.parse(localStorage.getItem('eps_cmp')||'null');
@@ -1864,23 +1864,23 @@ renderGastoBanc();
       abierto = id; render();
       requestAnimationFrame(()=>{
         const tr = document.querySelector(`#tbody tr.fila-d[data-id="${id}"]`);
-        if(tr){ tr.scrollIntoView({behavior:'smooth', block:'center'});
+        if(tr){ irSeccion(tr, {block:'center'});
                 tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash'); }
       });
     },
     bancada(g){
       $('#buscar').value=''; $('#filtro-banc').value=g; render();
-      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+      irSeccion('explorador');
     },
     ordenarGasto(){
       $('#buscar').value=''; $('#filtro-banc').value='';
       sortK='g_tot'; sortAsc=false; render();
-      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+      irSeccion('explorador');
     },
     ordenarAsistencia(asc){
       $('#buscar').value=''; $('#filtro-banc').value='';
       sortK='asist'; sortAsc=asc; render();
-      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+      irSeccion('explorador');
     }
   };
 
@@ -2001,7 +2001,7 @@ renderGastoBanc();
     const idx = [];
     const irA = (id, extra)=>()=>{
       const sec = document.getElementById(id); if(!sec) return;
-      sec.scrollIntoView({behavior:'smooth'});
+      irSeccion(sec);
       if(extra) setTimeout(extra, 380);
     };
     // 1) Glosario ciudadano (términos vivos del HTML)
@@ -2009,7 +2009,7 @@ renderGastoBanc();
       const term = (det.querySelector('summary')||{}).textContent || '';
       const texto = (det.querySelector('p')||{}).textContent || '';
       idx.push({cat:'glosario', t:term, sub:'📖 glosario ciudadano', txt:term+' '+texto,
-        fn:()=>irA('glosario', ()=>{ det.open = true; det.classList.add('busq-flash'); det.scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(()=>det.classList.remove('busq-flash'), 1600); })});
+        fn:()=>irA('glosario', ()=>{ det.open = true; det.classList.add('busq-flash'); irSeccion(det, {block:'center'}); setTimeout(()=>det.classList.remove('busq-flash'), 1600); })});
     });
     // 2) Gobierno: presidente y gabinete
     const gob = DATA.gobierno || {};
@@ -2100,12 +2100,12 @@ renderGastoBanc();
     if(!it) return;
     panel.classList.remove('show');
     if(it.tipo==='dip'){
-      document.getElementById('explorador').scrollIntoView({behavior:'smooth'});
+      irSeccion('explorador');
       setTimeout(()=>window.explorador.abrir(it.d.id), 320);
     } else if(it.tipo==='bancada'){
       window.explorador.bancada(it.b.grupo);
     } else if(it.tipo==='seccion'){
-      document.getElementById(it.s.id).scrollIntoView({behavior:'smooth'});
+      irSeccion(it.s.id);
     } else if(it.tipo==='info' && it.it.fn){
       it.it.fn();
     }
@@ -2132,7 +2132,7 @@ renderGastoBanc();
   const masA  = [...dd].sort((a,b)=>b.asist-a.asist)[0];
   const menosA= [...dd].sort((a,b)=>a.asist-b.asist)[0];
   const chips = [
-    {t:'📅 Fechas clave del país', fn:()=>document.getElementById('fechas').scrollIntoView({behavior:'smooth'})},
+    {t:'📅 Fechas clave del país', fn:()=>irSeccion('fechas')},
     {t:`💰 ¿Quién gasta más?`, fn:()=>window.explorador.ordenarGasto()},
     {t:`🏅 ¿Quién asiste más?`, fn:()=>window.explorador.ordenarAsistencia(false)},
     {t:`🚨 ¿Quién falta más?`, fn:()=>window.explorador.ordenarAsistencia(true)},
@@ -2177,16 +2177,35 @@ renderGastoBanc();
   // Al pulsar una categoría: el TÍTULO de la sección queda pegado justo bajo la barra (10px de aire),
   // sin importar el relleno de la sección, el ancho de pantalla o cuántas filas tenga la barra.
   const AIRE = 10;
-  function irA(id, actualizarHash){
-    const sec = document.getElementById(id); if(!sec) return false;
-    const tit = sec.querySelector('h2, h3') || sec;
-    const y = tit.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 0) - AIRE;
+  // irSeccion(el|id, {hash, block}) — MISMO margen para TODO salto interno: barra + 10px y luego el título
+  // (block:'center'/'nearest' se respetan para elementos pequeños: una fila de tabla, un término del glosario)
+  window.irSeccion = function(el, opts){
+    opts = opts || {};
+    if(typeof el === 'string') el = document.getElementById(el);
+    if(!el) return false;
+    const navH = nav ? nav.offsetHeight : 0;
+    if(opts.block === 'center'){
+      const r = el.getBoundingClientRect();
+      const y = r.top + window.pageYOffset - navH - Math.max(AIRE, (window.innerHeight - navH - r.height) / 2);
+      window.scrollTo({top: Math.max(0, y), behavior:'smooth'}); return true;
+    }
+    if(opts.block === 'nearest'){
+      const r = el.getBoundingClientRect();
+      if(r.top >= navH + AIRE && r.bottom <= window.innerHeight) return true;
+      if(r.top < navH + AIRE){ window.scrollTo({top: Math.max(0, r.top + window.pageYOffset - navH - AIRE), behavior:'smooth'}); return true; }
+    }
+    const tit = el.matches('h1,h2,h3,tr,details,.tarjeta,.card') ? el : (el.querySelector('h2, h3') || el);
+    const y = tit.getBoundingClientRect().top + window.pageYOffset - navH - AIRE;
     window.scrollTo({top: Math.max(0, y), behavior: 'smooth'});
-    if(actualizarHash && history.replaceState) history.replaceState(null, '', '#' + id);
+    if(opts.hash && el.id && history.replaceState) history.replaceState(null, '', '#' + el.id);
     return true;
-  }
-  document.querySelectorAll('nav.menu a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => { const id = a.getAttribute('href').slice(1); if(irA(id, true)) e.preventDefault(); });
+  };
+  function irA(id, actualizarHash){ return window.irSeccion(id, {hash: !!actualizarHash}); }
+  // TODOS los enlaces internos de la página (barra, tarjetas de la portada, botones, textos) usan el mismo margen
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]'); if(!a || a.getAttribute('href').length < 2) return;
+    const id = a.getAttribute('href').slice(1);
+    if(irA(id, true)) e.preventDefault();
   });
   if(location.hash.length > 1) setTimeout(() => irA(location.hash.slice(1), false), 350);
 })();
