@@ -2197,7 +2197,7 @@ renderGastoBanc();
     const tit = el.matches('h1,h2,h3,tr,details,.tarjeta,.card') ? el : (el.querySelector('h2, h3') || el);
     const y = tit.getBoundingClientRect().top + window.pageYOffset - navH - AIRE;
     window.scrollTo({top: Math.max(0, y), behavior: 'smooth'});
-    if(opts.hash && el.id && history.replaceState) history.replaceState(null, '', '#' + el.id);
+    if(opts.hash && el.id && history.replaceState){ try{ history.replaceState(null, '', '#' + el.id); }catch(e){} }
     return true;
   };
   function irA(id, actualizarHash){ return window.irSeccion(id, {hash: !!actualizarHash}); }
