@@ -188,6 +188,14 @@
   body.dark .btn-volver, body.dark .filtros button, body.dark .mapa-chips button, body.dark .mapa-tools .mini-btn, body.dark .subtabs button, body.dark .mes-nav button{background:#1c2540; color:#e9edf7; border-color:#3a4870;}
   body.dark .subtabs button.on, body.dark .filtros button.on, body.dark .mapa-chips button.on{background:var(--azul2); color:#fff;}
   body.dark .mapa-caja, body.dark svg text{fill:#e9edf7;}
+
+  .cta-proxima{border:2px dashed var(--ambar); background:linear-gradient(120deg,#fffaf0,#fff6d6); color:var(--texto);}
+  .cta-proxima p, .cta-proxima h3{color:var(--texto);}
+  body.dark .cta-proxima{background:linear-gradient(120deg,#2a2410,#1f1c12); border-color:#b98a10; color:#f3e9c9;}
+  body.dark .cta-proxima p, body.dark .cta-proxima h3, body.dark .cta-proxima .lead, body.dark .cta-proxima .nota-metodo{color:#f3e9c9;}
+  /* Seguridad: cualquier fondo claro puesto en línea se neutraliza en modo oscuro */
+  body.dark [style*="background:#f"], body.dark [style*="background:#e"], body.dark [style*="background:white"], body.dark [style*="background:linear-gradient(120deg,#fff"]{background:#1c2540 !important; color:#e9edf7 !important;}
+  body.dark [style*="background:#ffd75e"], body.dark .btn-amarillo{background:#ffd75e !important; color:#1d3a8f !important;}
 </style>
 </head>
 <body>
@@ -409,7 +417,7 @@
   <!-- ══════════ REGIONALES Y MUNICIPALES ══════════ -->
   <section id="tab-regionales" class="oculto">
     <h2 class="tit">🗺️ Elecciones regionales y municipales</h2>
-    <div class="card mt" style="border:2px dashed var(--ambar); background:linear-gradient(120deg,#fffaf0,#fff6d6); text-align:center;">
+    <div class="card mt cta-proxima" style="text-align:center;">
       <h3 style="font-size:16px;">🔜 Alcaldes, concejales, gobernadores y CORE 2028: tablero ya preparado</h3>
       <p style="font-size:13.5px; color:var(--texto2); margin-top:6px; max-width:680px; margin-left:auto; margin-right:auto;">El mismo explorador (elect@s, pactos, por comuna/región, más votad@s, buscador y tabla) quedará disponible apenas el Servel publique los archivos de la próxima elección municipal y regional. Mientras tanto, mira la cuenta regresiva y los cargos en juego.</p>
       <a href="proxima_eleccion.html" style="display:inline-block; margin-top:12px; background:var(--azul); color:#fff; font-weight:800; text-decoration:none; padding:11px 22px; border-radius:12px;">🔜 Ir al tablero de la próxima elección →</a>
